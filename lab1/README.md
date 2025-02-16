@@ -50,6 +50,17 @@ According to this lab description, the first part is about RNA sequences and the
 #### Entity TreeNode
 
 
+> [!NOTE]
+This class is a helper class for PhyloTree. While it's not explicitly mentioned in the description, we decided to include it in the model to represent the nodes in the tree. It was a crucial addition in order to describe the class a tree data structure and allow for the implementation of the tree traversal methods.
+
+
+The `TreeNode` class serves to represent nodes in a phylogenetic tree within Pylotree, hence `Phylotree` has attribute of type `TreeNode`. It functions as the fundamental unit of the nodes list attribute, storing information in a graph-based data structure (by having a recurive link to other nodes, parent and children, in its attributes). Each node holds an RNA type as its data attribute and maintains a list of child nodes. Key attributes include: 
+
+* `branch_length`, which represents the distance to the parent node
+* a `parent` attribute to store the parent node
+* a `children` attribute to manage child nodes. The class provides methods such as `add_child(child, weight)`, which adds a child node with a specified weight (now deprecated due to the branch_length attribute), and preorder_traversal(level=0), which returns a string representation of the tree in preorder. Additionally, it implements dunder methods: `__repr__` for node representation, `__str__` for string output, and `__getitem__` for retrieving child nodes by name.
+
+
 
 
 #### Species
@@ -107,6 +118,49 @@ It is described that species refer to the organisms that contain RNA sequences b
 - `__repr__` is used to return the string representation of the object as: `entry_id experiment species`.
 - `@property` and `@attribute.setter` are used for the attributes, with setter used for validation of the input values.
 - `print_all()` method is used to print all the models, chains, residues, and atoms that are part of the RNA_Molecule similar to a pdb file format, and saves the output to a file. The format is as follows: `ATOM <atom_number> <atom_name> <residue_type> <chain_id> <residue_position> <x> <y> <z> <element>`
+
+#### Class Family
+
+> _`Family` Class Overview:_
+
+The `Family` class represents a family of RNA molecules, particularly those in the **Rfam** database. It ensures that each family is uniquely identified, maintains a list of RNA molecules as its members, and optionally includes a phylogenetic tree representation. The class prevents duplicate instances and provides structured methods for adding, removing, and retrieving RNA families.
+
+ **Key Features**
+
+- Represents RNA families with shared **sequence similarity, secondary structure, and function**.
+- Ensures uniqueness by preventing duplicate instances based on the **family ID**
+- Supports integration with the **Rfam** database for automatic family creation (in `utils.py`, using rfam api)
+- Includes a **phylogenetic tree** (`Phylotree`) to represent evolutionary relationships which can be retrieved from various data types: newick, dict and json.
+
+---
+
+> **Attributes**
+
+ **Class Attributes**
+- `entries`: List of all created `Family` objects to track and avoid duplicates.
+
+**Instance Attributes**
+- `id` (`str`): Unique identifier for the family.
+- `name` (`str`): Name of the RNA family.
+- `type` (`str`, optional): Type of RNA (e.g., rRNA, tRNA, miRNA).
+- `members` (`list`): List of `RNA_Molecule` objects representing the
+
+
+
+**helper methods (private)**:
+- __validate_member(member): validate if the member is an instance of RNA_Molecule
+- __delete_family(id): delete the family with the given id from the entries list
+
+**dunders:**
+
+- `__init__(id, name, type=None, members=[], from_database=False)`: from_database is a flag to indicate if the object is created using the generator function from the database 
+- `__del__(self)`
+- `__eq__(self, other)`
+- `__len__(self)`
+- `__getitem__(self, key)`
+- `__setattr__(self, name, value)`
+- `__str__(self)`
+- `__repr__(self)`
 
 #### Functions to Extract Data from PDB Files to Create RNA_Molecule Object
 - `fetch_pdb_file(pdb_entry_id, save_directory=CACHE_DIR)` function written in `utils.py` is used to fetch the pdb file from the RCSB PDB database using the pdb entry id. It saves the file in the specified directory. It uses the `Biopython` library to fetch the file.
