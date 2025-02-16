@@ -75,6 +75,20 @@ It is described that species refer to the organisms that contain RNA sequences b
 
 ## Python Implementation
 
+List of modules:
+
+- [`Atom.py`](src/Atom.py)
+- [`Residue.py`](src/Residue.py)
+- [`Chain.py`](src/Chain.py)
+- [`Model.py`](src/Model.py)
+- [`RNA_Molecule.py`](src/RNA_Molecule.py)
+- [`Family.py`](src/family.py)
+- [`Clan.py`](src/clan.py)
+- [`PhyloTree.py`](src/tree.py)
+- [`utils.py`](src/utils.py) _this includes helper functions for database calls, data extraction, and file handling..._
+
+Kindly find an example of the implementation of the classes in [this notebook](src/example_usage.ipynb)
+
 #### Class Atom
 - It includes the attributes defined in the class diagram, with enum implementation for `AtomName` and `Element` for validation. 
 - In the constructor, the `atom_name` and `element` attributes are string values, but they were later converted to the corresponding enumeration values in the setter methods.
@@ -161,6 +175,105 @@ The `Family` class represents a family of RNA molecules, particularly those in t
 - `__setattr__(self, name, value)`
 - `__str__(self)`
 - `__repr__(self)`
+
+#### Class Clan
+
+**`Clan` Class Overview**
+
+The `Clan` class represents a **group of RNA families** that share common ancestry or biological significance. It ensures **unique identification** of clans, prevents duplicates, and provides structured methods for managing **RNA families** (`Family` objects).
+
+**Key Features**
+- Represents **RNA family groups** with shared ancestry.
+- Prevents duplicate clan creation by **linking existing clans** if an ID already exists.
+- Provides methods to **add and remove RNA families** (`Family` objects).
+- Implements **custom string representation** for better readability.
+
+---
+
+**Attributes**  
+**Class Attributes**
+- `entries`: List of all created `Clan` objects to track and avoid duplicates.
+
+**Instance Attributes**
+- `id` (`str`): Unique identifier for the clan (immutable).
+- `name` (`str`, optional): Name of the clan.
+- `members` (`list`): List of `Family` objects that belong to the clan.
+
+---
+
+**Methods**  
+**Class Methods**
+- `get_instances()`: Returns a list of all created `Clan` objects.
+- `get_clan(id)`: Retrieves an existing clan by its ID.
+
+**Instance Methods**
+- `add_family(family)`: Adds a `Family` object to the clan.
+- `remove_family(family)`: Removes a `Family` object from the clan.
+
+**Private Methods**
+- `__validate_member(member)`: Ensures that only `Family` objects are added to the clan.
+
+**Magic Methods**
+- `__str__()`: Returns a formatted string representation of the clan and its families.
+- `__repr__()`: Returns a structured representation of the clan instance.
+- `__eq__(other)`: Checks equality based on clan ID.
+- `__setattr__(name, value)`: Ensures controlled attribute setting, preventing ID modification and enforcing type validation.
+
+
+#### Class PhyloTree and TreeNode
+
+This modeule `tree.py` defines a `TreeNode` class and a `Phylotree` class for constructing and managing a phylogenetic tree.
+
+The `TreeNode` class represents a node in the tree with attributes:
+- `name`: stores the RNA type.
+- `branch_length`: stores the distance to the parent node.
+- `parent`: stores the parent node.
+- `children`: stores child nodes as a dictionary.
+
+Methods in `TreeNode`:
+- `add_child(child, weight)`: adds a child node with a given branch length.
+- `preorder_traversal(level=0)`: performs a preorder traversal and returns a string representation.
+- `__repr__` and `__str__`: provide readable representations of the node.
+- `__getitem__`: retrieves a child node by name.
+
+The `Phylotree` class represents a phylogenetic tree for RNA sequences, constructed using computational phylogenetics. It consists of:
+- A `root` node.
+- Internal nodes representing common ancestors.
+- Leaf nodes representing specific RNA sequences.
+
+Methods in `Phylotree`:
+- `build_tree(tree_dict, parent=None)`: builds a tree from a dictionary.
+- `from_dict(tree_dict, parent=None)`: constructs a tree from a dictionary.
+- `from_json(json_str)`: constructs a tree from a JSON string or file.
+- `from_newick(newick_str)`: parses a Newick-formatted string or file to build the tree.
+- `__str__` and `__repr__`: return a string representation of the tree.
+
+The script demonstrates tree construction using different input formats:
+- A dictionary representation.
+- A JSON file.
+- A Newick-formatted string.
+
+Example usage:
+```python
+tree_dict = {
+    "children": [
+        {"name": "a", "branch_length": 0.05592},
+        {"name": "b", "branch_length": 0.08277},
+        {
+            "children": [
+                {"name": "c", "branch_length": 0.11049},
+                {"name": "d", "branch_length": 0.31409}
+            ],
+            "branch_length": 0.340
+        }
+    ],
+    "branch_length": 0.03601
+}
+tree = Phylotree.from_dict(tree_dict)
+print(tree)
+
+
+
 
 #### Functions to Extract Data from PDB Files to Create RNA_Molecule Object
 - `fetch_pdb_file(pdb_entry_id, save_directory=CACHE_DIR)` function written in `utils.py` is used to fetch the pdb file from the RCSB PDB database using the pdb entry id. It saves the file in the specified directory. It uses the `Biopython` library to fetch the file.
