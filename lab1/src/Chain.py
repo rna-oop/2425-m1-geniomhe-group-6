@@ -1,9 +1,10 @@
 from Residue import Residue
 
 class Chain:
-    def __init__(self, id: str):
+    def __init__(self, id: str, residues=None):
         self.id = id
-        self._residues = []
+        self._residues = residues if residues is not None else [] 
+
         
     @property
     def id(self):

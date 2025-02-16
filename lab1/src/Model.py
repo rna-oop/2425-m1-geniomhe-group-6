@@ -1,10 +1,11 @@
 from Chain import Chain
 
 class Model:
-    def __init__(self, id: int):
+    def __init__(self, id: int, chains=None):
         self.id = id
-        self._chains = []
-    
+        self._chains = chains if chains is not None else [] 
+
+
     @property
     def id(self):
         return self._id

@@ -1,12 +1,13 @@
 from Model import Model
-
+import os
 class RNA_Molecule:
     
-    def __init__(self, entry_id: str, experiment: str, species: str):
+    def __init__(self, entry_id: str, experiment: str, species: str, models=None):
         self.entry_id = entry_id
         self.experiment = experiment
         self.species = species
-        self._models = []
+        self._models = models if models is not None else []  
+
         
     @property
     def entry_id(self):
@@ -51,21 +52,37 @@ class RNA_Molecule:
     def __repr__(self):
         return f"{self.entry_id} {self.experiment} {self.species}"
     
-    def print_all(self):
+
+    def print_all(self, output_dir="lab1/data"):
         """
-        A function to print all the models available for this RNA molecule entry, along with the atoms in each model.
-        For each Model, it prints on a new line the information with the following format similar to pdb format:
+        Prints all models available for this RNA molecule entry, along with the atoms in each model.
+        The output is written to a PDB-like formatted file:
         ATOM <atom_number> <atom_name> <residue_type> <chain_id> <residue_position> <x> <y> <z> <element>
+
+        Parameters:
+        - output_dir (str): The directory where the output file will be saved.
         """
-        print(self)
-        for model in self._models:
-            print(model)
-            atom_number=1
-            for chain in model.get_chains():
-                for residue in chain.get_residues():
-                    for atom in residue.get_atoms():
-                        print(f"ATOM {atom_number} {atom.atom_name} {residue.type.value} {chain.id} {residue.position} {atom.x} {atom.y} {atom.z} {atom.element} \n")
-                        atom_number+=1
+        os.makedirs(output_dir, exist_ok=True)  #Ensure the directory exists
+
+        filename = os.path.join(output_dir, f"{self.entry_id}_output.pdb")
+
+        with open(filename, "w") as file:  #Open file for writing
+            file.write(str(self) + "\n")  #Save the RNA molecule information
+            
+            for model in self._models:
+                file.write(str(model) + "\n")
+                atom_number = 1
+                for chain in model.get_chains():
+                    for residue in chain.get_residues():
+                        for atom in residue.get_atoms():
+                            file.write(f"ATOM {atom_number} {atom.atom_name.value} {residue.type.value} {chain.id} {residue.position} {atom.x} {atom.y} {atom.z} {atom.element.value}\n")
+                            atom_number += 1
+
+        #Print the contents of the saved file
+        with open(filename, "r") as file:
+            print(file.read())
+
+
         
 #Example usage
 '''

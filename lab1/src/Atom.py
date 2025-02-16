@@ -40,6 +40,7 @@ class AtomName(Enum):
     C8 = "C8"
     N4 = "N4"
     O2 = "O2"
+    O4 = "O4"
 
 atom_name_lookup = {atom.value: atom for atom in AtomName} #To look for the AtomName enum by its value
 

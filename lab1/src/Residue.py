@@ -5,15 +5,15 @@ class NBase(Enum):
     G = "G"
     A = "A"
     C = "C"
-    T = "T"
+    U = "U"
 
 
 class Residue:
 
-    def __init__(self, type: str, position: int):
+    def __init__(self, type: str, position: int, atoms=None):
         self.type = type
         self.position = position
-        self._atoms = []
+        self._atoms = atoms if atoms is not None else []  
 
     @property
     def type(self):
@@ -61,4 +61,9 @@ r.add_atom(atom2)
 print(r.get_atoms()) #output: [C1' 1.0 2.0 3.0 C, N9 4.0 5.0 6.0 N]
 r.remove_atom(atom1)
 print(r.get_atoms()) #output: [N9 4.0 5.0 6.0 N]
+
+atom3 = Atom("C4", 7.0, 8.0, 9.0, "C")
+r2 = Residue("G", 2)
+r2.add_atom(atom3)
+print(r2.get_atoms()) #output: [C4 7.0 8.0 9.0 C]
 '''
