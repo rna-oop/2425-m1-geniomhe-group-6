@@ -45,7 +45,8 @@ According to this lab description, the first part is about RNA sequences and the
 
 #### Entity PhyloTree
 - Since a phylogenetic tree here is defined for a given RNA family, hence a tree belongs only to one family. 
-- But a family can have 0 (if it does not yet have a tree associated with it) or multiple phylogenetic trees (because probably different algorithms can be used to construct the tree, or different versions at different times can exist). 
+- But a family can have 0 (if it does not yet have a tree associated with it) or multiple phylogenetic trees (because probably different algorithms can be used to construct the tree, or different versions at different times can exist).  
+- An important consideration during the uml design is portraying teh class as a Tree data structure which by definition is going to be recursive, this is embedded through the `root` relationship in the `PhyloTree` class with `TreeNode`, that will be represented as an attribute during implementation.
 
 #### Entity TreeNode
 
@@ -54,11 +55,7 @@ According to this lab description, the first part is about RNA sequences and the
 This class is a helper class for PhyloTree. While it's not explicitly mentioned in the description, we decided to include it in the model to represent the nodes in the tree. It was a crucial addition in order to describe the class a tree data structure and allow for the implementation of the tree traversal methods.
 
 
-The `TreeNode` class serves to represent nodes in a phylogenetic tree within Pylotree, hence `Phylotree` has attribute of type `TreeNode`. It functions as the fundamental unit of the nodes list attribute, storing information in a graph-based data structure (by having a recurive link to other nodes, parent and children, in its attributes). Each node holds an RNA type as its data attribute and maintains a list of child nodes. Key attributes include: 
-
-* `branch_length`, which represents the distance to the parent node
-* a `parent` attribute to store the parent node
-* a `children` attribute to manage child nodes. The class provides methods such as `add_child(child, weight)`, which adds a child node with a specified weight (now deprecated due to the branch_length attribute), and preorder_traversal(level=0), which returns a string representation of the tree in preorder. Additionally, it implements dunder methods: `__repr__` for node representation, `__str__` for string output, and `__getitem__` for retrieving child nodes by name.
+The `TreeNode` class serves to represent nodes in a phylogenetic tree within Pylotree, hence `Phylotree` has attribute of type `TreeNode`. It functions as the fundamental unit of the nodes list attribute, storing information in a graph-based data structure (by having a recurive link to other nodes, parent and children, in its attributes). Each node holds an RNA type as its data attribute and maintains a list of child nodes, this is shown through the self relationship in the class diagram, where a node can have multiple children nodes. Key attribute is `branch_length`, which represents the distance to the parent node.
 
 
 
@@ -87,7 +84,7 @@ List of modules:
 - [`PhyloTree.py`](src/tree.py)
 - [`utils.py`](src/utils.py) _this includes helper functions for database calls, data extraction, and file handling..._
 
-Kindly find an example of the implementation of the classes in [this notebook](src/example_usage.ipynb)
+
 
 #### Class Atom
 - It includes the attributes defined in the class diagram, with enum implementation for `AtomName` and `Element` for validation. 
@@ -182,15 +179,14 @@ The `Family` class represents a family of RNA molecules, particularly those in t
 
 The `Clan` class represents a **group of RNA families** that share common ancestry or biological significance. It ensures **unique identification** of clans, prevents duplicates, and provides structured methods for managing **RNA families** (`Family` objects).
 
-**Key Features**
+**Key Features**  
 - Represents **RNA family groups** with shared ancestry.
 - Prevents duplicate clan creation by **linking existing clans** if an ID already exists.
 - Provides methods to **add and remove RNA families** (`Family` objects).
 - Implements **custom string representation** for better readability.
 
----
 
-**Attributes**  
+ 
 **Class Attributes**
 - `entries`: List of all created `Clan` objects to track and avoid duplicates.
 
@@ -199,9 +195,8 @@ The `Clan` class represents a **group of RNA families** that share common ancest
 - `name` (`str`, optional): Name of the clan.
 - `members` (`list`): List of `Family` objects that belong to the clan.
 
----
 
-**Methods**  
+ 
 **Class Methods**
 - `get_instances()`: Returns a list of all created `Clan` objects.
 - `get_clan(id)`: Retrieves an existing clan by its ID.
@@ -222,7 +217,9 @@ The `Clan` class represents a **group of RNA families** that share common ancest
 
 #### Class PhyloTree and TreeNode
 
-This modeule `tree.py` defines a `TreeNode` class and a `Phylotree` class for constructing and managing a phylogenetic tree.
+This module `tree.py` defines a `TreeNode` class and a `Phylotree` class for constructing and managing a phylogenetic tree.
+
+In the object diagram we see a phylotree is diretly linked to one node, which is the root (will be portrayed as an attribute) and each node is recursively linked to other nodes, in its attributes, as seen in the following implementation:
 
 The `TreeNode` class represents a node in the tree with attributes:
 - `name`: stores the RNA type.
@@ -248,10 +245,10 @@ Methods in `Phylotree`:
 - `from_newick(newick_str)`: parses a Newick-formatted string or file to build the tree.
 - `__str__` and `__repr__`: return a string representation of the tree.
 
-The script demonstrates tree construction using different input formats:
+The module demonstrates tree construction using different input formats:
 - A dictionary representation.
 - A JSON file.
-- A Newick-formatted string.
+- A Newick-formatted string (or newick file path)
 
 Example usage:
 ```python
@@ -273,6 +270,26 @@ tree = Phylotree.from_dict(tree_dict)
 print(tree)
 ```
 
+or 
+
+```python
+    newick_str = '''
+    (87.4_AE017263.1/29965-30028_Mesoplasma_florum_L1[265311].1:0.05592,
+    _URS000080DE91_2151/1-68_Mesoplasma_florum[2151].1:0.08277,
+        (90_AE017263.1/668937-668875_Mesoplasma_florum_L1[265311].2:0.11049,
+        81.3_AE017263.1/31976-32038_Mesoplasma_florum_L1[265311].3:0.31409)
+    0.340:0.03601);
+    '''
+    tree=Phylotree.from_newick(newick_str) #success  
+```
+
+or from files:
+
+```python
+tree=Phylotree.from_newick('lab1/examples/RF00162.nhx') #newick
+tree=Phylotree.from_json('lab1/examples/RF00162.json') #json
+```
+
 
 
 
@@ -281,6 +298,8 @@ print(tree)
 - `create_RNA_Molecule(pdb_entry_id)` function written in `utils.py` is used to create an RNA_Molecule object from the pdb file accessed through the pdb_entry using the first function. It reads the pdb file, extracts the necessary information first about the `experiment` and `species` to create the specific `RNA_molecule` object, and then creates the corresponding objects (models, chains, residues, atoms) while adding them in the hierarchical order to the RNA_Molecule object. It returns the RNA_Molecule object.
 
 ## Python Code Examples
+
+Kindly find an example of the implementation of the classes in [this notebook](src/example_usage.ipynb)
 
 #### Small examples inside each class implementation:
 - Specific Usage Examples are present at the end of each class implementation in the python files.
@@ -407,4 +426,4 @@ print(tree)
     ATOM 3 C4 C A 3 0.21 0.76 -0.93 C
     ATOM 4 N1 C A 3 0.25 0.54 0.23 N
     ``` 
-    
+

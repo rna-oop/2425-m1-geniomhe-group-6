@@ -1,7 +1,7 @@
 # 2425-m1geniomhe-oop2-labs
 
-* Firstname Lastname ([@github_username1](https://github.com/github_username1))
-* Firstname Lastname ([@github_username1](https://github.com/github_username2))
+* Joelle ASSY ([@JoelleAs](https://github.com/joelleas))
+* Rayane ADAM ([@raysas](https://github.com/raysas))
 
 ## Modeling a Library for the Manipulation of Ribonucleic Acids (RNAs)
 The goal of this series of labs is to build a library that allows easy manipulation and study of RNA sequences.
