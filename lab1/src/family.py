@@ -1,14 +1,8 @@
-# from RNA_molecule import RNA_Molecule
+from RNA_Molecule import RNA_Molecule
 
-from utils import get_rfam, get_family_attributes
+from utils import get_family_attributes, create_RNA_Molecule, get_tree_newick_from_fam
+from tree import Phylotree
 
-# for testing purposes
-class RNA_Molecule:
-    def __init__(self, sequence):
-        self.sequence = sequence
-
-    def __str__(self):
-        return self.sequence
 
 class Family:
     '''
@@ -60,7 +54,7 @@ class Family:
     # --class attribute to store all families - no duplicates are allowed (checked in __setattr__), unique by id
     entries=[] 
 
-    def __init__(self, id, name, type=None, members=[], from_database=False):
+    def __init__(self, id, name, type=None, members=[], tree=None, from_database=False):
         if not from_database:
             print('Warning: Family object created without database connection, creating a new family with provided id and name')
 
@@ -75,6 +69,7 @@ class Family:
             self.__name = name
             self.__type = type
             self.__members = members  # list of RNA_Molecule objects
+            self.__tree = tree
 
             Family.entries.append(self)  # adding it to list of instances
             print('Family created successfully')
@@ -123,6 +118,13 @@ class Family:
     def members(self, value):
         self.__members = value
 
+    @property
+    def tree(self):
+        return self.__tree
+    @tree.setter
+    def tree(self, value):
+        self.__tree = value
+
     # --dunders
     def __eq__(self, other):
         return self.id == other.id
@@ -161,6 +163,13 @@ class Family:
             for member in value:
                 self.__validate_member(member)
             super().__setattr__(name, value)
+        elif name=='_Family__tree':
+            if isinstance(value, Phylotree):
+                super().__setattr__(name, value)
+            elif value is None:
+                super().__setattr__(name, value)
+            else:
+                raise ValueError('Tree must be an instance of Phylotree')
 
 
     def __str__(self):
@@ -171,6 +180,8 @@ class Family:
             fam+='\tMembers:\n'
             for member in self.members:
                 fam+='\t\t'+str(member)+'\n'
+        if self.tree:
+            fam+='------------------------------------------------------------------------------------\n\t\t\t\tTree:\n'+str(self.tree)
         return fam
 
     def __repr__(self):
@@ -179,7 +190,8 @@ class Family:
             id={self.id}, 
             name={self.name}, 
             type={self.type}, 
-            members={self.members}
+            members={self.members},
+            tree={self.tree}
         )'''
     
     # -- instance methods
@@ -219,11 +231,15 @@ class Family:
     @staticmethod
     def from_rfam(query:str):
         i,n,t=get_family_attributes(query)
-        return Family(id=i, name=n, type=t, from_database=True)
+        tree_nwk=get_tree_newick_from_fam(i)
+        tr=Phylotree.from_newick(tree_nwk)
+        return Family(id=i, name=n, type=t, tree=tr,from_database=True)
 
 if __name__=='__main__':
 
     # --testing
     fam1=Family.from_rfam('SAM')
+    rna1= create_RNA_Molecule("7EAF")
+    fam1.add_RNA(rna1)
     print(fam1) #success
-    
+
