@@ -57,3 +57,186 @@ It is described that species refer to the organisms that contain RNA sequences b
 
 
 
+## Object Diagram
+
+![Object Diagram](/lab1/model/Object-Diagram.jpg)
+
+
+## Python Implementation
+
+#### Class Atom
+- It includes the attributes defined in the class diagram, with enum implementation for `AtomName` and `Element` for validation. 
+- In the constructor, the `atom_name` and `element` attributes are string values, but they were later converted to the corresponding enumeration values in the setter methods.
+- `@attribute.setter` is used to validate the input values for the attributes. For the coordinates it validates that the values are float, and for the atom_name and element it validates that the values are part of the enumeration. For example:
+```python
+   def element(self, element):
+        if not isinstance(element, str):
+            raise TypeError(f"element must be a string, got {type(element)}")
+        #Check if the string is a valid Element
+        if not element in Element.__members__:
+            raise ValueError(f"{element} is not a valid Element value")
+        self._element=Element.__members__[element]
+```
+    It is used to validate that the input value is a string and that the string is part of the Element enumeration.
+- `@property` decorator was used to define getter and setter methods for the attributes, allowing for encapsulation and validation while providing a simple interface for accessing and modifying the attributes.
+- `__repr__` is used to return the string representation of the object as: `atom_name x y z element`. 
+
+
+#### Class Residue
+- It includes the attributes `type` and `position`, with enum implementation for `NBase` for validation of the residue type.
+- In the constructor, the `type` attribute is a string value, but it was later converted to the corresponding enumeration value in the setter method. It also includes ` atoms=None` as a default value for the atoms attribute, which is a list that will store the atoms that are part of the residue, it is initialized as an empty list if no atoms are provided. 
+- `@property` and `@attribute.setter` are used for the attributes, with setter used for validation of the input values. 
+- Methods for adding `add_atom()` with validations that the input is an instance of `Atom` and that it does not already exist and removing atoms `remove_atom` from the residue are included, with a method to also get the list of atoms in the residue `get_atoms()`.
+- `__repr__` is used to return the string representation of the object as: `type position`.
+
+
+#### Class Chain
+- It includes the attribute `id`, with `residues=None` as a default value for the residues attribute, which is a list that will store the residues that are part of the chain, it is initialized as an empty list if no residues are provided. 
+- Methods for adding `add_residue()` with validations and removing residues `remove_residue` from the chain are also included, with a method to get the list of residues in the chain `get_residues()`.
+- `__repr__` is used to return the string representation of the object as: `id`.
+  
+
+#### Class Model
+- It includes the attribute `id`, with `chains=None` as a default value for the chains attribute, which is a list that will store the chains that are part of the model, it is initialized as an empty list if no chains are provided.
+- Methods for adding `add_chain()` with validations and removing chains `remove_chain` from the model are also included, with a method to get the list of chains in the model `get_chains()`.
+- `__repr__` is used to return the string representation of the object as: `id`.
+
+#### Class RNA_Molecule
+- It includes the attributes `entry_id`, `experiment`, `species`, with `models=None` as a default value for the models attribute, which is a list that will store the models that are part of the RNA_Molecule, it is initialized as an empty list if no models are provided.
+- Methods for adding `add_model()` with validations and removing models `remove_model` from the RNA_Molecule are also included, with a method to get the list of models in the RNA_Molecule `get_models()`.
+- `__repr__` is used to return the string representation of the object as: `entry_id experiment species`.
+- `@property` and `@attribute.setter` are used for the attributes, with setter used for validation of the input values.
+- `print_all()` method is used to print all the models, chains, residues, and atoms that are part of the RNA_Molecule similar to a pdb file format, and saves the output to a file. The format is as follows: `ATOM <atom_number> <atom_name> <residue_type> <chain_id> <residue_position> <x> <y> <z> <element>`
+
+#### Functions to Extract Data from PDB Files to Create RNA_Molecule Object
+- `fetch_pdb_file(pdb_entry_id, save_directory=CACHE_DIR)` function written in `utils.py` is used to fetch the pdb file from the RCSB PDB database using the pdb entry id. It saves the file in the specified directory. It uses the `Biopython` library to fetch the file.
+- `create_RNA_Molecule(pdb_entry_id)` function written in `utils.py` is used to create an RNA_Molecule object from the pdb file accessed through the pdb_entry using the first function. It reads the pdb file, extracts the necessary information first about the `experiment` and `species` to create the specific `RNA_molecule` object, and then creates the corresponding objects (models, chains, residues, atoms) while adding them in the hierarchical order to the RNA_Molecule object. It returns the RNA_Molecule object.
+
+## Python Code Examples
+
+#### Small examples inside each class implementation:
+- Specific Usage Examples are present at the end of each class implementation in the python files.
+- The examples demonstrate the creation of objects, adding and removing elements, and printing the objects.
+- For example:
+    - in the `Atom` class:
+    ```python
+    atom = Atom("C1'", 1.0, 2.0, 3.0, "C")
+    print(atom) #output: C1' 1.0 2.0 3.0 C
+    ```
+    - in the `Residue` class:
+    ```python
+    r = Residue("A", 1)
+    print(r) #output: A 1
+    atom1 = Atom("C1'", 1.0, 2.0, 3.0, "C")
+    atom2 = Atom("N9", 4.0, 5.0, 6.0, "N")
+    r.add_atom(atom1)
+    r.add_atom(atom2)
+    print(r.get_atoms()) #output: [C1' 1.0 2.0 3.0 C, N9 4.0 5.0 6.0 N]
+    r.remove_atom(atom1)
+    print(r.get_atoms()) #output: [N9 4.0 5.0 6.0 N]
+
+    atom3 = Atom("C4", 7.0, 8.0, 9.0, "C")
+    r2 = Residue("G", 2)
+    r2.add_atom(atom3)
+    print(r2.get_atoms()) #output: [C4 7.0 8.0 9.0 C]
+    ```
+    - in the `Chain` class:
+    ```python
+    c = Chain("A")
+    print(c) #output: A
+    r = Residue("A", 1)
+    c.add_residue(r)
+    print(c.get_residues()) #output: [A 1]
+    c.remove_residue(r)
+    print(c.get_residues()) #output: []
+    ```
+    - in the `Model` class:
+    ```python
+    m = Model(1)
+    print(m) #output: 1
+    c = Chain("A")
+    m.add_chain(c)
+    print(m.get_chains()) #output: [A]
+    m.remove_chain(c)
+    print(m.get_chains()) #output: []
+    ```
+    - in the `RNA_Molecule` class:
+    ```python
+    rna1 = RNA_Molecule("1A9N", "NMR", "Homo sapiens")
+    print(rna1) #Output 1A9N NMR Homo sapiens
+    m1 = Model(1)
+    m2 = Model(2)
+    m3 = Model(3)
+    rna1.add_model(m1)
+    rna1.add_model(m2)
+    rna1.add_model(m3)
+    print(rna1.get_models()) #Output [Model 1, Model 2, Model 3]
+    rna1.remove_model(m3) 
+    print(rna1.get_models()) #Output [Model 1, Model 2]
+    rna1.print_all() 
+    #Output 1A9N NMR Homo sapiens
+    #Model 1
+    #Model 2
+    ```
+
+#### Small Example to Manually create an RNA_Molecule
+- Provided in the file `Example.py`.
+- It shows how the code can be used to create an RNA_Molecule manually, while adding all its structures from models, chains, residues, and atoms. 
+    ```python
+    #Creating an RNA molecule
+    rna_molecule = RNA_Molecule("1JAT", "X-RAY DIFFRACTION", "Homo sapiens")
+
+    #Creating a model
+    model1 = Model(1)
+
+    #Creating a chain
+    ch1 = Chain('A')
+
+    #Adding the model to the RNA molecule
+    rna_molecule.add_model(model1)
+
+    #Adding the chain to the model
+    model1.add_chain(ch1)
+
+    #Creating Residues
+    res1=Residue("A", 1)
+    res2=Residue("U", 2)
+    res3=Residue("C",3)
+
+    #Adding Residues
+    ch1.add_residue(res1)
+    ch1.add_residue(res2)
+    ch1.add_residue(res3)
+
+    #Creating Atoms
+    a1=Atom("OP1", 0.1, 0.2, 0.3, "O")
+    a2=Atom("P", 0.4, -0.5, 0.6, "P")
+    a3=Atom("N1", 0.25, 0.54, 0.23, "N")
+    a4=Atom("C4", 0.21, 0.76, -0.93, "C")
+
+    #Adding Atoms
+    res1.add_atom(a1)
+    res2.add_atom(a2)
+    res3.add_atom(a4)
+    res3.add_atom(a3)
+    ```
+- The following code shows how to access each structural element
+    ```python
+    print(rna_molecule.get_models())
+    print(rna_molecule.get_models()[0].get_chains())
+    print(rna_molecule.get_models()[0].get_chains()[0].get_residues())
+    print(rna_molecule.get_models()[0].get_chains()[0].get_residues()[0].get_atoms())
+    ```
+- Printing the structure using the `print_all()` method
+    ```python
+    rna_molecule.print_all()
+    ``` 
+    provides as output the following format, saved in a file:
+    ```1JAT X-RAY DIFFRACTION Homo sapiens
+    Model 1
+    ATOM 1 OP1 A A 1 0.1 0.2 0.3 O
+    ATOM 2 P U A 2 0.4 -0.5 0.6 P
+    ATOM 3 C4 C A 3 0.21 0.76 -0.93 C
+    ATOM 4 N1 C A 3 0.25 0.54 0.23 N
+    ``` 
+    

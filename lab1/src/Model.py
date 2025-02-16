@@ -17,7 +17,12 @@ class Model:
         self._id=id
         
     def add_chain(self, chain):
+        if not isinstance(chain, Chain):  
+            raise TypeError(f"Expected a Chain instance, got {type(chain)}")
+        if chain in self._chains:
+            raise ValueError(f"The chain {chain} is already in the list")
         self._chains.append(chain)
+
     
     def get_chains(self):
         return self._chains

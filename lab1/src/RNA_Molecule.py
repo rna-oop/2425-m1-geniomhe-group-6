@@ -87,15 +87,18 @@ class RNA_Molecule:
 #Example usage
 '''
 rna1 = RNA_Molecule("1A9N", "NMR", "Homo sapiens")
-print(rna1)
+print(rna1) #Output 1A9N NMR Homo sapiens
 m1 = Model(1)
 m2 = Model(2)
 m3 = Model(3)
 rna1.add_model(m1)
 rna1.add_model(m2)
 rna1.add_model(m3)
-print(rna1.get_models())
-rna1.remove_model(m3)
-print(rna1.get_models())
-rna1.print_all()
+print(rna1.get_models()) #Output [Model 1, Model 2, Model 3]
+rna1.remove_model(m3) 
+print(rna1.get_models()) #Output [Model 1, Model 2]
+rna1.print_all() 
+#Output 1A9N NMR Homo sapiens
+#Model 1
+#Model 2
 '''

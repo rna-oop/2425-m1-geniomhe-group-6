@@ -38,6 +38,10 @@ class Residue:
         self._position=position
 
     def add_atom(self, atom):
+        if not isinstance(atom, Atom):
+            raise TypeError(f"Expected an Atom instance, got {type(atom)}")
+        if atom in self._atoms:
+            raise ValueError(f"The atom {atom} is already in the list")
         self._atoms.append(atom)
 
     def get_atoms(self):

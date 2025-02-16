@@ -17,7 +17,12 @@ class Chain:
         self._id=id
         
     def add_residue(self, residue):
+        if not isinstance(residue, Residue):
+            raise TypeError(f"Expected a Residue instance, got {type(residue)}")
+        if residue in self._residues:
+            raise ValueError(f"The residue {residue} is already in the list")
         self._residues.append(residue)
+
         
     def get_residues(self):
         return self._residues
