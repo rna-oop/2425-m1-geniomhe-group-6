@@ -71,9 +71,6 @@ It is described that species refer to the organisms that contain RNA sequences b
 
 This object diagram portrays the example found in [here](./lab1.pdf). It shows the following objects:  
 
-This object diagram portrays the example found in [here](./lab1.pdf). It shows the following objects:  
-
-This object diagram portrays the example found in [here](./lab1.pdf). It shows the following objects:  
 
 | object      | class          | description |
 |------------|---------------|-------------|
@@ -102,6 +99,7 @@ This object diagram portrays the example found in [here](./lab1.pdf). It shows t
 | n2         | TreeNode     | tree node representing a RNA molecule of a particular species (leaf) |
 | n3         | TreeNode     | Another tree node representing a RNA molecule of a particular species |
 | n4         | TreeNode     | Another leaf representing a rna seq labeled with accession "92. CP018551.1" |
+
 
 
 
