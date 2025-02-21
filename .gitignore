@@ -1,0 +1,6 @@
+# .gitignore
+test/
+todo.md
+test.ipynb
+__pycache__/
+examples/

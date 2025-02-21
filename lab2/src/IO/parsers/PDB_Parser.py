@@ -1,7 +1,14 @@
+'''
+PDB_Parser module contains class PDB_Parser for parsing PDB files
+'''
+
+import os,sys
+sys.path.append(os.path.abspath('lab2/src'))
+
 from IO.parsers.RNA_Parser import RNA_Parser
 from processor import Processor
 from Bio import PDB
-import os
+
 
 class PDB_Parser(RNA_Parser):
     

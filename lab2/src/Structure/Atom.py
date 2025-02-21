@@ -1,3 +1,7 @@
+'''
+Atom module contains class Atom and two enums Element and AtomName
+'''
+
 from enum import Enum
 
 #Define the Element enum

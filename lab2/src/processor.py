@@ -1,3 +1,10 @@
+'''
+module processor contains class Processor for handling parse/write operations (helper)
+'''
+
+import os,sys
+sys.path.append(os.path.abspath('lab2/src'))
+
 from Structure.RNA_Molecule import RNA_Molecule, Model, Chain, Residue, Atom
 
 class Processor:

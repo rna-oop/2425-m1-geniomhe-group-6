@@ -1,4 +1,4 @@
-from Structure.Residue import Residue
+from Residue import Residue
 
 class Chain:
     def __init__(self, id: str, residues=None):

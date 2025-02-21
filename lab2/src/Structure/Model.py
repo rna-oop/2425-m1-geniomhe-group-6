@@ -1,4 +1,8 @@
-from Structure.Chain import Chain
+'''
+Chain module contains class Chain
+'''
+
+from Chain import Chain
 
 class Model:
     def __init__(self, id: int, chains=None):

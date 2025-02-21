@@ -1,3 +1,9 @@
+'''
+RNA_IO module contains class RNA_IO for input/output operations
+'''
+import os,sys
+sys.path.append(os.path.abspath('lab2/src'))
+
 from IO.parsers.PDB_Parser import PDB_Parser
 from IO.writers.PDB_Writer import PDB_Writer
 

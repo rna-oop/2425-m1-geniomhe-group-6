@@ -1,6 +1,10 @@
-from Structure.Model import Model
+'''
+module RNA_Molecule contains class RNA_Molecule
+'''
 
+from Model import Model
 import os
+
 class RNA_Molecule:
     
     def __init__(self, entry_id: str, experiment: str, species: str, models=None):
