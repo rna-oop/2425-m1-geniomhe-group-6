@@ -1,3 +1,7 @@
+__doc__='''
+clan module contains class Clan
+'''
+
 from family import Family
 
 class Clan:

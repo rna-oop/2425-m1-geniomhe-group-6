@@ -1,0 +1,2 @@
+biopython   # -- Bio.PDB for PDB api
+requests    # -- requests for HTTP api (rfam rest api)

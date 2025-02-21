@@ -1,9 +1,13 @@
+__doc__='''
+family module contains class Family
+'''
+
 import os,sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+sys.path.append(os.path.abspath('lab2/src'))
 
-# from Structure.RNA_Molecule import RNA_Molecule
+from Structure.RNA_Molecule import RNA_Molecule
 from tree import Phylotree
-
+from species import Species
 from utils import get_family_attributes, create_RNA_Molecule, get_tree_newick_from_fam
 
 
@@ -58,7 +62,7 @@ class Family:
     # --class attribute to store all families - no duplicates are allowed (checked in __setattr__), unique by id
     entries=[] 
 
-    def __init__(self, id, name, type=None, members=[], trees={}, from_database=False):
+    def __init__(self, id, name, type=None, members=[], trees={}, species=None, from_database=False):
         if not from_database:
             print('Warning: Family object created without database connection, creating a new family with provided id and name')
 
@@ -74,6 +78,7 @@ class Family:
             self.__type = type
             self.__members = members  # list of RNA_Molecule objects
             self.__trees = trees
+            self.__species = species
 
             Family.entries.append(self)  # adding it to list of instances
             print('Family created successfully')
@@ -171,6 +176,11 @@ class Family:
                 raise ValueError('Trees must be a dictionary of Phylotree objects')
             for key in value:
                 self.__validate_tree(value[key])
+            super().__setattr__(name, value)
+
+        if name == '_Family__species':
+            if not isinstance(value, Species):
+                raise ValueError('Species must be an instance of Species')
             super().__setattr__(name, value)
 
 

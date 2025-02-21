@@ -1,3 +1,7 @@
+__doc__='''
+tree module contains classes TreeNode and Phylotree
+'''
+
 import json,os,sys
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))

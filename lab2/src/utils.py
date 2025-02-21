@@ -1,3 +1,17 @@
+doc='''
+utils module conating utilities functions for the RNA library in order to perform data retrieval and file parsing
+
+Functions:
+    - parse_newick(newick: str) -> dict: recursively parses a Newick string into a nested dictionary
+    - fetch_pdb_file(pdb_entry_id: str, save_directory: str) -> str: fetches a PDB file given a PDB entry ID
+    - create_RNA_Molecule(pdb_entry_id: str) -> RNA_Molecule: creates an RNA_Molecule object from a PDB file
+    - get_rfam(q: str) -> dict: retrieves information about an RNA family from the RFAM database
+    - get_family_attributes(q: str) -> tuple: retrieves attributes of an RNA family from the RFAM database
+    - get_pdb_ids_from_fam(fam_id: str) -> list: retrieves the PDB IDs associated with an RNA family
+    - get_tree_newick_from_fam(fam_id: str) -> str: retrieves the Newick tree from the RFAM database given the RNA family ID
+    
+'''
+
 import re
 import json
 import requests
