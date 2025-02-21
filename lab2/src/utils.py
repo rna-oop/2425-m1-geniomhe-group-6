@@ -18,6 +18,9 @@ import requests
 import os
 from Bio import PDB
 
+import os,sys
+sys.path.append(os.path.abspath('lab2/src')) #not needed suppposedly
+
 from Structure.RNA_Molecule import RNA_Molecule
 from Structure.Model import Model
 from Structure.Chain import Chain
