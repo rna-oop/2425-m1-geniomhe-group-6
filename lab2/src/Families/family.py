@@ -1,7 +1,10 @@
-from Structure.RNA_Molecule import RNA_Molecule
+import os,sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+
+# from Structure.RNA_Molecule import RNA_Molecule
+from tree import Phylotree
 
 from utils import get_family_attributes, create_RNA_Molecule, get_tree_newick_from_fam
-from lab2.src.Families.tree import Phylotree
 
 
 class Family:
@@ -21,11 +24,13 @@ class Family:
         - name: str, representing the family name
         - type: str, representing the family type 
         - members: list of RNA_Molecule objects, representing the family members
+        - trees: dict of Phylotree objects, representing the family trees 
 
     This class has the following methods:
 
     - helper methods:
         - __validate_member(member): validate if the member is an instance of RNA_Molecule
+        - __validate_tree(tree): validate if the tree is an instance of Phylotree 
         - __delete_family(id): delete the family with the given id from the entries list
 
     - instance methods:
@@ -36,7 +41,6 @@ class Family:
     - class methods:
         - `get_instances()`
         - `get_family(id)`
-        - `reset()` (delete all instances, used with caution)
 
     - dunders:
         - `__init__(id, name, type=None, members=[], from_database=False)`
@@ -54,7 +58,7 @@ class Family:
     # --class attribute to store all families - no duplicates are allowed (checked in __setattr__), unique by id
     entries=[] 
 
-    def __init__(self, id, name, type=None, members=[], tree=None, from_database=False):
+    def __init__(self, id, name, type=None, members=[], trees={}, from_database=False):
         if not from_database:
             print('Warning: Family object created without database connection, creating a new family with provided id and name')
 
@@ -69,7 +73,7 @@ class Family:
             self.__name = name
             self.__type = type
             self.__members = members  # list of RNA_Molecule objects
-            self.__tree = tree
+            self.__trees = trees
 
             Family.entries.append(self)  # adding it to list of instances
             print('Family created successfully')
@@ -86,7 +90,9 @@ class Family:
                 return
         print('Family not found')
             
-
+    def __validate_tree(self, tree):
+        if not isinstance(tree, Phylotree):
+            raise ValueError('Tree must be an instance of Phylotree')
 
     
     # --getters/setters decorators
@@ -119,19 +125,15 @@ class Family:
         self.__members = value
 
     @property
-    def tree(self):
-        return self.__tree
-    @tree.setter
-    def tree(self, value):
-        self.__tree = value
+    def trees(self):
+        return self.__trees
+    @trees.setter
+    def trees(self, value):
+        self.__trees = value
 
     # --dunders
     def __eq__(self, other):
         return self.id == other.id
-
-    # def __del__(self):
-    #     Family.__delete_family(self.id)
-    #     print('Family deleted')
 
     def __len__(self):
         return len(self.__members)
@@ -163,13 +165,13 @@ class Family:
             for member in value:
                 self.__validate_member(member)
             super().__setattr__(name, value)
-        elif name=='_Family__tree':
-            if isinstance(value, Phylotree):
-                super().__setattr__(name, value)
-            elif value is None:
-                super().__setattr__(name, value)
-            else:
-                raise ValueError('Tree must be an instance of Phylotree')
+        elif name=='_Family__trees':
+            # dict of trees
+            if not isinstance(value, dict):
+                raise ValueError('Trees must be a dictionary of Phylotree objects')
+            for key in value:
+                self.__validate_tree(value[key])
+            super().__setattr__(name, value)
 
 
     def __str__(self):
@@ -180,8 +182,10 @@ class Family:
             fam+='\tMembers:\n'
             for member in self.members:
                 fam+='\t\t'+str(member)+'\n'
-        if self.tree:
-            fam+='------------------------------------------------------------------------------------\n\t\t\t\tTree:\n'+str(self.tree)
+        if self.trees:
+            fam+='\tTrees:\n'
+            for k,v in self.trees.items():
+                fam+='\t\t'+k+':\n'+str(v)+'\n'
         return fam
 
     def __repr__(self):
@@ -191,7 +195,7 @@ class Family:
             name={self.name}, 
             type={self.type}, 
             members={self.members},
-            tree={self.tree}
+            trees={self.trees}
         )'''
     
     # -- instance methods
@@ -207,6 +211,40 @@ class Family:
             self.__members.remove(RNA)
         else:
             print('RNA molecule not in family')
+
+    def add_tree(self, tree, method='NA', format='nwk'):
+        '''
+        takes a tree from user, it can be of types:
+        - Phylotree
+        - dict
+        - str
+
+        if it's a string it should be either newick or json string/file path
+
+        param:
+        - tree: Phylotree, dict or str
+        - method: str, representing the method/db used to generate the tree (default='NA')
+        - format: str, representing the format of the tree if it's a string (default='nwk' for newick)
+
+        '''
+        if isinstance(tree, Phylotree):
+            self.__trees[method]=tree
+        elif isinstance(tree, dict):
+            treefied=Phylotree.from_dict(tree)
+            self.__trees[method]=treefied
+        elif isinstance(tree, str):
+            if format=='nwk':
+                treefied=Phylotree.from_newick(tree)
+                self.__trees[method]=treefied
+            elif format=='json':
+                treefied=Phylotree.from_json(tree)
+                self.__trees[method]=treefied
+            else:
+                raise ValueError('Invalid format, please provide a valid format (nwk or json)')
+        else:
+            raise ValueError('Invalid tree type, please provide a valid tree (Phylotree, dict or str) and specify the format if it is a string')
+        
+
     
 
     # -- static methods
@@ -220,12 +258,6 @@ class Family:
                 return entry
         return None
 
-    # @staticmethod
-    # def reset():
-    #     while Family.entries:  
-    #         entry = Family.entries.pop() 
-    #         del entry  
-
 
     # -- generator function
     @staticmethod
@@ -233,13 +265,15 @@ class Family:
         i,n,t=get_family_attributes(query)
         tree_nwk=get_tree_newick_from_fam(i)
         tr=Phylotree.from_newick(tree_nwk)
-        return Family(id=i, name=n, type=t, tree=tr,from_database=True)
+        new_fam= Family(id=i, name=n, type=t,from_database=True)
+        new_fam.add_tree(tr, method='rfam')
+        return new_fam
 
 if __name__=='__main__':
 
     # --testing
-    fam1=Family.from_rfam('SAM')
-    rna1= create_RNA_Molecule("7EAF")
-    fam1.add_RNA(rna1)
+    fam1=Family.from_rfam('RF01510')
+    # rna1= create_RNA_Molecule("7EAF")
+    # fam1.add_RNA(rna1)
     print(fam1) #success
 

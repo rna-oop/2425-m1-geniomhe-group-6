@@ -1,4 +1,7 @@
-import json,os
+import json,os,sys
+
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+
 from utils import * #to parse newick string
 
 class TreeNode:

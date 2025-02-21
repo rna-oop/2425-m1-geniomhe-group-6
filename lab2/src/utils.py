@@ -4,11 +4,11 @@ import requests
 import os
 from Bio import PDB
 
-from lab2.src.Structure.RNA_Molecule import RNA_Molecule
-from lab2.src.Structure.Model import Model
-from lab2.src.Structure.Chain import Chain
-from lab2.src.Structure.Residue import Residue
-from lab2.src.Structure.Atom import Atom
+from Structure.RNA_Molecule import RNA_Molecule
+from Structure.Model import Model
+from Structure.Chain import Chain
+from Structure.Residue import Residue
+from Structure.Atom import Atom
 
 CACHE_DIR='.rnalib_cache/'
 

@@ -1,4 +1,4 @@
-from Families.family import Family
+from family import Family
 
 class Clan:
     entries=[]
