@@ -32,6 +32,14 @@ class RNA_IO:
         writer.write(rna_molecule, path_to_file)
     
 #Example Usage
-rna_io=RNA_IO()
-mol=rna_io.read("/mnt/c/Users/dell/OneDrive/Master/M1/Periode_3/OOP2/2425-m1-geniomhe-group-6/lab1/data/7eaf/7eaf.pdb", "PDB")
-mol.print_all()
+
+from utils import pathify_pdb
+
+if __name__ == "__main__":
+    rna_io=RNA_IO()
+
+    pdb_path_test=pathify_pdb("7eaf")
+
+    mol=rna_io.read(pdb_path_test, "PDB")
+    mol.print_all()
+ # -- added to __name__ block for it not to be executed when importing but only when running the script from terminal (for demo.ipynb imports)
