@@ -57,6 +57,8 @@ class Family:
         - `__str__(self)`
         - `__repr__(self)`
 
+    *Note: M to N relationship between Species and Family is handled by having a list of species object in Family and a list of family objects in Species; In order to ensure a symmetric addition, this will be handled in this class whenever we're adding a species by calling the Species._add_family method implicitly*
+
     '''
 
     # --class attribute to store all families - no duplicates are allowed (checked in __setattr__), unique by id
@@ -179,9 +181,13 @@ class Family:
             super().__setattr__(name, value)
 
         if name == '_Family__species':
-            if not isinstance(value, Species):
-                raise ValueError('Species must be an instance of Species')
+            if not isinstance(value, list):
+                raise ValueError('Species must be a list of Species objects')
+            for species in value:
+                if not isinstance(species, Species):
+                    raise ValueError('Species must be an instance of Species')
             super().__setattr__(name, value)
+
 
 
     def __str__(self):
@@ -255,7 +261,17 @@ class Family:
             raise ValueError('Invalid tree type, please provide a valid tree (Phylotree, dict or str) and specify the format if it is a string')
         
 
-    
+    def add_species(self, species):
+        '''
+        add a species to the family
+        '''
+        if not isinstance(species, Species):
+            raise ValueError('Species must be an instance of Species')
+        if species not in self.__species:
+            self.__species.append(species)
+            species._add_family(self)
+        else:
+            print('Species already in family')
 
     # -- static methods
     @staticmethod
