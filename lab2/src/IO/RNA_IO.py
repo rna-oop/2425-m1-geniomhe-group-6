@@ -42,4 +42,3 @@ if __name__ == "__main__":
 
     mol=rna_io.read(pdb_path_test, "PDB")
     mol.print_all()
- # -- added to __name__ block for it not to be executed when importing but only when running the script from terminal (for demo.ipynb imports)

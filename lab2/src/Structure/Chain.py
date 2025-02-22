@@ -1,9 +1,13 @@
+
+import os,sys
+sys.path.append(os.path.abspath('lab2/src'))
+
 from Structure.Residue import Residue
 
 class Chain:
     def __init__(self, id: str, residues=None):
         self.id = id
-        self._residues = residues if residues is not None else [] 
+        self._residues = residues if residues is not None else {}
 
         
     @property
@@ -19,28 +23,27 @@ class Chain:
     def add_residue(self, residue):
         if not isinstance(residue, Residue):
             raise TypeError(f"Expected a Residue instance, got {type(residue)}")
-        if not residue in self._residues:
-            self._residues.append(residue)
-        
-
+        if residue.position not in self._residues:
+            self._residues[residue.position] = residue
+            residue.chain = self
         
     def get_residues(self):
         return self._residues
     
     def remove_residue(self, residue):
-        self._residues.remove(residue)
+        self._residues.pop(residue.position)
         
     def __repr__(self):
         return f"{self.id}"
 
 
 #Example usage
-'''
-c = Chain("A")
-print(c) #output: A
-r = Residue("A", 1)
-c.add_residue(r)
-print(c.get_residues()) #output: [A 1]
-c.remove_residue(r)
-print(c.get_residues()) #output: []
-'''
+
+if __name__ == "__main__":
+    c = Chain("A")
+    print(c) #output: A
+    r = Residue("A", 1)
+    c.add_residue(r)
+    print(c.get_residues()) #output: [A 1]
+    c.remove_residue(r)
+    print(c.get_residues()) #output: {}

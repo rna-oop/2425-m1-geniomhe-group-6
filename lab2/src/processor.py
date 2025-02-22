@@ -10,6 +10,7 @@ from Structure.Model import Model
 from Structure.Chain import Chain
 from Structure.Residue import Residue
 from Structure.Atom import Atom
+from Families.species import Species
 
 class Processor:
     
@@ -20,15 +21,17 @@ class Processor:
         self.rna_molecule = None
         self.atoms = []
         
+        """
         # Lookup dictionaries for tracking existing objects
         self.models = {}   # key: model_id, value: Model object
         self.chains = {}   # key: (model_id, chain_id), value: Chain object
         self.residues = {} # key: (model_id, chain_id, residue_id), value: Residue object
+        """
         
     def rna_info(self, entry_id, experiment, species):
         self.entry_id = entry_id
         self.experiment = experiment
-        self.species = species
+        self.species = Species(species)
         
     def atom_info(self, *args):
         self.atoms.append(list(args))
@@ -39,9 +42,24 @@ class Processor:
         
         for atom in self.atoms:
             
-            atom_name, x, y, z, element, residue_name, residue_id, chain_id, model_id = atom
+            atom_name, x, y, z, element, residue_name, residue_id, chain_id, altloc, occupancy, model_id = atom
             
-            #Retrieve or create the model
+            self.rna_molecule.add_model(Model(model_id))
+            model = self.rna_molecule.get_models()[model_id]
+            model.add_chain(Chain(chain_id))
+            chain = model.get_chains()[chain_id]
+            chain.add_residue(Residue(residue_name, residue_id))
+            residue = chain.get_residues()[residue_id]
+            residue.add_atom(Atom(atom_name, x, y, z, element, altloc, occupancy))
+                
+        return self.rna_molecule
+
+
+
+
+
+"""
+#Retrieve or create the model
             if model_id not in self.models:
                 self.models[model_id] = Model(model_id)
             model = self.models[model_id]
@@ -63,5 +81,4 @@ class Processor:
             #Create the atom and add it to the residue
             atom = Atom(atom_name, x, y, z, element)
             residue.add_atom(atom) #Add atom to the residue
-                
-        return self.rna_molecule
+"""

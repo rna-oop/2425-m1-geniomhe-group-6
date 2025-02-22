@@ -2,7 +2,10 @@
 species module: contains class Species
 '''
 
-from family import Family
+import sys,os
+sys.path.append(os.path.abspath('lab2/src'))
+
+#from Families.family import Family 
 
 class Species:
     '''
@@ -147,6 +150,8 @@ class Species:
         #     s+=f"\n\tSpecies: {self.__species}"
         return s
 
+"""Joelle
+
     @staticmethod
     def _get_species(name):
         for species in Species.declared_species:
@@ -167,7 +172,7 @@ class Species:
         if family not in self.__families:
             self.__families.append(family)
         print(f'Family {family.name} already exists in the species {self.__name}; not added again')
-      
+
     def __repr__(self):
         return f'''
         Species(
@@ -191,3 +196,6 @@ if __name__ == '__main__':
     s3=Species('H', species='jok') #same name as s1 shdoule be same instance
     print(s3)
     print(s1==s3) #success
+    
+
+Joelle"""

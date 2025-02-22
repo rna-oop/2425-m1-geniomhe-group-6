@@ -50,12 +50,15 @@ atom_name_lookup = {atom.value: atom for atom in AtomName} #To look for the Atom
 
 class Atom:
 
-    def __init__(self, atom_name: str, x: float, y: float, z: float, element: str):
+    def __init__(self, atom_name: str, x: float, y: float, z: float, element: str, altloc=None, occupancy= None):
         self.atom_name = atom_name
         self.x = x
         self.y = y
         self.z = z
         self.element = element
+        self.altloc = altloc
+        self.occupancy = occupancy
+        self.residue = None #The residue to which the atom belongs
 
     @property
     def atom_name(self):
@@ -114,12 +117,35 @@ class Atom:
         self._z=z
         
 
+    @property
+    def altloc(self):
+        return self._altloc
+    
+    @altloc.setter
+    def altloc(self, altloc):
+        if altloc is not None and not isinstance(altloc, str):
+            raise TypeError(f"altloc must be a string, got {type(altloc)}")
+        self._altloc=altloc
+        
+    @property
+    def occupancy(self):
+        return self._occupancy
+    
+    @occupancy.setter
+    def occupancy(self, occupancy):
+        if occupancy is not None and not isinstance(occupancy, float):
+            raise TypeError(f"occupancy must be a float, got {type(occupancy)}")
+        self._occupancy=occupancy
+        
+        
     def __repr__(self):
-        return f"{self.atom_name.value} {self.x} {self.y} {self.z} {self.element.value}"
+        if self.altloc is not None and self.occupancy is not None:
+            return f"{self._atom_name.value} {self._altloc} {self._x} {self._y} {self._z} {self._element.value} {self._occupancy}"
+        return f"{self._atom_name.value} {self._x} {self._y} {self._z} {self._element.value}"
 
 
 #Example usage
-'''
-atom = Atom("C1'", 1.0, 2.0, 3.0, "C")
-print(atom) #output: C1' 1.0 2.0 3.0 C
-'''
+
+if __name__ == "__main__":
+    atom = Atom("C1'", 1.0, 2.0, 3.0, "C")
+    print(atom) #output: C1' 1.0 2.0 3.0 C

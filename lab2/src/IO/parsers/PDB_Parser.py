@@ -65,12 +65,14 @@ class PDB_Parser(RNA_Parser):
             residue_id = int(line[22:26].strip()) 
 
         atom_name = line[12:16].strip()
+        altloc = line[16:17].strip()
         x, y, z = map(float, [line[30:38], line[38:46], line[46:54]])
+        occupancy = float(line[54:60].strip())
         element = line[76:78].strip()
 
         #Construct the return tuple based on what is extracted
         if extract_residue and extract_chain:
-            return atom_name, x, y, z, element, residue_name, residue_id, chain_id
+            return atom_name, x, y, z, element, residue_name, residue_id, chain_id, altloc, occupancy
         elif extract_residue:
             return atom_name, x, y, z, element, residue_name, residue_id
         elif extract_chain:
