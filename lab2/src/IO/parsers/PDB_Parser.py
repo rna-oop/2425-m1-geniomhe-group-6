@@ -15,7 +15,7 @@ class PDB_Parser(RNA_Parser):
     def __init__(self):
         pass
     
-    def read(self, path_to_file, extract_residues=True, extract_chains=True):
+    def read(self, path_to_file):
         """
         Reads a PDB file and returns the RNA molecule object.
         """
@@ -23,7 +23,7 @@ class PDB_Parser(RNA_Parser):
         
         #Extract RNA_Molecule Attributes(Entry_ID, Experiment, Species) and store them in the processor object
         id, experiment, species = self._extract_molecule_info(path_to_file)
-        processor.rna_info(id, experiment, species) 
+        processor.molecule_info(id, experiment, species) 
         
         #Extract the atoms and store them in the processor object
         with open(path_to_file, 'r') as pdb_file:
@@ -35,64 +35,47 @@ class PDB_Parser(RNA_Parser):
                     model_id = int(line.split()[1])  #Extract model ID
                     
                 elif line.startswith("ATOM"):
-                    atom_info = self._extract_atom_info(line, extract_residues, extract_chains)
+                    atom_info = self._extract_atom_info(line)
                     if atom_info is not None:
                         processor.atom_info(*atom_info, model_id)
                     
         return processor.createMolecule() 
-    
-    
-    
-    
 
-    def _extract_atom_info(self, line, extract_residue, extract_chain):
+
+    def _extract_atom_info(self, line):
         '''
         Extracts the atom information from an atom line in a PDB file.
         Parameters:
         - line: A string representing a line from a PDB file.
-        - extract_residues: Boolean to specify if residue information should be extracted.
-        - extract_chains: Boolean to specify if chain information should be extracted.
         Returns:
         - A tuple containing atom information, or None if the residue is not valid.
         '''
-        if extract_chain:
-            chain_id = line[21]
-    
-        if extract_residue:
-            residue_name = line[17:20].strip()
-            if residue_name not in ['A', 'C', 'G', 'U']:
-                return None #Not a nucleotide
-            residue_id = int(line[22:26].strip()) 
 
+        residue_name = line[17:20].strip()
+        if residue_name not in ['A', 'C', 'G', 'U']:
+            return None #Not a nucleotide
+        residue_id = int(line[22:26].strip()) 
+        
         atom_name = line[12:16].strip()
         altloc = line[16:17].strip()
         x, y, z = map(float, [line[30:38], line[38:46], line[46:54]])
         occupancy = float(line[54:60].strip())
         element = line[76:78].strip()
-
-        #Construct the return tuple based on what is extracted
-        if extract_residue and extract_chain:
-            return atom_name, x, y, z, element, residue_name, residue_id, chain_id, altloc, occupancy
-        elif extract_residue:
-            return atom_name, x, y, z, element, residue_name, residue_id
-        elif extract_chain:
-            return atom_name, x, y, z, element, chain_id
-        else:
-            return atom_name, x, y, z, element  #Only return atom information
+        
+        chain_id = line[21]
+        
+        return atom_name, x, y, z, element, residue_name, residue_id, chain_id, altloc, occupancy
 
 
-
-
-    
     def _extract_molecule_info(self, path_to_file):
         """
         Extracts the PDB ID, experiment, and species information from a PDB file.
         """
         with open(path_to_file, 'r') as file:
             
-            id = "NA"
-            experiment = "NA"
-            species = "NA"
+            id = ""
+            experiment = None
+            species = None
             
             for line in file:
                 
@@ -114,31 +97,22 @@ class PDB_Parser(RNA_Parser):
                     break
                 
         return id, experiment, species
-                        
-        
-    
-    
-    
-    
-    
-    def fetch_pdb_file(self, pdb_entry_id, save_directory):
-        '''
-        A function that takes as input pdb entry id and returns the path of the pdb file
-        '''
-        pdb_entry_id = pdb_entry_id.lower()
 
-        pdb_list = PDB.PDBList()
+if __name__ == "__main__":
+    
+    parser = PDB_Parser()
+    line="ATOM      1 OP3     G A   1      -9.698   3.426 -31.854  1.00   O"
+    print(line[12:16].strip())
+    print(line[16:17].strip())
+    print(line[17:20].strip())
+    print(line[21])
+    print(int(line[22:26].strip()))
+    print(float(line[30:38]))
+    print(float(line[38:46]))
+    print(float(line[46:54]))
+    print(float(line[54:60].strip()))
+    print(line[76:78].strip())
 
-        target_directory = os.path.join(save_directory, pdb_entry_id)
-        
-        if not os.path.exists(target_directory):
-            os.makedirs(target_directory)
 
-        pdb_list.retrieve_pdb_file(pdb_entry_id, pdir=target_directory, file_format='pdb')
-        
-        os.rename(
-            os.path.join(target_directory, f'pdb{pdb_entry_id}.ent'),
-            os.path.join(target_directory, f'{pdb_entry_id}.pdb')
-        )
-        
-        return os.path.join(target_directory, f'{pdb_entry_id}.pdb')
+    print(parser._extract_atom_info(line))
+

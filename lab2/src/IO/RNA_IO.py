@@ -41,4 +41,9 @@ if __name__ == "__main__":
     pdb_path_test=pathify_pdb("7eaf")
 
     mol=rna_io.read(pdb_path_test, "PDB")
-    mol.print_all()
+    rna_io.write(mol, "7eaf_test.pdb", "PDB")
+    
+    mol1=rna_io.read("7eaf_test.pdb", "PDB")
+    rna_io.write(mol1, "7eaf_test1.pdb", "PDB")
+    
+    

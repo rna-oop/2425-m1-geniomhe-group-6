@@ -11,7 +11,7 @@ from Families.species import Species
 
 class RNA_Molecule:
     
-    def __init__(self, entry_id: str, experiment: str, species: Species, models=None):
+    def __init__(self, entry_id: str, experiment=None, species=None, models=None):
         self.entry_id = entry_id
         self.experiment = experiment
         self.species = species
@@ -34,7 +34,7 @@ class RNA_Molecule:
     
     @experiment.setter
     def experiment(self, experiment):
-        if not isinstance(experiment, str):
+        if experiment is not None and not isinstance(experiment, str):
             raise TypeError(f"experiment must be a string, got {type(experiment)}")
         self._experiment=experiment
         
@@ -44,7 +44,7 @@ class RNA_Molecule:
     
     @species.setter
     def species(self, species):
-        if not isinstance(species, Species):
+        if species is not None and not isinstance(species, Species):
             raise TypeError(f"species must be a Species object, got {type(species)}")
         self._species=species
         
@@ -64,36 +64,6 @@ class RNA_Molecule:
         
     def __repr__(self):
         return f"ID: {self.entry_id} Experiment: {self.experiment} {self.species}"
-    
-
-    def print_all(self, output_dir="lab1/data"):
-        """
-        Prints all models available for this RNA molecule entry, along with the atoms in each model.
-        The output is written to a PDB-like formatted file:
-        ATOM <atom_number> <atom_name> <residue_type> <chain_id> <residue_position> <x> <y> <z> <element>
-
-        Parameters:
-        - output_dir (str): The directory where the output file will be saved.
-        """
-        os.makedirs(output_dir, exist_ok=True)  #Ensure the directory exists
-
-        filename = os.path.join(output_dir, f"{self.entry_id}_output.pdb")
-
-        with open(filename, "w") as file:  #Open file for writing
-            file.write(str(self) + "\n")  #Save the RNA molecule information
-            
-            for model in self._models.values():
-                file.write(str(model) + "\n")
-                atom_number = 1
-                for chain in model.get_chains().values():
-                    for residue in chain.get_residues().values():
-                        for atom in residue.get_atoms().values():
-                            file.write(f"ATOM {atom_number} {atom.atom_name.value} {atom.altloc} {residue.type.value} {chain.id} {residue.position} {atom.x} {atom.y} {atom.z} {atom.occupancy} {atom.element.value}\n")
-                            atom_number += 1
-
-        #Print the contents of the saved file
-        with open(filename, "r") as file:
-            print(file.read())
 
 
         
@@ -103,18 +73,13 @@ if __name__ == "__main__":
     
     species = Species("Homo Sapiens")
     rna1 = RNA_Molecule("1A9N", "NMR", species)
-    print(rna1) #Output 1A9N NMR Homo sapiens
+    print(rna1) #Output ID: 1A9N Experiment: NMR Species: Homo Sapiens
     m1 = Model(1)
     m2 = Model(2)
     m3 = Model(3)
     rna1.add_model(m1)
     rna1.add_model(m2)
     rna1.add_model(m3)
-    print(rna1.get_models()) #Output [Model 1, Model 2, Model 3]
+    print(rna1.get_models()) #Output {1: Model 1, 2: Model 2, 3: Model 3}
     rna1.remove_model(m3) 
-    print(rna1.get_models()) #Output [Model 1, Model 2]
-    rna1.print_all() 
-    #Output 1A9N NMR Homo sapiens
-    #Model 1
-    #Model 2
-
+    print(rna1.get_models()) #Output {1: Model 1, 2: Model 2}

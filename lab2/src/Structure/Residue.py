@@ -48,18 +48,18 @@ class Residue:
     def add_atom(self, atom):
         if not isinstance(atom, Atom):
             raise TypeError(f"Expected an Atom instance, got {type(atom)}")
-        if (atom.atom_name.value, atom.altloc) not in self._atoms:
-            self._atoms[(atom.atom_name.value, atom.altloc)] = atom
+        if (atom.name.value, atom.altloc) not in self._atoms:
+            self._atoms[(atom.name.value, atom.altloc)] = atom
             atom.residue = self
 
     def get_atoms(self):
         return self._atoms
     
     def remove_atom(self, atom):
-        self._atoms.pop((atom.atom_name.value, atom.altloc))
+        self._atoms.pop((atom.name.value, atom.altloc))
 
     def __repr__(self):
-        return f"{self.type.name} {self.position}"
+        return f"Residue type:{self.type.value} position:{self.position}"
 
 
 #Example usage
@@ -67,18 +67,18 @@ class Residue:
 if __name__ == "__main__":
     
     r = Residue("A", 1)
-    print(r) #output: A 1
+    print(r) #output: Residue type:A position:1
     atom1 = Atom("C1'", 1.0, 2.0, 3.0, "C")
     atom2 = Atom("N9", 4.0, 5.0, 6.0, "N")
     r.add_atom(atom1)
     r.add_atom(atom2)
-    print(r.get_atoms()) #output: [C1' 1.0 2.0 3.0 C, N9 4.0 5.0 6.0 N]
+    print(r.get_atoms()) #output: {("C1'", None): AtomName.C1_prime 1.0 2.0 3.0 Element.C, ('N9', None): AtomName.N9 4.0 5.0 6.0 Element.N}
     r.remove_atom(atom1)
-    print(r.get_atoms()) #output: [N9 4.0 5.0 6.0 N]
+    print(r.get_atoms()) #output: {('N9', None): AtomName.N9 4.0 5.0 6.0 Element.N}
 
     atom3 = Atom("C4", 7.0, 8.0, 9.0, "C")
     r2 = Residue("G", 2)
     r2.add_atom(atom3)
-    print(r2.get_atoms()) #output: [C4 7.0 8.0 9.0 C]
+    print(r2.get_atoms()) #output: {('C4', None): AtomName.C4 7.0 8.0 9.0 Element.C}
     r2.add_atom(atom3) 
-    print(r2.get_atoms()) #output: [C4 7.0 8.0 9.0 C]
+    print(r2.get_atoms()) #output: {('C4', None): AtomName.C4 7.0 8.0 9.0 Element.C}

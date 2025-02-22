@@ -46,9 +46,9 @@ class Model:
 
 if __name__ == "__main__":
     m = Model(1)
-    print(m) #output: 1
+    print(m) #output: Model 1
     c = Chain("A")
     m.add_chain(c)
-    print(m.get_chains()) #output: [A]
+    print(m.get_chains()) #output: {'A': A}
     m.remove_chain(c)
     print(m.get_chains()) #output: {}

@@ -50,28 +50,31 @@ atom_name_lookup = {atom.value: atom for atom in AtomName} #To look for the Atom
 
 class Atom:
 
-    def __init__(self, atom_name: str, x: float, y: float, z: float, element: str, altloc=None, occupancy= None):
-        self.atom_name = atom_name
+    def __init__(self, name: str, x: float, y: float, z: float, element: str, altloc=None, occupancy=None, temp_factor=None, i_code=None, charge=None):
+        self.name = name
         self.x = x
         self.y = y
         self.z = z
         self.element = element
         self.altloc = altloc
         self.occupancy = occupancy
+        self.temp_factor = temp_factor
+        self.i_code = i_code
+        self.charge = charge
         self.residue = None #The residue to which the atom belongs
 
     @property
-    def atom_name(self):
-        return self._atom_name
+    def name(self):
+        return self._name
 
-    @atom_name.setter
-    def atom_name(self, atom_name):
-        if not isinstance(atom_name, str):
-            raise TypeError(f"atom_name must be a string, got {type(atom_name)}")
+    @name.setter
+    def name(self, name):
+        if not isinstance(name, str):
+            raise TypeError(f"atom_name must be a string, got {type(name)}")
         #Check if the string is a valid AtomName
-        if not atom_name in atom_name_lookup:
-            raise ValueError(f"{atom_name} is not a valid AtomName value")
-        self._atom_name=atom_name_lookup[atom_name]
+        if not name in atom_name_lookup:
+            raise ValueError(f"{name} is not a valid AtomName value")
+        self._name=atom_name_lookup[name]
 
     @property
     def element(self):
@@ -138,10 +141,39 @@ class Atom:
         self._occupancy=occupancy
         
         
+    @property
+    def temp_factor(self):
+        return self._temp_factor
+    
+    @temp_factor.setter
+    def temp_factor(self, temp_factor):
+        if temp_factor is not None and not isinstance(temp_factor, float):
+            raise TypeError(f"temp_factor must be a float, got {type(temp_factor)}")
+        self._temp_factor=temp_factor
+        
+    @property
+    def i_code(self):
+        return self._i_code
+    
+    @i_code.setter
+    def i_code(self, i_code):
+        if i_code is not None and not isinstance(i_code, str):
+            raise TypeError(f"i_code must be a string, got {type(i_code)}")
+        self._i_code=i_code
+        
+    @property
+    def charge(self):
+        return self._charge
+    
+    @charge.setter
+    def charge(self, charge):
+        if charge is not None and not isinstance(charge, str):
+            raise TypeError(f"charge must be a string, got {type(charge)}")
+        self._charge=charge
+
+        
     def __repr__(self):
-        if self.altloc is not None and self.occupancy is not None:
-            return f"{self._atom_name.value} {self._altloc} {self._x} {self._y} {self._z} {self._element.value} {self._occupancy}"
-        return f"{self._atom_name.value} {self._x} {self._y} {self._z} {self._element.value}"
+        return f"{self.name} {self.x} {self.y} {self.z} {self.element}"
 
 
 #Example usage

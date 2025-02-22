@@ -34,16 +34,16 @@ class Chain:
         self._residues.pop(residue.position)
         
     def __repr__(self):
-        return f"{self.id}"
+        return f"Chain {self.id}"
 
 
 #Example usage
 
 if __name__ == "__main__":
     c = Chain("A")
-    print(c) #output: A
+    print(c) #output: Chain A
     r = Residue("A", 1)
     c.add_residue(r)
-    print(c.get_residues()) #output: [A 1]
+    print(c.get_residues()) #output: {1: A 1}
     c.remove_residue(r)
     print(c.get_residues()) #output: {}
