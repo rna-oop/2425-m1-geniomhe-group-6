@@ -22,7 +22,8 @@ class PDB_Parser(RNA_Parser):
         processor=Processor() #To handle the molecule representation in the processor class
         
         #Extract RNA_Molecule Attributes(Entry_ID, Experiment, Species) and store them in the processor object
-        processor.rna_info(self.extract_molecule_info(path_to_file)) 
+        id, experiment, species = self._extract_molecule_info(path_to_file)
+        processor.rna_info(id, experiment, species) 
         
         #Extract the atoms and store them in the processor object
         with open(path_to_file, 'r') as pdb_file:
@@ -34,7 +35,7 @@ class PDB_Parser(RNA_Parser):
                     model_id = int(line.split()[1])  #Extract model ID
                     
                 elif line.startswith("ATOM"):
-                    atom_info = self.extract_atom_info(line, extract_residues, extract_chains)
+                    atom_info = self._extract_atom_info(line, extract_residues, extract_chains)
                     if atom_info is not None:
                         processor.atom_info(*atom_info, model_id)
                     
@@ -44,7 +45,7 @@ class PDB_Parser(RNA_Parser):
     
     
 
-    def _extract_atom_info(line, extract_residue, extract_chain):
+    def _extract_atom_info(self, line, extract_residue, extract_chain):
         '''
         Extracts the atom information from an atom line in a PDB file.
         Parameters:
@@ -81,7 +82,7 @@ class PDB_Parser(RNA_Parser):
 
 
     
-    def _extract_molecule_info(path_to_file):
+    def _extract_molecule_info(self, path_to_file):
         """
         Extracts the PDB ID, experiment, and species information from a PDB file.
         """
@@ -118,7 +119,7 @@ class PDB_Parser(RNA_Parser):
     
     
     
-    def fetch_pdb_file(pdb_entry_id, save_directory=CACHE_DIR):
+    def fetch_pdb_file(self, pdb_entry_id, save_directory):
         '''
         A function that takes as input pdb entry id and returns the path of the pdb file
         '''

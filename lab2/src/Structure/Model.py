@@ -2,7 +2,7 @@
 Chain module contains class Chain
 '''
 
-from Chain import Chain
+from Structure.Chain import Chain
 
 class Model:
     def __init__(self, id: int, chains=None):
@@ -23,10 +23,13 @@ class Model:
     def add_chain(self, chain):
         if not isinstance(chain, Chain):  
             raise TypeError(f"Expected a Chain instance, got {type(chain)}")
-        if chain in self._chains:
+        if chain not in self._chains:
             self._chains.append(chain)
         
-
+    def __eq__(self, other):
+        if isinstance(other, Model):
+            return self.id == other.id
+        return False
     
     def get_chains(self):
         return self._chains
@@ -36,6 +39,8 @@ class Model:
         
     def __repr__(self):
         return f"Model {self.id}"
+    
+    
     
 #Example usage
 '''

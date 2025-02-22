@@ -2,7 +2,7 @@
 module RNA_Molecule contains class RNA_Molecule
 '''
 
-from Model import Model
+from Structure.Model import Model
 import os
 
 class RNA_Molecule:
@@ -110,5 +110,3 @@ rna1.print_all()
 #Model 1
 #Model 2
 '''
-rna=RNA_Molecule(None, None, None)
-print(rna)

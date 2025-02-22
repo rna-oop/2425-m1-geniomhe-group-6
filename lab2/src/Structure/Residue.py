@@ -3,7 +3,7 @@ Residue module containing class Residue and enum NBase
 '''
 
 from enum import Enum
-from Atom import Atom
+from Structure.Atom import Atom
 
 class NBase(Enum):
     G = "G"
