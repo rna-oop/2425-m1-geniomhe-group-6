@@ -1,0 +1,1 @@
+- [ ] pathify a pdb id (allow pdb id input rather than file path) (function: `utils.fetch_pdb_id`)

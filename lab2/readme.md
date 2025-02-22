@@ -5,6 +5,11 @@
 - [Class Diagram](#class-diagram)
 - [Implementation](#implementation)
 
+demo test on colab:   
+<a href="https://colab.research.google.com/github/rna-oop/2425-m1-geniomhe-group-6/tree/main/lab2/demo.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open Project in colab"/></a> 
+
+https://github.com/rna-oop/2425-m1-geniomhe-group-6/tree/main/lab2/src
+
 ## Class Diagram
 
 <p align='center'>

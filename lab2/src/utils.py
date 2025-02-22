@@ -96,6 +96,8 @@ def fetch_pdb_file(pdb_entry_id, save_directory=CACHE_DIR):
     
     return os.path.join(target_directory, f'{pdb_entry_id}.pdb')
 
+pathify_pdb=fetch_pdb_file
+
 def create_RNA_Molecule(pdb_entry_id):
     
     pdb_file_path=fetch_pdb_file(pdb_entry_id)
