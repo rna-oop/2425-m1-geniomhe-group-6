@@ -15,7 +15,7 @@ class PDB_Parser(RNA_Parser):
     def __init__(self):
         pass
     
-    def read(self, path_to_file):
+    def read(self, path_to_file, coarse_grained=False, atom_name="C1'"):
         """
         Reads a PDB file and returns the RNA molecule object.
         """
@@ -35,9 +35,15 @@ class PDB_Parser(RNA_Parser):
                     model_id = int(line.split()[1])  #Extract model ID
                     
                 elif line.startswith("ATOM"):
-                    atom_info = self._extract_atom_info(line)
-                    if atom_info is not None:
-                        processor.atom_info(*atom_info, model_id)
+                    if coarse_grained:
+                        if line[12:16].strip() == atom_name:
+                            atom_info = self._extract_atom_info(line)
+                            if atom_info is not None:
+                                processor.atom_info(*atom_info, model_id)
+                    else:
+                        atom_info = self._extract_atom_info(line)
+                        if atom_info is not None: #It is None if the residue is not a nucleotide
+                            processor.atom_info(*atom_info, model_id)
                     
         return processor.createMolecule() 
 
@@ -97,4 +103,3 @@ class PDB_Parser(RNA_Parser):
                     break
                 
         return id, experiment, species
-
