@@ -97,5 +97,5 @@ class PDB_Writer(RNA_Writer):
             expdta_line = f"EXPDTA    {experiment:<69}"
             lines.append(expdta_line)
 
-        return "\n".join(lines)
+        return "\n".join(lines) + "\n"
 
