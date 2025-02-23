@@ -45,10 +45,7 @@ class PDB_Parser(RNA_Parser):
     def _extract_atom_info(self, line):
         '''
         Extracts the atom information from an atom line in a PDB file.
-        Parameters:
-        - line: A string representing a line from a PDB file.
-        Returns:
-        - A tuple containing atom information, or None if the residue is not valid.
+        Returns a tuple containing atom information, or None if the residue is not valid.
         '''
 
         residue_name = line[17:20].strip()
@@ -58,13 +55,16 @@ class PDB_Parser(RNA_Parser):
         
         atom_name = line[12:16].strip()
         altloc = line[16:17].strip()
+        i_code = line[26:27].strip()
         x, y, z = map(float, [line[30:38], line[38:46], line[46:54]])
         occupancy = float(line[54:60].strip())
+        temp_factor = float(line[60:66].strip()) if line[60:66].strip() else None
         element = line[76:78].strip()
+        charge = line[78:80].strip()
         
         chain_id = line[21]
         
-        return atom_name, x, y, z, element, residue_name, residue_id, chain_id, altloc, occupancy
+        return atom_name, x, y, z, element, residue_name, residue_id, chain_id, altloc, occupancy, temp_factor, i_code, charge
 
 
     def _extract_molecule_info(self, path_to_file):
@@ -97,22 +97,4 @@ class PDB_Parser(RNA_Parser):
                     break
                 
         return id, experiment, species
-
-if __name__ == "__main__":
-    
-    parser = PDB_Parser()
-    line="ATOM      1 OP3     G A   1      -9.698   3.426 -31.854  1.00   O"
-    print(line[12:16].strip())
-    print(line[16:17].strip())
-    print(line[17:20].strip())
-    print(line[21])
-    print(int(line[22:26].strip()))
-    print(float(line[30:38]))
-    print(float(line[38:46]))
-    print(float(line[46:54]))
-    print(float(line[54:60].strip()))
-    print(line[76:78].strip())
-
-
-    print(parser._extract_atom_info(line))
 
