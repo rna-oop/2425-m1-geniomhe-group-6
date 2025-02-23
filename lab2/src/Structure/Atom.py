@@ -61,7 +61,7 @@ class Atom:
         self.temp_factor = temp_factor
         self.i_code = i_code
         self.charge = charge
-        self.residue = None #The residue to which the atom belongs
+        self.__residue = None #The residue to which the atom belongs
 
     @property
     def name(self):
@@ -174,6 +174,25 @@ class Atom:
         
     def __repr__(self):
         return f"{self.name} {self.x} {self.y} {self.z} {self.element}"
+    
+    @property
+    def residue(self):
+        return self.__residue
+    #no setter will be implemented for this attribute, it will be set directly
+
+    # -- as is the case in classes in Families module, 
+    # to handle this 1-N relationship we need to add a residue attribute only when an atom instance is added to a residue instance
+    # for that we'll create a helper method
+
+    def _add_residue(self, residue):
+        '''
+        helper function to add an Atom to the residue object when it is used in the Residue module
+
+        the user must always add an Atom from a residue instance and addition to the Atom instance will be done automatically
+        '''
+        # --no need to validate Residue since this method will be called from Residue class method on self (being of type Residue is inevitable)
+        self.__residue = residue 
+
 
 
 #Example usage

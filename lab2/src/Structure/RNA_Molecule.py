@@ -44,8 +44,12 @@ class RNA_Molecule:
     
     @species.setter
     def species(self, species):
-        if species is not None and not isinstance(species, Species):
-            raise TypeError(f"species must be a Species object, got {type(species)}")
+        if isinstance(species,str):
+            species = Species(species)
+        if not isinstance(species, Species):
+            raise TypeError(f"species must be a Species object, got {type(species)}; please provide the species name either in string or Species type")
+        
+        species._add_molecule(self)
         self._species=species
         
     def add_model(self, model):
@@ -53,7 +57,7 @@ class RNA_Molecule:
             raise TypeError(f"Expected a Model instance, got {type(model)}")
         if model.id not in self._models:
             self._models[model.id] = model
-            model.rna_molecule = self
+            model._add_rna_molecule(self)
         
     def get_models(self):
         return self._models  
@@ -71,7 +75,7 @@ class RNA_Molecule:
 
 if __name__ == "__main__":
     
-    species = Species("Homo Sapiens")
+    species = 'Homo Sapiens' #handles automatic conversion of string to type Species successfully (minimizing error and enhancing ui)
     rna1 = RNA_Molecule("1A9N", "NMR", species)
     print(rna1) #Output ID: 1A9N Experiment: NMR Species: Homo Sapiens
     m1 = Model(1)
@@ -83,3 +87,13 @@ if __name__ == "__main__":
     print(rna1.get_models()) #Output {1: Model 1, 2: Model 2, 3: Model 3}
     rna1.remove_model(m3) 
     print(rna1.get_models()) #Output {1: Model 1, 2: Model 2}
+
+    # -- testing creation of 2 species with same name
+    rna2=RNA_Molecule('7tim','XRAY','Homo sapiens') 
+    print(rna1.species.declared_species) # able to recognize both species entries as one: successful
+
+    # -- testing the 1-N composition with Model
+    m_test=Model(1)
+    rna2.add_model(m_test)
+    print(m_test.rna_molecule)
+    #amazingness

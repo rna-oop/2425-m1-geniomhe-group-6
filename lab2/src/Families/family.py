@@ -7,7 +7,6 @@ sys.path.append(os.path.abspath('lab2/src'))
 
 from Structure.RNA_Molecule import RNA_Molecule
 from tree import Phylotree
-from species import Species
 from utils import get_family_attributes, create_RNA_Molecule, get_tree_newick_from_fam
 
 
@@ -56,15 +55,12 @@ class Family:
         - `__setattr__(self, name, value)`
         - `__str__(self)`
         - `__repr__(self)`
-
-    *Note: M to N relationship between Species and Family is handled by having a list of species object in Family and a list of family objects in Species; In order to ensure a symmetric addition, this will be handled in this class whenever we're adding a species by calling the Species._add_family method implicitly*
-
     '''
 
     # --class attribute to store all families - no duplicates are allowed (checked in __setattr__), unique by id
     entries=[] 
 
-    def __init__(self, id, name, type=None, members=[], trees={}, species=None, from_database=False):
+    def __init__(self, id, name, type=None, members=[], trees={}, from_database=False):
         if not from_database:
             print('Warning: Family object created without database connection, creating a new family with provided id and name')
 
@@ -80,8 +76,7 @@ class Family:
             self.__type = type
             self.__members = members  # list of RNA_Molecule objects
             self.__trees = trees
-            self.__species = species
-
+            self.__clan=None
             Family.entries.append(self)  # adding it to list of instances
             print('Family created successfully')
 
@@ -138,6 +133,13 @@ class Family:
     def trees(self, value):
         self.__trees = value
 
+    @property
+    def clan(self):
+        return self.__clan
+    @clan.setter
+    def clan(self, value):
+        print('Warning: cannot set clan from family level, please use the Clan class to set the clan for this family\n\t e.g., c1.add_family(f1) # will be automatically added to f1')
+
     # --dunders
     def __eq__(self, other):
         return self.id == other.id
@@ -179,21 +181,17 @@ class Family:
             for key in value:
                 self.__validate_tree(value[key])
             super().__setattr__(name, value)
-
-        if name == '_Family__species':
-            if not isinstance(value, list):
-                raise ValueError('Species must be a list of Species objects')
-            for species in value:
-                if not isinstance(species, Species):
-                    raise ValueError('Species must be an instance of Species')
+        elif name=='_Family__clan':
             super().__setattr__(name, value)
-
+            #to be able to set it from clan level
 
 
     def __str__(self):
         fam='-- Family: '+self.name+' ('+self.id+')\n'
         if self.type:
             fam+='\tType: '+self.type+'\n'
+        if self.clan:
+            fam+='\tClan: '+self.clan.name
         if self.members != []:
             fam+='\tMembers:\n'
             for member in self.members:
@@ -260,18 +258,12 @@ class Family:
         else:
             raise ValueError('Invalid tree type, please provide a valid tree (Phylotree, dict or str) and specify the format if it is a string')
         
+        # -- when tree added successfully, add the family to the tree
+        tree._add_family(self)
 
-    def add_species(self, species):
-        '''
-        add a species to the family
-        '''
-        if not isinstance(species, Species):
-            raise ValueError('Species must be an instance of Species')
-        if species not in self.__species:
-            self.__species.append(species)
-            species._add_family(self)
-        else:
-            print('Species already in family')
+    def _add_clan(self, clan):
+        self.__clan=clan
+        
 
     # -- static methods
     @staticmethod
@@ -301,5 +293,5 @@ if __name__=='__main__':
     fam1=Family.from_rfam('RF01510')
     # rna1= create_RNA_Molecule("7EAF")
     # fam1.add_RNA(rna1)
-    print(fam1) #success
+    print(fam1.trees['rfam'].family) #success
 

@@ -18,11 +18,12 @@ class Clan:
             self.__name = name
             self.__members = members
             Clan.entries.append(self)
-            print('Clan created successfully')
+            print(f'>> Clan {id} created successfully <<')
 
     def __validate_member(self, member):
         if not isinstance(member, Family):
             raise ValueError('Member must be an instance of Family')
+        
 
     @staticmethod
     def get_instances():
@@ -70,6 +71,7 @@ class Clan:
                 raise ValueError('Members must be a list of Family objects')
             for member in value:
                 self.__validate_member(member)
+                member._add_clan(self)
             self.__dict__[name]=value
 
     def __str__(self):
@@ -95,8 +97,9 @@ class Clan:
         self.__validate_member(family)
         if family not in self.__members:
             self.__members.append(family)
+            family._add_clan(self)
         else:
-            print('Family already in clan')
+            print('> Family already in clan')
 
     def remove_family(self, family):
         if family in self.__members:
@@ -110,9 +113,11 @@ if __name__=='__main__':
     f3=Family('f3', 'Family 3')
     c1=Clan('c1', 'Clan 1', [f1, f2])
     c2=Clan('c2', 'Clan 2', [f3])
-    print(c1)
-    print(c2)
-    c1.add_family(f3)
-    print('after adding f3:',c1)
-    c1.remove_family(f2)
-    print('after removing f2:',c1)
+    # print(c1)
+    # print(c2)
+    # c1.add_family(f3)
+    # print('after adding f3:',c1)
+    # c1.remove_family(f2)
+    # print('after removing f2:',c1)
+
+    print(f1)
