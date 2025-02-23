@@ -1,1 +1,10 @@
 - [ ] pathify a pdb id (allow pdb id input rather than file path) (function: `utils.fetch_pdb_id`)
+- [x] add species properly to `RNA_Molecule`
+- [x] fix 1-N relationships in `Families` classes
+- [x] add getters in `Structure` related to 1-N attributes
+- [ ] add family distribution function from family to inspect species
+- [ ] refix UML
+- [ ] edit documentation of modules and submodules  
+- [ ] explain enhancements in readme
+- [ ] add `__str__` to all classes in `Structure` module
+- [ ] add `__getitem__` to classes with composition relationships

@@ -89,6 +89,46 @@ class Phylotree:
 
     The string representation will be a preorder traversal of the tree, running from the root
 
+    
+    ## Usage:
+
+    I order to declare an object of tyep Phylotree, you can use the following methods:
+    - Phylotree.from_dict(tree_dict)
+    - Phylotree.from_json(json_str)
+    - Phylotree.from_newick(newick_str)
+
+    *note that json_str and nwk_str can be a file path for the respective file types*
+
+    For the user to build a tree, need to have it in one of theese 3 formats, given that the dict/json format is liek the following:
+
+    ```json
+    {
+        "children": [
+            {
+            "name": "a",
+            "branch_length": 0.05592
+            },
+            {
+            "name": "b",
+            "branch_length": 0.08277
+            },
+            {
+            "children": [
+                {
+                "name": "c",
+                "branch_length": 0.11049
+                },
+                {
+                "name": "d",
+                "branch_length": 0.31409
+                }
+            ],
+            "branch_length": 0.340
+            }
+        ],
+        "branch_length": 0.03601
+    }
+    ```
     '''
 
     def __init__(self, from_generator=False):
@@ -107,6 +147,7 @@ class Phylotree:
         >>> tree = Phylotree.from_newick("((A:0.1,B:0.2):0.3,C:0.4);") #uses a static generator method to build the tree 
         '''
         self.__root=None
+        self.__family=None
         if not from_generator:
             print("Warning: Initializing Phylotree directly will not build the tree, it'll be empty and requires adding entries to it manually")
 
@@ -118,6 +159,21 @@ class Phylotree:
     def root(self, node):
         self.__root = node
 
+    @property
+    def family(self):
+        return self.__family
+    @family.setter
+    def family(self, family):
+        print('Can not set family from tree, have to add a tree to family through fam.add_tree(tree) and it will be added here as an attribute')
+
+    def _add_family(self, family):
+        self.__family = family
+
+    def __setattr__(self, name, value):
+        if name == '_Phylotree__root': #wont be needed since tree will be built from a generator
+            if not isinstance(value, TreeNode) and value is not None:
+                raise TypeError(f"Expected a TreeNode instance, got {type(value)}")
+        super().__setattr__(name, value)
         
     @staticmethod
     def build_tree(tree_dict, parent=None):
@@ -186,7 +242,11 @@ class Phylotree:
 
     
     def __str__(self):
-        return self.root.preorder_traversal()
+        s = ''
+        if self.family is not None:
+            s = f"Phylogenetic Tree for {self.family.id}"
+        s += self.root.preorder_traversal()
+        return s
     
     def __repr__(self):
         return self.__str__()+"\n"+f'Root: {self.root}'
