@@ -21,9 +21,9 @@ class PDB_Parser(RNA_Parser):
         """
         processor=Processor() #To handle the molecule representation in the processor class
         
-        #Extract RNA_Molecule Attributes(Entry_ID, Experiment, Species) and store them in the processor object
-        id, experiment, species = self._extract_molecule_info(path_to_file)
-        processor.molecule_info(id, experiment, species) 
+        #Extract RNA_Molecule Attributes and store them in the processor object
+        molecule_info = self._extract_molecule_info(path_to_file)
+        processor.molecule_info(*molecule_info)
         
         #Extract the atoms and store them in the processor object
         with open(path_to_file, 'r') as pdb_file:

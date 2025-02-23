@@ -17,9 +17,10 @@ class NBase(Enum):
 
 class Residue:
 
-    def __init__(self, type: str, position: int, atoms=None):
+    def __init__(self, type: str, position: int, i_code=None, atoms=None):
         self.type = type
         self.position = position
+        self.i_code = i_code
         self._atoms = atoms if atoms is not None else {}  
         self.__chain = None #The chain to which the residue belongs
 
@@ -45,6 +46,16 @@ class Residue:
             raise TypeError(f"position must be an integer, got {type(position)}")
         self._position=position
 
+    @property
+    def i_code(self):
+        return self._i_code
+    
+    @i_code.setter
+    def i_code(self, i_code):
+        if i_code is not None and not isinstance(i_code, str):
+            raise TypeError(f"i_code must be a string, got {type(i_code)}")
+        self._i_code=i_code
+        
     # -- same as in Atom, this is to access the chain information the residue instance belongs to
     @property
     def chain(self):

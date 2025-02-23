@@ -43,9 +43,9 @@ class Processor:
             model = self.rna_molecule.get_models()[model_id]
             model.add_chain(Chain(chain_id))
             chain = model.get_chains()[chain_id]
-            chain.add_residue(Residue(residue_name, residue_id))
+            chain.add_residue(Residue(residue_name, residue_id, i_code=i_code))
             residue = chain.get_residues()[residue_id]
-            residue.add_atom(Atom(atom_name, x, y, z, element, altloc, occupancy, temp_factor, i_code, charge))
+            residue.add_atom(Atom(atom_name, x, y, z, element, altloc, occupancy, temp_factor, charge))
                 
         return self.rna_molecule
 

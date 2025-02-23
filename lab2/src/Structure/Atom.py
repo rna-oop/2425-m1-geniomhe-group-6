@@ -50,7 +50,7 @@ atom_name_lookup = {atom.value: atom for atom in AtomName} #To look for the Atom
 
 class Atom:
 
-    def __init__(self, name: str, x: float, y: float, z: float, element: str, altloc=None, occupancy=None, temp_factor=None, i_code=None, charge=None):
+    def __init__(self, name: str, x: float, y: float, z: float, element: str, altloc=None, occupancy=None, temp_factor=None, charge=None):
         self.name = name
         self.x = x
         self.y = y
@@ -59,7 +59,6 @@ class Atom:
         self.altloc = altloc
         self.occupancy = occupancy
         self.temp_factor = temp_factor
-        self.i_code = i_code
         self.charge = charge
         self.__residue = None #The residue to which the atom belongs
 
@@ -151,15 +150,6 @@ class Atom:
             raise TypeError(f"temp_factor must be a float, got {type(temp_factor)}")
         self._temp_factor=temp_factor
         
-    @property
-    def i_code(self):
-        return self._i_code
-    
-    @i_code.setter
-    def i_code(self, i_code):
-        if i_code is not None and not isinstance(i_code, str):
-            raise TypeError(f"i_code must be a string, got {type(i_code)}")
-        self._i_code=i_code
         
     @property
     def charge(self):

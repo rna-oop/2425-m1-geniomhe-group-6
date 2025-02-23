@@ -56,7 +56,7 @@ class PDB_Writer(RNA_Writer):
         altloc = atom.altloc or ' '  
         occupancy = atom.occupancy or None  
         temp_factor = atom.temp_factor or None  
-        i_code = atom.i_code or ' '  
+        i_code = residue.i_code or ' '  
         charge = atom.charge or ' '  
 
         #Format floats or replace with spaces
@@ -84,7 +84,7 @@ class PDB_Writer(RNA_Writer):
         species = rna_molecule.species.name if rna_molecule.species else None
         
         #Format HEADER line
-        header_line = f"HEADER    RNA                                     {entry_id:>4}"
+        header_line = f"HEADER    RNA{'':49}{entry_id:4}"
         lines.append(header_line)
 
         #Format SOURCE line if species is provided
