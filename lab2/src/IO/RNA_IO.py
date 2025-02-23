@@ -20,7 +20,7 @@ class RNA_IO:
         if format not in self.parsers:
             raise ValueError(f"Format {format} is not supported")
         parser=self.parsers[format]
-        return parser.read(path_to_file)
+        return parser.read(path_to_file, coarse_grained, atom_name)
     
     def write(self, rna_molecule, path_to_file, format):
         """
