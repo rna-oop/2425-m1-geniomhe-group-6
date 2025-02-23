@@ -31,9 +31,9 @@ class PDB_Writer(RNA_Writer):
 
                             f.write(
                                 f"ATOM  {serial:>5} {atom.name.value:<4}{altloc:1}{residue.type.value:>3} "
-                                f"{chain.id:1}{residue.position:>4}{i_code:1}   "
+                                f"{chain.id:1}{residue.position:>4}{i_code:1}{'':3}"
                                 f"{atom.x:8.3f}{atom.y:8.3f}{atom.z:8.3f}"
-                                f"{occupancy_formatted}{temp_factor_formatted}          "
+                                f"{occupancy_formatted}{temp_factor_formatted}{'':10}"
                                 f"{atom.element.value:>2}{charge:2}\n"
                             )
                             serial += 1  #Increment serial for each atom
