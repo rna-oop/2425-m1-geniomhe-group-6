@@ -48,9 +48,12 @@ class RNA_Molecule:
             species = Species(species)
         if not isinstance(species, Species) and species is not None:
             raise TypeError(f"species must be a Species object, got {type(species)}; please provide the species name either in string or Species type")
+        
         if species is not None:
             species._add_molecule(self)
             self._species=species
+        else:
+            self._species=None
         
     def add_model(self, model):
         if not isinstance(model, Model):

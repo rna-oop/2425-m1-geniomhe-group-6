@@ -105,7 +105,8 @@ class Species:
         # --no need to validate RNA_Molecule since this method will be called from RNA_Moelcule class method on self (being of type RNA_Molecule is inevitable)
         if molecule.entry_id not in list(self.__rna_molecules.keys()):
             self.__rna_molecules[molecule.entry_id] = molecule
-        print(f'RNA_Molecule {molecule.entry_id} already exists in the species {self.__name}; not added again')
+        else:
+            print(f'RNA_Molecule {molecule.entry_id} already exists in the species {self.__name}; not added again')
 
     @staticmethod
     def _get_species(name):

@@ -4,3 +4,4 @@ test/
 test.ipynb
 __pycache__/
 examples/
+.rnalib_cache/

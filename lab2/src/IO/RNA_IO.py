@@ -17,7 +17,7 @@ class RNA_IO:
         """
         Reads a PDB file and returns the RNA molecule object.
         """
-        if format not in self.parsers:
+        if format not in self.__parsers:
             raise ValueError(f"Format {format} is not supported")
         parser=self.__parsers[format]
         return parser.read(path_to_file, coarse_grained, atom_name)

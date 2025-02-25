@@ -268,11 +268,17 @@ class Family:
         '''
         species_dist = {}
         for member in self.__members:
-            species_name = member.species.name
-            if species_name in species_dist:
-                species_dist[species_name] += 1
+            if member.species is None:
+                if 'unclassified' in species_dist:
+                    species_dist['unclassified'] += 1
+                else:
+                    species_dist['unclassified'] = 1
             else:
-                species_dist[species_name] = 1
+                species_name = member.species.name
+                if species_name in species_dist:
+                    species_dist[species_name] += 1
+                else:
+                    species_dist[species_name] = 1
         return species_dist
     
     def distribution(self):

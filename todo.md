@@ -2,8 +2,8 @@
 - [x] add species properly to `RNA_Molecule`
 - [x] fix 1-N relationships in `Families` classes
 - [x] add getters in `Structure` related to 1-N attributes
-- [ ] add family distribution function from family to inspect species
-- [ ] refix UML
+- [x] add family distribution function from family to inspect species
+- [x] refix UML
 - [ ] edit documentation of modules and submodules  
 - [ ] explain enhancements in readme
 - [ ] add `__str__` to all classes in `Structure` module
