@@ -60,21 +60,21 @@ For the purpose of this lab (reading/writing to a file), new classes have been i
         - `write(rna_molecule, file_path, format)`
             - Writes an `RNA_Molecule` instance to a file.
     - Handles multiple file formats by relying on specialized `parsers` and `writers` for format-specific processing → can have many parsers and writers.
-<br>
+
 
 2. **Parsing** 
     - `RNA_Parser` (Abstract Class)
         - Defines the abstract method `read()`, enforcing child classes to implement format-specific parsing.
     - `PDB_Parser` (Concrete Class)
         - Implements `read()`, processing PDB files to create an RNA_Molecule instance.
-<br>
+
 
 3. **Writing**
     -  `RNA_Writer` (Abstract Class)
        - Defines the abstract method `write()`, ensuring all writers implement format-specific writing.
     - `PDB_Writer` (Concrete Class)
         - Implements `write()`, converting an RNA_Molecule instance into a PDB file.
-<br>
+
 
 4. **`Processor` (RNA Structure Representation Handler)**
     - An intermediary between parsers/writers and RNA_Molecule.
@@ -85,7 +85,7 @@ For the purpose of this lab (reading/writing to a file), new classes have been i
         - `PDB_Writer` uses a `Processor` to extract relevant data for writing.
         - An `RNA_Molecule` can be associated with multiple `Processor` instances.
         - A `Processor` can belong to at most one `parser` or one `writer` (0..1 relationship). 
-<br>
+
 
 5. **Design Choice**
     - Decoupling:
@@ -196,9 +196,11 @@ fam.plot_distribution()
 #### `RNA_IO` Class
 
 - Responsible for managing the input and output operations of RNA molecule data. It provides methods for reading RNA molecule representations from files and writing them back to files in various formats. 
-<br>
+
+
 - This is the class that the user interacts with to read and write RNA molecule data.
-<br>
+
+
 - **Constructor**:
 
     The class is initialized with two private dictionaries:
@@ -210,7 +212,7 @@ fam.plot_distribution()
             self.__parsers = {"PDB": PDB_Parser()}
             self.__writers = {"PDB": PDB_Writer()}
     ```
-<br>
+
 
 - **Methods**:
 
@@ -235,7 +237,7 @@ fam.plot_distribution()
             return parser.read(path_to_file, coarse_grained, atom_name)
         ```
         The method first checks if the specified format is supported by the RNA_IO instance. If the format is supported, it retrieves the corresponding parser from the `__parsers` dictionary and calls its `read` method to parse the file and return an `RNA_Molecule` instance.
-<br>
+
 
     1. `write(rna_molecule, path_to_file, format)`
         - Purpose: Writes an `RNA_Molecule` object to a file of the specified format.
@@ -272,7 +274,7 @@ fam.plot_distribution()
 #### `PDB_Parser` Class
 
 - Concrete subclass of `RNA_Parser` that implements the `read` method for parsing PDB files and creating an `RNA_Molecule` instance.
-<br>
+
 
 - **`read` method**:
 
@@ -325,7 +327,7 @@ fam.plot_distribution()
         - The `Processor` object is used to create an `RNA_Molecule` instance.
         - The `RNA_Molecule` instance is returned.
   
-<br>
+
 
 - `_extract_molecule_info` private method:
 
@@ -337,7 +339,7 @@ fam.plot_distribution()
     - The extracted information is stored in the `Processor` object for creating the `RNA_Molecule` instance.
     - It basically extracts the essential information needed to create an `RNA_Molecule` object. 
     - **It can be easily extended to extract additional information if needed or remove unnecessary data, without requiring any changes to the `read` method.**
-<br>
+
 
 - `_extract_atom_info` private method:
 
@@ -368,7 +370,7 @@ fam.plot_distribution()
     - The extracted atom information includes the atom name, coordinates, element, residue name, residue ID, chain ID, alternate location indicator, occupancy, temperature factor, insertion code, and charge.
     - This method is called by the `read` method to extract atom information for creating the `RNA_Molecule` instance.
     - **It can be easily extended to extract additional atom information if needed or remove unnecessary data, without requiring any changes to the `read` method.**
-<br>
+
 
 ---
 
@@ -432,7 +434,7 @@ fam.plot_distribution()
         - The MODEL record is closed when a new model starts.
     6. **End of File**:
         - The PDB file is closed with an "END" record.
-<br>
+
 
 - `_format_molecule_info` private method:
     - This method formats the molecule information (entry ID, experiment, species) in PDB format.
@@ -441,7 +443,7 @@ fam.plot_distribution()
     - The formatted molecule information is returned as a string.
     - This method is called by the `write` method to write the molecule information to the PDB file.
     - **It can be easily extended to include additional information or modify the formatting without requiring changes to the `write` method.**
-<br>
+
 
 - `_format_atom_info` private method:
   
@@ -451,6 +453,7 @@ fam.plot_distribution()
     - The formatted atom information is returned as a string.
     - This method is called by the `write` method to format the atom information for writing to the PDB file.
     - **It can be easily extended to include additional atom information or modify the formatting without requiring changes to the `write` method.**
+
 ---
 
 #### `Processor` Class
