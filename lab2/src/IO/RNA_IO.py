@@ -10,8 +10,8 @@ from IO.writers.PDB_Writer import PDB_Writer
 class RNA_IO:
     
     def __init__(self):
-        self.parsers={"PDB": PDB_Parser()}
-        self.writers={"PDB": PDB_Writer()}
+        self.__parsers={"PDB": PDB_Parser()}
+        self.__writers={"PDB": PDB_Writer()}
     
     def read(self, path_to_file, format, coarse_grained=False, atom_name="C1'"):
         """
@@ -19,16 +19,16 @@ class RNA_IO:
         """
         if format not in self.parsers:
             raise ValueError(f"Format {format} is not supported")
-        parser=self.parsers[format]
+        parser=self.__parsers[format]
         return parser.read(path_to_file, coarse_grained, atom_name)
     
     def write(self, rna_molecule, path_to_file, format):
         """
         Writes the RNA molecule object to a PDB file.
         """
-        if format not in self.writers:
+        if format not in self.__writers:
             raise ValueError(f"Format {format} is not supported")
-        writer=self.writers[format]
+        writer=self.__writers[format]
         writer.write(rna_molecule, path_to_file)
     
 #Example Usage

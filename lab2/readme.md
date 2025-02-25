@@ -7,11 +7,16 @@
   - [Class Diagram](#class-diagram)
   - [Object Diagram](#object-diagram)
   - [Implementation](#implementation)
+    - [Code Explanation](#code-explanation)
+      - [`RNA_IO` Class](#rna_io-class)
+      - [`RNA_Parser` and `RNA_Writer` Classes](#rna_parser-and-rna_writer-classes)
+      - [`PDB_Parser` Class](#pdb_parser-class)
+      - [`PDB_Writer` Class](#pdb_writer-class)
+      - [`Processor` Class](#processor-class)
+  - [Decoupling Analysis](#decoupling-analysis)
+  - [Code USage Example](#code-usage-example)
 
-Demo test on colab:   
-<a href="https://colab.research.google.com/github/rna-oop/2425-m1-geniomhe-group-6/tree/main/lab2/demo.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open Project in colab"/></a> 
-
-https://github.com/rna-oop/2425-m1-geniomhe-group-6/tree/main/lab2/src
+--- 
 
 ## Class Diagram
 
@@ -24,7 +29,7 @@ As a minor enhancement to the previous lab design, we added `Species` entity to 
 
 For the purpose of this lab (reading/writing to a file), new classes have been introduced in yellow in this diagram: 
 
-1. `RNA_IO` **(User Interface for I/O Operations)**
+1. **`RNA_IO` (User Interface for I/O Operations)**
     - Serves as the interface for reading and writing RNA sequence files.
     - Provides two methods:
         - `read(path, format, coarse_grained=False, atom_name=None)` → `RNA_Molecule`
@@ -35,20 +40,23 @@ For the purpose of this lab (reading/writing to a file), new classes have been i
         - `write(rna_molecule, file_path, format)`
             - Writes an `RNA_Molecule` instance to a file.
     - Handles multiple file formats by relying on specialized `parsers` and `writers` for format-specific processing → can have many parsers and writers.
+<br>
 
 2. **Parsing** 
     - `RNA_Parser` (Abstract Class)
         - Defines the abstract method `read()`, enforcing child classes to implement format-specific parsing.
     - `PDB_Parser` (Concrete Class)
         - Implements `read()`, processing PDB files to create an RNA_Molecule instance.
-  
+<br>
+
 3. **Writing**
     -  `RNA_Writer` (Abstract Class)
        - Defines the abstract method `write()`, ensuring all writers implement format-specific writing.
     - `PDB_Writer` (Concrete Class)
         - Implements `write()`, converting an RNA_Molecule instance into a PDB file.
+<br>
 
-4. `Processor` **(RNA Structure Representation Handler)**
+4. **`Processor` (RNA Structure Representation Handler)**
     - An intermediary between parsers/writers and RNA_Molecule.
     - Converts parsed content into an RNA_Molecule instance.
     - Flattens an RNA_Molecule into a list of atoms for writing.
@@ -57,6 +65,7 @@ For the purpose of this lab (reading/writing to a file), new classes have been i
         - `PDB_Writer` uses a `Processor` to extract relevant data for writing.
         - An `RNA_Molecule` can be associated with multiple `Processor` instances.
         - A `Processor` can belong to at most one `parser` or one `writer` (0..1 relationship). 
+<br>
 
 5. **Design Choice**
     - Decoupling:
@@ -66,7 +75,7 @@ For the purpose of this lab (reading/writing to a file), new classes have been i
     - Extensibility:
         - New formats (e.g., FASTA) can be supported by adding corresponding RNA_Parser and RNA_Writer subclasses.
 
-
+---
 
 ## Object Diagram
 
@@ -75,4 +84,271 @@ For the purpose of this lab (reading/writing to a file), new classes have been i
 <figcaption align='center'>Object Diagram</figcaption>
 </p>
 
-## Implementation
+- `rna_io` object instantiated by the user to read and write.
+- `pdb_parser` object created by `rna_io` to parse PDB files.
+- `pdb_writer` object created by `rna_io` to write PDB files.
+- `p1` object of class `Processor` created by `pdb_parser` to handle RNA structure representation and create an `RNA_Molecule` object.
+- `p2` object of class `Processor` created by `pdb_writer` to extract atoms list from `RNA_Molecule` for writing (by handling the RNA structure representation). 
+
+--- 
+
+## Implementation 
+
+The implementation of the classes is available in the [src](https://github.com/rna-oop/2425-m1-geniomhe-group-6/tree/main/lab2/src) directory.
+
+The classes are organized as follows:
+
+- **Structure Module**:
+    - `Atom`
+    - `Residue`
+    - `Chain`
+    - `Model`
+    - `RNA_Molecule`
+  
+- **Families Module**:
+    - `Family`
+    - `Clan`
+    - `Species`
+    - `Tree`
+
+- **IO Module**:
+    - `RNA_IO`
+    - **parsers**:
+        - `RNA_Parser`
+        - `PDB_Parser`
+    - **writers**:
+        - `RNA_Writer`
+        - `PDB_Writer`
+
+- `Processor`
+
+### Code Explanation 
+
+#### `RNA_IO` Class
+
+- Responsible for managing the input and output operations of RNA molecule data. It provides methods for reading RNA molecule representations from files and writing them back to files in various formats. 
+<br>
+- This is the class that the user interacts with to read and write RNA molecule data.
+<br>
+- **Constructor**:
+
+    The class is initialized with two private dictionaries:
+    - `__parsers`: Contains instances of parsers for different file formats. Currently, it includes the PDB format parser.
+    - `__writers`: Contains instances of writers for different file formats. Currently, it includes the PDB format writer.
+
+    ```python
+        def __init__(self):
+            self.__parsers = {"PDB": PDB_Parser()}
+            self.__writers = {"PDB": PDB_Writer()}
+    ```
+<br>
+
+- **Methods**:
+
+    1. `read(path_to_file, format, coarse_grained=False, atom_name="C1'")`
+        - Purpose: Reads a file of the specified format and returns an `RNA_Molecule` object.
+        - Parameters:
+          - `path_to_file`: The path to the file to be read.
+          - `format`: The format of the file being read (e.g., "PDB").
+          - `coarse_grained`: A boolean flag indicating whether to use a coarse-grained representation, defaults to `False`.
+          - `atom_name`: The name of the atom to be read, defaults to `"C1'"` because:
+            - It defines the sugar ring attachment point to the base.
+            - It’s commonly used in coarse-grained RNA models.
+            - It provides a stable reference point per residue.
+        - Returns: An `RNA_Molecule` instance.
+        - Raises: `ValueError` if the specified format is not supported.
+
+        ```python
+        def read(self, path_to_file, format, coarse_grained=False, atom_name="C1'"):
+            if format not in self.__parsers:
+                raise ValueError(f"Format {format} is not supported.")
+            parser = self.__parsers[format]
+            return parser.read(path_to_file, coarse_grained, atom_name)
+        ```
+        The method first checks if the specified format is supported by the RNA_IO instance. If the format is supported, it retrieves the corresponding parser from the `__parsers` dictionary and calls its `read` method to parse the file and return an `RNA_Molecule` instance.
+<br>
+
+    1. `write(rna_molecule, path_to_file, format)`
+        - Purpose: Writes an `RNA_Molecule` object to a file of the specified format.
+        - Parameters:
+          - `rna_molecule`: The RNA molecule object to be written to the file.
+          - `path_to_file`: The path where the file will be written.
+          - `format`: The format of the file to be written (e.g., "PDB").
+        - Raises: `ValueError` if the specified format is not supported.
+        - Calls the `write` method of the corresponding writer for the specified format to write the RNA molecule to the file.
+        
+--- 
+
+#### `RNA_Parser` and `RNA_Writer` Classes
+
+- These are abstract classes that define the interface for parsers and writers, respectively. They enforce the implementation of the `read` and `write` methods in concrete subclasses.
+
+    ```python
+    class RNA_Parser(ABC):
+        
+        @abstractmethod
+        def read(self, path_to_file):
+            pass
+    ```
+
+    ```python
+    class RNA_Writer(ABC):
+        
+        @abstractmethod
+        def write(self, rna_molecule, path_to_file):
+            pass
+    ```
+---
+
+#### `PDB_Parser` Class
+
+- Concrete subclass of `RNA_Parser` that implements the `read` method for parsing PDB files and creating an `RNA_Molecule` instance.
+<br>
+
+- **`read` method**:
+
+    ```python
+    def read(self, path_to_file, coarse_grained=False, atom_name="C1'"):
+        """
+        Reads a PDB file and returns the RNA molecule object.
+        """
+        processor=Processor() #To handle the molecule representation in the processor class
+        
+        #Extract RNA_Molecule Attributes and store them in the processor object
+        molecule_info = self._extract_molecule_info(path_to_file)
+        processor.molecule_info(*molecule_info)
+        
+        #Extract the atoms and store them in the processor object
+        with open(path_to_file, 'r') as pdb_file:
+            
+            model_id = 0 
+        
+            for line in pdb_file:
+                if line.startswith("MODEL"):
+                    model_id = int(line.split()[1])  #Extract model ID
+                    
+                elif line.startswith("ATOM"):
+                    if coarse_grained:
+                        if line[12:16].strip() == atom_name:
+                            atom_info = self._extract_atom_info(line)
+                            if atom_info is not None:
+                                processor.atom_info(*atom_info, model_id)
+                    else:
+                        atom_info = self._extract_atom_info(line)
+                        if atom_info is not None: #It is None if the residue is not a nucleotide
+                            processor.atom_info(*atom_info, model_id)
+                    
+        return processor.createMolecule() #Create the RNA_Molecule object
+    ```
+
+    1. **Processor Initialization**:
+        - A `Processor` instance is created to handle the molecule representation.
+    2. **Extract Molecule Info**:
+        - The method `_extract_molecule_info` is called to extract the relevant information about the RNA molecule from the PDB file.
+        - The extracted information is stored in the `Processor` object.
+    3. **Extract Atoms**:
+        - The PDB file is read line by line.
+        - If the line starts with "MODEL", the model ID is extracted.
+        - If the line starts with "ATOM", the atom information is extracted.
+        - If `coarse_grained` is `True`, only atoms with the specified `atom_name` are extracted.
+        - The extracted atom information is stored in the `Processor` object.
+    4. **Create Molecule**:
+        - The `Processor` object is used to create an `RNA_Molecule` instance.
+        - The `RNA_Molecule` instance is returned.
+  
+<br>
+
+- `_extract_molecule_info` private method:
+
+    ```python
+        def _extract_molecule_info(self, path_to_file):
+
+            with open(path_to_file, 'r') as file:
+
+                id = ""
+                experiment = None
+                species = None
+                for line in file:
+                    
+                    #Extract the PDB ID
+                    if line.startswith("HEADER"):
+                        id = line[62:66].strip()
+                        
+                    #Extract the EXPDTA (experiment) information
+                    if line.startswith("EXPDTA"):
+                        experiment = line[10:].strip()
+                    
+                    #Extract the species information
+                    if line.startswith("SOURCE"):
+                        if "ORGANISM_SCIENTIFIC" in line:
+                            species_info = line.split(":")[1].strip()
+                            species = species_info.split(";")[0].strip()
+                            
+                    if line.startswith("REMARK") | line.startswith("ATOM"):
+                        break
+                    
+            return id, experiment, species
+    ```
+
+    - This method reads the PDB file line by line and extracts the PDB ID, experiment, and species information.
+    - The extracted information is returned as a tuple.
+    - The method stops reading the file once it encounters a line starting with "REMARK" or "ATOM".
+    - This method is called by the `read` method to extract the molecule information before extracting the atoms.
+    - The extracted information is stored in the `Processor` object for creating the `RNA_Molecule` instance.
+    - If the information is not found, the corresponding attribute is set to `None`.
+    - It basically extracts the essential information needed to create an `RNA_Molecule` object. 
+    - **It can be easily extended to extract additional information if needed or remove unnecessary data, without requiring any changes to the `read` method.**
+<br>
+
+- `_extract_atom_info` private method:
+
+    ```python
+        def _extract_atom_info(self, line):
+
+        residue_name = line[17:20].strip()
+        if residue_name not in ['A', 'C', 'G', 'U']:
+            return None #Not a nucleotide
+        residue_id = int(line[22:26].strip()) 
+        i_code = line[26:27].strip()
+        
+        atom_name = line[12:16].strip()
+        altloc = line[16:17].strip()
+        x, y, z = map(float, [line[30:38], line[38:46], line[46:54]])
+        occupancy = float(line[54:60].strip())
+        temp_factor = float(line[60:66].strip()) if line[60:66].strip() else None
+        element = line[76:78].strip()
+        charge = line[78:80].strip()
+        
+        chain_id = line[21]
+        
+        return atom_name, x, y, z, element, residue_name, residue_id, chain_id, altloc, occupancy, temp_factor, i_code, charge
+    ```
+    - This method extracts the atom information from an atom line in a PDB file.
+    - It returns a tuple containing the atom information.
+    - If the residue is not a valid nucleotide (A, C, G, U), it returns `None`.
+    - The extracted atom information includes the atom name, coordinates, element, residue name, residue ID, chain ID, alternate location indicator, occupancy, temperature factor, insertion code, and charge.
+    - This method is called by the `read` method to extract atom information for creating the `RNA_Molecule` instance.
+    - **It can be easily extended to extract additional atom information if needed or remove unnecessary data, without requiring any changes to the `read` method.**
+<br>
+
+---
+
+#### `PDB_Writer` Class
+
+---
+
+#### `Processor` Class
+
+
+
+---
+
+## Decoupling Analysis
+
+
+--- 
+
+## Code USage Example
+
+Demo test on colab:   
+<a href="https://colab.research.google.com/github/rna-oop/2425-m1-geniomhe-group-6/tree/main/lab2/demo.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open Project in colab"/></a> 

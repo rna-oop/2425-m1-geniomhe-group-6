@@ -7,7 +7,6 @@ sys.path.append(os.path.abspath('lab2/src'))
 
 from IO.parsers.RNA_Parser import RNA_Parser
 from processor import Processor
-from Bio import PDB
 
 
 class PDB_Parser(RNA_Parser):
@@ -58,10 +57,10 @@ class PDB_Parser(RNA_Parser):
         if residue_name not in ['A', 'C', 'G', 'U']:
             return None #Not a nucleotide
         residue_id = int(line[22:26].strip()) 
+        i_code = line[26:27].strip()
         
         atom_name = line[12:16].strip()
         altloc = line[16:17].strip()
-        i_code = line[26:27].strip()
         x, y, z = map(float, [line[30:38], line[38:46], line[46:54]])
         occupancy = float(line[54:60].strip())
         temp_factor = float(line[60:66].strip()) if line[60:66].strip() else None
