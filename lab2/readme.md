@@ -451,7 +451,6 @@ fam.plot_distribution()
     - The formatted atom information is returned as a string.
     - This method is called by the `write` method to format the atom information for writing to the PDB file.
     - **It can be easily extended to include additional atom information or modify the formatting without requiring changes to the `write` method.**
-<br>
 ---
 
 #### `Processor` Class
