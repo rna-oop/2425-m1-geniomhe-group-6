@@ -167,6 +167,30 @@ To ensure this behavior we have either not provided a setter for this attribute 
 
 This was done in all classes that have a 1-N relationship with another class.
 
+#### Species class
+
+In order to account for instanciated species, and because we dont wanna lose track of what we have created and the connection to each species with their types, we have implemenented a class attribute `declared_species` that ensures:  
+* unicity of a species instance 
+* ability to access and point to equivalent species instances
+
+This is particularly helpful with the 1-N relationship `Species` have with `RNA_Molecule` instances. 1 RNA-Molecule instance can be found in 1 Species, but 1 Species can have multiple RNA_Molecule instances. Thus we have added an attribute in Species that stores a dictionary of RNA_Molecule instances, with the key being the RNA_Molecule instance's id (to enhance lookup speed using the dict's inherent hashing compared to looping through a list). And for the relationship to be well implemented, we have added a `species` attribute in the RNA_Molecule class that points to the Species instance it belongs to. The latter is only set by appending an RNA_Molecule instance to a Species instance, and not by setting it directly (automatic handling). In this way, the `declared_species` class attribute ensures that one species instance can have multiple RNA_Molecule instances.  
+_e.g., rna molecule 1 associated with E.coli species, rna molecule 2 associated with E.coli species, we would find only one E.coli species instance in the declared_species attribute, with the two RNA_Molecule instances in its rna molecules dictionary corresponding to rna1 and rna2_
+
+A species class have been implemented to account for them as entities that might have several RNA moelcules associated with them. To keep track of previously created species, we have implemented a class attribute `declared_species` that ensures unicity of species instances and ability to access and point to equivalent species instances. This is particularly helpful with the 1-N relationship between Species and RNA molecule. 1 RNA molecule instance can be found in 1 Species, but 1 Species can have multiple RNA molecule instances, so an instanciated species would have a dictionary of RNA molecule instances, with the key being the RNA molecule instance's id, and value of type `RNA_Molecule`. This way, we can easily access the RNA molecule instances associated with a species instance ( a dict instead of a list to enhance lookup speed using the dict's inherent hashing compared to looping through a list).
+
+And for the relationship to be well implemented, we have added a `species` attribute in the RNA_Molecule class that points to the Species instance it belongs to. The latter is only set by appending an RNA_Molecule instance to a Species instance, and not by setting it directly (automatic handling). In this way, the `declared_species` class attribute ensures that one species instance can have multiple RNA_Molecule instances.  
+
+_e.g., rna molecule 1 associated with E.coli species, rna molecule 2 associated with E.coli species, we would find only one E.coli species instance in the declared_species attribute, with the two RNA_Molecule instances in its rna molecules dictionary corresponding to rna1 and rna2_
+
+Since Species has a relationship with RNA_Molecule, and Family has a relationship with RNA_Molecule, an additional functionality that is now avaliable to teh user is the ability to see the distribution of species in a family. This is done by calling the `distribution()` method in the Family class, which returns a data frame of species and the number of RNA_Molecule instances associated with them. For visualiztion, the user can call the `plot_distribution()` method in the Family class, which plots a pie plot of the species distribution.
+
+```python
+fam=Family(id='SAM',name='SAM')
+fam.plot_distribution()
+```
+
+![dist](./assets/dist.png)
+
 ### Code Explanation 
 
 #### `RNA_IO` Class
