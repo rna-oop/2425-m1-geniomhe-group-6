@@ -29,7 +29,7 @@ class PDB_Writer(RNA_Writer):
             
             current_model = None
 
-            for model_id, serial, atom, residue, chain in atoms:
+            for model_id, *atom_info in atoms:
                 #Write MODEL record when a new model starts
                 #If the model ID is 0, it means that there is only one model and no MODEL record is needed
                 if model_id !=0 and model_id != current_model:
@@ -39,7 +39,7 @@ class PDB_Writer(RNA_Writer):
                     current_model = model_id
                 
                 #Write the formatted atom line
-                pdb_line = self._format_atom_info(serial, atom, residue, chain)
+                pdb_line = self._format_atom_info(*atom_info)
                 f.write(pdb_line)
 
             if model_id!=0:

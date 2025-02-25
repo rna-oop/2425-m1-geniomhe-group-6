@@ -4,24 +4,27 @@
 
 - [Lab 2 Report](#lab-2-report)
   - [Table of contents](#table-of-contents)
+  - [Demo test on python notebook](#demo-test-on-python-notebook)
   - [Class Diagram](#class-diagram)
   - [Object Diagram](#object-diagram)
   - [Implementation](#implementation)
+    - [Extensions](#extensions)
+      - [Directory Structure](#directory-structure)
+      - [Handling 1-N Relationships](#handling-1-n-relationships)
     - [Code Explanation](#code-explanation)
       - [`RNA_IO` Class](#rna_io-class)
       - [`RNA_Parser` and `RNA_Writer` Classes](#rna_parser-and-rna_writer-classes)
       - [`PDB_Parser` Class](#pdb_parser-class)
       - [`PDB_Writer` Class](#pdb_writer-class)
+  - [](#)
       - [`Processor` Class](#processor-class)
   - [Decoupling Analysis](#decoupling-analysis)
-  - [Code USage Example](#code-usage-example)
-  - [Extensions](#extensions)
-    - [Directory Structure](#directory-structure)
-    - [Handling 1-N Relationships](#handling-1-n-relationships)
 
 
 
-Demo test on python notebook (can't host private repo code on google colab, sofor now cn only ik it to the `.ipynb` file): 
+## Demo test on python notebook
+
+This demo shows how the user will use the code.
 
 Demo directory:
 
@@ -144,6 +147,25 @@ src/
 ├── processor.py
 └── utils.py
 ```
+
+### Extensions
+
+_Some enhancements on the library design that are worth of mention:_
+
+#### Directory Structure
+
+In lab1, we had a flat directory structure. In lab2, we have introduced a new directory structure to better organize the code into modules and submodules, as seen in [Implementation Section](#implementation). This structure helps in managing the codebase effectively and allows for better organization of related classes and functionalities.
+
+The interdependencies between modules have been handled by appending the `src` directory to the pythonpath and importing the modules using absolute imports. Another alternative during the development stage (not a deployable library yet) is tu sue the [`set-pythonpath.sh`](../dev/set-pythonpath.sh) script in `dev/` directory.
+
+#### Handling 1-N Relationships
+
+Originally, if we have a 1-N relationship between two classes, _e.g., one Family have many RNA Molecules_, we would store a list of RNA Molecules in the Family class. This is a simple and straightforward approach. However, it has some drawbacks, as it makes us unable to tag each RNA Molecule with the Family it belongs to. To address this issue, we have added an attribute "family" to the RNA Molecule class, that the user has no interaction whatsoever with, but is rather set automatically through the code when the RNA Molecule is added to a Family. 
+
+> [!IMPORTANT]
+To ensure this behavior we have either not provided a setter for this attribute or raised a warning message if the user tries to set it manually. A private method has been implemented that acts as a setter for this attribute in the other class (_e.g., RNA_Molecule's `_add_family()` method will be used in Family's add_RNA() method through: `fam1.add_RNA(rna1)`; behind the scenes: `rna1._add_family(self)  `_).
+
+This was done in all classes that have a 1-N relationship with another class.
 
 ### Code Explanation 
 
@@ -283,42 +305,12 @@ src/
 
 - `_extract_molecule_info` private method:
 
-    ```python
-        def _extract_molecule_info(self, path_to_file):
-
-            with open(path_to_file, 'r') as file:
-
-                id = ""
-                experiment = None
-                species = None
-                for line in file:
-                    
-                    #Extract the PDB ID
-                    if line.startswith("HEADER"):
-                        id = line[62:66].strip()
-                        
-                    #Extract the EXPDTA (experiment) information
-                    if line.startswith("EXPDTA"):
-                        experiment = line[10:].strip()
-                    
-                    #Extract the species information
-                    if line.startswith("SOURCE"):
-                        if "ORGANISM_SCIENTIFIC" in line:
-                            species_info = line.split(":")[1].strip()
-                            species = species_info.split(";")[0].strip()
-                            
-                    if line.startswith("REMARK") | line.startswith("ATOM"):
-                        break
-                    
-            return id, experiment, species
-    ```
-
     - This method reads the PDB file line by line and extracts the PDB ID, experiment, and species information.
     - The extracted information is returned as a tuple.
+    - If the information is not found, the corresponding attribute is set to `None`.
     - The method stops reading the file once it encounters a line starting with "REMARK" or "ATOM".
     - This method is called by the `read` method to extract the molecule information before extracting the atoms.
     - The extracted information is stored in the `Processor` object for creating the `RNA_Molecule` instance.
-    - If the information is not found, the corresponding attribute is set to `None`.
     - It basically extracts the essential information needed to create an `RNA_Molecule` object. 
     - **It can be easily extended to extract additional information if needed or remove unnecessary data, without requiring any changes to the `read` method.**
 <br>
@@ -358,41 +350,96 @@ src/
 
 #### `PDB_Writer` Class
 
+- Concrete subclass of `RNA_Writer` that implements the `write` method for writing `RNA_Molecule` objects to PDB files.
+
+- **`write` method**:
+
+    ```python
+    def write(self, rna_molecule, path_to_file):
+        """
+        Writes the RNA molecule object to a PDB-like file.
+        Format:
+        <Record name> <Serial> <Atom name> <AltLoc> <Residue name> <ChainID> <Residue sequence number> <ICode> <X> <Y> <Z> <Occupancy> <TempFactor> <Element> <Charge>
+        """
+        processor=Processor()
+        atoms = processor.flattenMolecule(rna_molecule)  #Get a flat list of atoms
+
+        with open(path_to_file, "w") as f:
+            
+            #Write molecule information
+            molecule_info = self._format_molecule_info(rna_molecule)
+            f.write(molecule_info)
+            
+            #Write atom information
+            
+            current_model = None
+
+            for model_id, *atom_info in atoms:
+                #Write MODEL record when a new model starts
+                #If the model ID is 0, it means that there is only one model and no MODEL record is needed
+                if model_id !=0 and model_id != current_model:
+                    if current_model is not None:
+                        f.write("ENDMDL\n")  #Close previous model
+                    f.write(f"MODEL     {model_id}\n")
+                    current_model = model_id
+                
+                #Write the formatted atom line
+                pdb_line = self._format_atom_info(*atom_info)
+                f.write(pdb_line)
+
+            if model_id!=0:
+                f.write("ENDMDL\n")  #Close the last model
+            f.write("END\n")  #End of PDB file
+                
+        print(f"RNA molecule written to {path_to_file}")
+    ```
+    1. **Processor Initialization**:
+        - A `Processor` instance is created because it handles the molecule representation.
+    2. **Flatten Molecule**:
+        - The `Processor` object is used to flatten the `RNA_Molecule` object into a list of atoms.
+    3. **Write Molecule Info**:
+        - The method `_format_molecule_info` is called to format the molecule information for writing to the PDB file.
+        - The formatted molecule information is written to the file.
+    4. **Write Atom Info**:
+        - The atoms are iterated over, and the atom information is formatted using the method `_format_atom_info` for writing to the PDB file.
+        - The formatted atom information is written to the file.
+    5. **Write MODEL Records**:
+        - If the model ID changes, a new MODEL record is written.
+        - The MODEL record is closed when a new model starts.
+    6. **End of File**:
+        - The PDB file is closed with an "END" record.
+<br>
+
+- `_format_molecule_info` private method:
+    - This method formats the molecule information (entry ID, experiment, species) in PDB format.
+    - It extracts the relevant information from the `RNA_Molecule` object.
+    - It formats the HEADER, SOURCE, and EXPDTA lines for the PDB file.
+    - The formatted molecule information is returned as a string.
+    - This method is called by the `write` method to write the molecule information to the PDB file.
+    - **It can be easily extended to include additional information or modify the formatting without requiring changes to the `write` method.**
+<br>
+
+- `_format_atom_info` private method:
+  
+    - This method formats an atom entry into PDB format.
+    - It extracts the relevant information from the atom such as atom attributes, residue, chain. 
+    - It formats them according to the PDB format specification.
+    - The formatted atom information is returned as a string.
+    - This method is called by the `write` method to format the atom information for writing to the PDB file.
+    - **It can be easily extended to include additional atom information or modify the formatting without requiring changes to the `write` method.**
+<br>
 ---
 
 #### `Processor` Class
 
-
+- The `Processor` class acts as an intermediary between the parsers/writers and the `RNA_Molecule` class.
+- It is used to hanldle the RNA structure representation.
+- It contains methods to store the parsed content `molecule_info` and `atom_info`.
+- It is responsible for converting the parsed content into an `RNA_Molecule` instance: `createMolecule()` method. 
+- Also responsible for flattening an `RNA_Molecule` into a list of atoms for writing: `flattenMolecule(rna_molecule)`.
 
 ---
 
-
-### Extensions
-
-_Some enhancements on the library design that are worth of mention:_
-
-#### Directory Structure
-
-In lab1, we had a flat directory structure. In lab2, we have introduced a new directory structure to better organize the code into modules and submodules, as seen in [Implementation Section](#implementation). This structure helps in managing the codebase effectively and allows for better organization of related classes and functionalities.
-
-The interdependencies between modules have been handled by appending the `src` directory to the pythonpath and importing the modules using absolute imports. Another alternative during the development stage (not a deployable library yet) is tu sue the [`set-pythonpath.sh`](../dev/set-pythonpath.sh) script in `dev/` directory.
-
-#### Handling 1-N Relationships
-
-Originally, if we have a 1-N relationship between two classes, _e.g., one Family have many RNA Molecules_, we would store a list of RNA Molecules in the Family class. This is a simple and straightforward approach. However, it has some drawbacks, as it makes us unable to tag each RNA Molecule with the Family it belongs to. To address this issue, we have added an attribute "family" to the RNA Molecule class, that the user has no interaction whatsoever with, but is rather set automatically through the code when the RNA Molecule is added to a Family. 
-
-> [!IMPORTANT]
-To ensure this behavior we have either not provided a setter for this attribute or raised a warning message if the user tries to set it manually. A private method has been implemented that acts as a setter for this attribute in the other class (_e.g., RNA_Molecule's `_add_family()` method will be used in Family's add_RNA() method through: `fam1.add_RNA(rna1)`; behind the scenes: `rna1._add_family(self)  `_).
-
-This was done in all classes that have a 1-N relationship with another class.
-
 ## Decoupling Analysis
 
-
---- 
-
-## Code USage Example
-
-Demo test on colab:   
-<a href="https://colab.research.google.com/github/rna-oop/2425-m1-geniomhe-group-6/tree/main/lab2/demo.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open Project in colab"/></a> 
-
+The decoupling of parsing/writing from the RNA structure representation was demonstrated in the design and the implementation. 
