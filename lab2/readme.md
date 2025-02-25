@@ -15,8 +15,28 @@
       - [`Processor` Class](#processor-class)
   - [Decoupling Analysis](#decoupling-analysis)
   - [Code USage Example](#code-usage-example)
+  - [Extensions](#extensions)
+    - [Directory Structure](#directory-structure)
+    - [Handling 1-N Relationships](#handling-1-n-relationships)
 
 --- 
+  - [Extensions](#extensions)
+
+
+
+Demo test on python notebook (can't host private repo code on google colab, sofor now cn only ik it to the `.ipynb` file): 
+
+Demo directory:
+
+```text
+lab2/
+└── demo
+   ├── demo.ipynb              # main demo demonstrating reading and writing
+   └── demo-extensions.ipynb   # demo for extension features
+```
+
+[![Demo](https://img.shields.io/badge/main_demo-notebook-orange)](./demo/demo.ipynb)  [![Demo2](https://img.shields.io/badge/extension_demo-notebook-orange)](./demo/demo-extensions.ipynb)
+
 
 ## Class Diagram
 
@@ -352,3 +372,53 @@ The classes are organized as follows:
 
 Demo test on colab:   
 <a href="https://colab.research.google.com/github/rna-oop/2425-m1-geniomhe-group-6/tree/main/lab2/demo.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open Project in colab"/></a> 
+
+
+## Extensions
+
+_Some enhancements on the library design that are worth of mention:_
+
+### Directory Structure
+
+In lab1, we had a flat directory structure. In lab2, we have introduced a new directory structure to better organize the code into modules and submodules. The new structure is as follows:
+
+```text
+src/
+├── Families
+│   ├── __init__.py
+│   ├── clan.py
+│   ├── family.py
+│   ├── species.py
+│   └── tree.py
+├── IO
+│   ├── RNA_IO.py
+│   ├── __init__.py
+│   ├── parsers
+│   │   ├── PDB_Parser.py
+│   │   ├── RNA_Parser.py
+│   │   └── __init__.py
+│   └── writers
+│       ├── PDB_Writer.py
+│       ├── RNA_Writer.py
+│       └── __init__.py
+├── Structure
+│   ├── Atom.py
+│   ├── Chain.py
+│   ├── Model.py
+│   ├── RNA_Molecule.py
+│   ├── Residue.py
+│   └── __init__.py 
+├── processor.py
+└── utils.py
+```
+
+The interdependencies between modules have been handled by appending the `src` directory to the pythonpath and importing the modules using absolute imports. Another alternative during the development stage (not a deployable library yet) is tu sue the [`set-pythonpath.sh`](../dev/set-pythonpath.sh) script in `dev/` directory.
+
+### Handling 1-N Relationships
+
+Originally, if we have a 1-N relationship between two classes, _e.g., one Family have many RNA Molecules_, we would store a list of RNA Molecules in the Family class. This is a simple and straightforward approach. However, it has some drawbacks, as it makes us unable to tag each RNA Molecule with the Family it belongs to. To address this issue, we have added an attribute "family" to the RNA Molecule class, that the user has no interaction whatsoever with, but is rather set automatically through the code when the RNA Molecule is added to a Family. 
+
+> [!CAUTION]
+To ensure this behavior we have either not provided a setter for this attribute or raised a warning message if the user tries to set it manually. A private method has been implemented that acts as a setter for this attribute in the other class (_e.g., RNA_Molecule's `_add_family()` method will be used in Family's add_RNA() method through: `fam1.add_RNA(rna1)`; behind the scenes: `rna1._add_family(self)  `_).
+
+This was done in all classes that have a 1-N relationship with another class.

@@ -6,9 +6,10 @@ import os,sys
 sys.path.append(os.path.abspath('lab2/src'))
 
 from Structure.RNA_Molecule import RNA_Molecule
-from tree import Phylotree
+from Families.tree import Phylotree
 from utils import get_family_attributes, create_RNA_Molecule, get_tree_newick_from_fam
 
+import pandas as pd
 
 class Family:
     '''
@@ -261,6 +262,35 @@ class Family:
         # -- when tree added successfully, add the family to the tree
         tree._add_family(self)
 
+    def get_species_count(self):
+        '''
+        returns a dictionary of species distribution in the family
+        '''
+        species_dist = {}
+        for member in self.__members:
+            species_name = member.species.name
+            if species_name in species_dist:
+                species_dist[species_name] += 1
+            else:
+                species_dist[species_name] = 1
+        return species_dist
+    
+    def distribution(self):
+        '''
+        returns a pandas dataframe of species distribution in the family
+        '''
+        species_dist = self.get_species_count()
+        df = pd.DataFrame(species_dist.items(), columns=['Species', 'Count'])
+        df['Label'] = df['Species'].apply(lambda x: f"Species: {x}")
+        return df
+    
+    def plot_distribution(self):
+        '''
+        plots the species distribution in the family
+        '''
+        df=self.distribution()
+        df.plot(kind='pie', x='Species', y='Count', title='Species distribution in family '+self.name, labels=df['Label'], autopct='%1.1f%%', legend=False)
+
     def _add_clan(self, clan):
         self.__clan=clan
         
@@ -291,7 +321,13 @@ if __name__=='__main__':
 
     # --testing
     fam1=Family.from_rfam('RF01510')
+    fam2=Family.from_rfam('RF01511')
+    fam3=Family.from_rfam('RF01512')
+
     # rna1= create_RNA_Molecule("7EAF")
     # fam1.add_RNA(rna1)
+
     print(fam1.trees['rfam'].family) #success
+
+
 
