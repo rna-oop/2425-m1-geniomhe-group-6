@@ -81,6 +81,7 @@ class PDB_Parser(RNA_Parser):
             id = ""
             experiment = None
             species = None
+            check_next_line = False
             
             for line in file:
                 
@@ -94,9 +95,20 @@ class PDB_Parser(RNA_Parser):
                 
                 #Extract the species information
                 if line.startswith("SOURCE"):
-                    if "ORGANISM_SCIENTIFIC" in line:
-                        species_info = line.split(":")[1].strip()
-                        species = species_info.split(";")[0].strip()
+                    if check_next_line:
+                        #Extract everything after the first two words (SOURCE and index)
+                        sp_second_part = " ".join(line.split()[2:]).rstrip(";")
+                        species += " " + sp_second_part
+                        check_next_line = False
+                    else:
+                        if "ORGANISM_SCIENTIFIC" in line:
+                            species_info = line.split(":")[1].strip()
+                            if ";" in species_info:
+                                species = species_info.split(";")[0].strip()
+                            else:
+                                species = species_info.strip()  #Store the incomplete name
+                                check_next_line = True  # Flag to check the next line
+                            
                         
                 if line.startswith("REMARK") | line.startswith("ATOM"):
                     break
