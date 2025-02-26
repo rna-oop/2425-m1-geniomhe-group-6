@@ -37,6 +37,8 @@ lab2/
 
 [![Demo](https://img.shields.io/badge/main_demo-notebook-orange)](./demo/demo.ipynb)  [![Demo2](https://img.shields.io/badge/extension_demo-notebook-orange)](./demo/demo-extensions.ipynb)
 
+ [![viz](https://img.shields.io/badge/RNA_coarse_grained_3Dplot-notebook-blue)](./demo/demo-extensions.ipynb)
+
 
 ## Class Diagram
 
