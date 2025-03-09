@@ -13,6 +13,7 @@ class ArrayBuilder(Builder):
         self.__array = {}
         self.__model_id = 0
         self.__residue_id = 0
+        self.__prev_atom=["", 0.0] #[atom_name, occupancy]
         
     @property
     def molecule(self):
@@ -41,6 +42,12 @@ class ArrayBuilder(Builder):
         if (self.__model_id, self.__residue_id) not in self.__array:
             self.__array[(self.__model_id, self.__residue_id)] = []
         
-    def add_atom(self, atom_name, x, y, z, *args):
-        
-        self.__array[(self.__model_id, self.__residue_id)].append([x, y, z])
+    def add_atom(self, atom_name, x, y, z, element, altloc, occupancy, temp_factor, charge):
+        #if a residue contains same atom with different altloc, add the one with the highest occupancy
+        if atom_name == self.__prev_atom:
+            if occupancy > self.__prev_atom[1]: 
+                self.__array[(self.__model_id, self.__residue_id)].append([x, y, z])
+                self.__prev_atom=[atom_name, occupancy]
+        else:
+            self.__array[(self.__model_id, self.__residue_id)].append([x, y, z])
+            self.__prev_atom=[atom_name, occupancy]
