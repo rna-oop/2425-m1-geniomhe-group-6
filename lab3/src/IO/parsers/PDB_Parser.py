@@ -6,7 +6,7 @@ import os,sys
 sys.path.append(os.path.abspath('lab3/src'))
 
 from IO.parsers.RNA_Parser import RNA_Parser
-from Processing.Director import Director
+from Processing.builders.Director import Director
 from Processing.builders.ArrayBuilder import ArrayBuilder
 from Processing.builders.ObjectBuilder import ObjectBuilder
 
@@ -23,7 +23,7 @@ class PDB_Parser(RNA_Parser):
         - else, an RNA Molecule object
         """
         
-        director = Director(builder)
+        director = Director()
         
         if array == True:
             builder = ArrayBuilder()
@@ -52,13 +52,13 @@ class PDB_Parser(RNA_Parser):
                         if line[12:16].strip() == atom_name:
                             atom_info = self._extract_atom_info(line)
                             if atom_info is not None:
-                                director.add_atom_info(*atom_info, model_id)
+                                director.add_atom_info(model_id, *atom_info)
                     else:
                         atom_info = self._extract_atom_info(line)
                         if atom_info is not None: #It is None if the residue is not a nucleotide
-                            director.add_atom_info(*atom_info, model_id)
+                            director.add_atom_info(model_id, *atom_info)
                     
-        return builder.molecule() 
+        return builder.molecule
 
 
     def _extract_atom_info(self, line):

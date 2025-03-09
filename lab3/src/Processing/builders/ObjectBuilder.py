@@ -7,8 +7,8 @@ from Structure.Chain import Chain
 from Structure.Residue import Residue
 from Structure.Atom import Atom
 from Families.species import Species
-
-class ObjectBuilder:
+from Processing.builders.Builder import Builder
+class ObjectBuilder(Builder):
     """
     The ObjectBuilder class is responsible for constructing the RNA molecule object.
     """
@@ -24,7 +24,7 @@ class ObjectBuilder:
         self.reset()
         return molecule
     
-    def add_model(self. model_id):
+    def add_model(self, model_id):
         self.__molecule.add_model(Model(model_id))
         
     def add_chain(self, chain_id):

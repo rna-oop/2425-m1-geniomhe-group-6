@@ -18,7 +18,7 @@ class Director:
             raise ValueError("The builder must be an instance of a Builder class.")
         self.__builder=builder
         
-    def add_atom_info(self, *atom_info, model_id):
+    def add_atom_info(self, model_id, *atom_info):
         atom_name, x, y, z, element, residue_name, residue_id, chain_id, altloc, occupancy, temp_factor, i_code, charge = atom_info
         self.builder.add_model(model_id)
         self.builder.add_chain(chain_id)
