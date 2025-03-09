@@ -80,6 +80,12 @@ The output is a numpy array with the shape `(1, 95, 3)` which is the expected sh
 
 _tentative implementation_
 
+recheck info stored in numpy array, should be of this form:
+
+1 seq has 95 residues, **each residue having a list of atoms** (how is this represented, so far there are only 1 atom per residue?, should be a list of atoms), each atom has x,y,z coordinates.
+
+
+
 #### ii. Writer returns PDBML format
 
 ##### file format description
@@ -416,9 +422,9 @@ _these are notes for dev purposes, to be removed later_
 
 
 - [x] added first implementation of PDBWriter to allow taking an np array
-- [ ] fix the latter implementation after fixing array dimensions
+- [ ] fix the latter implementation ~after fixing array dimensions~
 - [x] xml formatting and creation function added to processor (for rna mol) includes `atomSiteCategory` as the only category since no other info on bonds and symmetry is saved within our rna object
 - [x] add PDML_Writer class
 - [x] added xml and pdbl writing options in rna_io, tested with 7eaf (sample output in [demo.xml](./demo.xml))
-- [ ] xml reader from array (check dimensions or temp implementation on the current array)
+- [ ] xml reader from array (temp implementation on the current array)
 
