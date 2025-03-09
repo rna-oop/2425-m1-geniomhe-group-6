@@ -77,17 +77,74 @@ class Processor:
                 
         return self.rna_molecule
     
-    #--old implementation -> returns (1,95,3) array
-    # def createArray(self):
-    #     max_model_id=self.atoms[-1][-1] #access the model_id of the last atom 
-    #     max_res_id=self.atoms[-1][6] #access the res_id of the last atom
-    #     array=np.zeros((max_model_id+1, max_res_id+1, 3)) #initialize the array with zeros
-    #     for atom in self.atoms: 
-    #         model_id, res_id=atom[-1], atom[6] #access the model_id and res_id of the atom
-    #         x, y, z = atom[1:4] #access the x,y,z coordinates of the atom
-    #         array[model_id,res_id]=np.array([x,y,z]) #store the coordinates in the array
-    #     return array
+    def createArray(self):
+        print(f'--createArray--')
+        '''
+        Creates a 3D array representation of the RNA molecule.
+        The array has dimensions (number of models, max_residues_no, max_atoms_per_residue_no, 3) and stores the x,y,z coordinates of each atom.
+        Empty cells are filled with nan.
+        '''
+        #--get the max no of models
+        max_models_no=max(self.atoms[-1][-1], 1) #check the the model_id of the last atom
+        
+        #--get the max no of residues and atoms per residue
+        max_residues_no=0
+        max_atoms_per_residue_no=0
+        
+        current_residue_id=0
+        current_atoms_no=0
+        current_atom_name=""
+        
+        for atom in self.atoms:
+            
+            #get the max no of residues
+            if atom[6] > max_residues_no:
+                max_residues_no=atom[6]
+                
+            if atom[6]!=current_residue_id: #if new residue
+                current_residue_id=atom[6]
+                current_atoms_no=0 #reset the current atoms no
+            
+            if current_atom_name!=atom[0]: #increment the current atoms no only if the atom name is different
+                current_atom_name=atom[0]
+                current_atoms_no += 1
 
+            #get the max no of atoms per residue
+            if current_atoms_no > max_atoms_per_residue_no: 
+                max_atoms_per_residue_no=current_atoms_no
+                
+        #--initialize the array with nan
+        array=np.full((max_models_no, max_residues_no, max_atoms_per_residue_no, 3), np.nan) 
+        
+        #--fill the array with the coordinates
+        current_residue_id=0
+        current_atom_id=0
+        current_atom_name=""
+        prev_atom=None
+        
+        for atom in self.atoms:
+            
+            model_id=max(atom[-1]-1, 0) #model_id starts from 1, array index starts from 0
+            
+            if atom[6]!=current_residue_id: #if new residue
+                current_residue_id=atom[6]
+                current_atom_id=0 #reset the current atom id
+                prev_atom=None
+                current_atom_name=""
+            
+            if current_atom_name!=atom[0]: 
+                current_atom_id += 1
+                array[model_id, current_residue_id-1,  current_atom_id-1]=np.array(atom[1:4]) #store the x,y,z coordinates in the array
+                prev_atom=atom
+                
+            if current_atom_name==atom[0]:
+                a=max_occupancy(atom, prev_atom)
+                array[model_id, current_residue_id-1,  current_atom_id-1]=np.array(a[1:4]) 
+                prev_atom=a
+                
+            current_atom_name=atom[0]
+            
+        return array
     
     # -- v2 array implementation: returns (1, 95, 2048, 3) array
     # def createNDArray(self):
