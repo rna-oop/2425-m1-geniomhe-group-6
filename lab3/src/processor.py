@@ -17,7 +17,7 @@ import numpy as np
 import xml.etree.ElementTree as ET
 from xml.dom import minidom
 
-
+#-- helpers
 
 def pretty_print_xml(func): #--used as decorator
     def wrapper(*args, **kwargs):
@@ -29,6 +29,13 @@ def pretty_print_xml(func): #--used as decorator
             
         return pretty_xml
     return wrapper
+
+def max_occupancy(atom1,atom2):
+    '''takes 2 atoms (supposedly same atoms on alt locations) and returns the one with highest occupancy'''
+    if atom1[9]>atom2[9]: #occupancy saved as 9th element in the atom list rep
+        return atom1
+    else:
+        return atom2
 
 class Processor:
     
@@ -71,42 +78,102 @@ class Processor:
         return self.rna_molecule
     
     #--old implementation -> returns (1,95,3) array
-    def createArray(self):
-        max_model_id=self.atoms[-1][-1] #access the model_id of the last atom 
-        max_res_id=self.atoms[-1][6] #access the res_id of the last atom
-        array=np.zeros((max_model_id+1, max_res_id+1, 3)) #initialize the array with zeros
-        for atom in self.atoms: 
-            model_id, res_id=atom[-1], atom[6] #access the model_id and res_id of the atom
-            x, y, z = atom[1:4] #access the x,y,z coordinates of the atom
-            array[model_id,res_id]=np.array([x,y,z]) #store the coordinates in the array
-        return array
+    # def createArray(self):
+    #     max_model_id=self.atoms[-1][-1] #access the model_id of the last atom 
+    #     max_res_id=self.atoms[-1][6] #access the res_id of the last atom
+    #     array=np.zeros((max_model_id+1, max_res_id+1, 3)) #initialize the array with zeros
+    #     for atom in self.atoms: 
+    #         model_id, res_id=atom[-1], atom[6] #access the model_id and res_id of the atom
+    #         x, y, z = atom[1:4] #access the x,y,z coordinates of the atom
+    #         array[model_id,res_id]=np.array([x,y,z]) #store the coordinates in the array
+    #     return array
 
     
-    # new array implementation: returns (1, 95, 2048, 3) array
+    # -- v2 array implementation: returns (1, 95, 2048, 3) array
+    # def createNDArray(self):
+    #     '''
+    #     Creates a 3D array representation of the RNA molecule.
+    #     The array has dimensions (number of models, number of residues, number of atoms, 3) and stores the x,y,z coordinates of each atom.
+    #     '''
+    #     print(f'no of tomas in list: {len(self.atoms)}')#returned 2048
+    #     print(f'from createArray this is self.atoms[-1]: {self.atoms[-1]}')
+
+    #     models_no=self.atoms[-1][-1]+1 #access the model_id of the last atom +1 (if one model it'll be 0)
+    #     residues_no=self.atoms[-1][6] #access the res_id (indexing starts at 1)
+    #     atoms_no=len(self.atoms) #no of atoms
+    #     array=np.zeros((models_no, residues_no, atoms_no, 3)) #initialize the array with zeros
+    #     track_residue_id=1
+    #     track_model_id=0
+    #     for atom_no, atom in enumerate(self.atoms):
+    #         model_id, res_id=atom[-1], atom[6]
+    #         if model_id!=track_model_id:
+    #             track_model_id=model_id
+    #         if res_id!=track_residue_id:
+    #             track_residue_id=res_id
+    #         x, y, z = atom[1:4]
+    #         array[model_id,res_id-1,atom_no]=np.array([x,y,z])
+    #     return array
+
+    # -- new array implementation: returns (1, 95, 60, 3) array (60 is max no of atoms in a residue): functional one
     def createNDArray(self):
         '''
         Creates a 3D array representation of the RNA molecule.
         The array has dimensions (number of models, number of residues, number of atoms, 3) and stores the x,y,z coordinates of each atom.
         '''
-        print(f'no of tomas in list: {len(self.atoms)}')#returned 2048
-        print(f'from createArray this is self.atoms[-1]: {self.atoms[-1]}')
+        # print(f'no of tomas in list: {len(self.atoms)}')#returned 2048
+        # print(f'from createArray this is self.atoms[-1]: {self.atoms[-1]}')
 
         models_no=self.atoms[-1][-1]+1 #access the model_id of the last atom +1 (if one model it'll be 0)
         residues_no=self.atoms[-1][6] #access the res_id (indexing starts at 1)
         atoms_no=len(self.atoms) #no of atoms
-        array=np.zeros((models_no, residues_no, atoms_no, 3)) #initialize the array with zeros
+        array=np.ones((models_no, residues_no, 60, 3)) #initialize the array with ones
+        array=array*-1 #initialize the array with -1 (better than 0s bcs (0,0,0) are valid coordinates and we wanna represent empty cells)
         track_residue_id=1
         track_model_id=0
+        atom_index=0
+        prev_atom=None
+        current_atom=None
+
         for atom_no, atom in enumerate(self.atoms):
+            prev_atom=current_atom
+            current_atom=atom #save atom for next iteration compare with next atom (if same atom with alt location replace with the one with highest occupancy) 
+
             model_id, res_id=atom[-1], atom[6]
-            if model_id!=track_model_id:
-                track_model_id=model_id
+            if model_id!=track_model_id: #this is useful when code is extended to account for multiple sequences
+                track_model_id=model_id #and automatically if different model then should be different resi so next condition will be met (no need to reset vars here)
+
             if res_id!=track_residue_id:
                 track_residue_id=res_id
-            x, y, z = atom[1:4]
-            array[model_id,res_id-1,atom_no]=np.array([x,y,z])
-        return array
+                atom_index=0
+                prev_atom=None #resets it   
+            
+            if prev_atom is not None: #if res_id is the same as the previous atom
+                
+                prev_type=prev_atom[0]
+                current_type=current_atom[0]
 
+                if prev_type==current_type: #if same atom type
+
+                    #-- first thing to do in order to keep everything clear is decrease the atom_index by 1
+                    #   this is essential bcs we are not aiming to create a new cell for the current atom, we're stuck at prev
+                    #   if current is of highest occup it will replace the prev entered entry, else same entry will be in pllace without losing track of indexing
+                    atom_index-=1
+
+                    highest_occupancy=max_occupancy(prev_atom, current_atom) #get the atom with highest occupancy
+                    
+                    #--replace the last array element with the one with highest occupancy
+                    x, y, z = highest_occupancy[1:4]
+                    array[model_id,res_id-1,atom_index]=np.array([x,y,z])
+
+                else:
+                    x, y, z = current_atom[1:4]
+                    array[model_id,res_id-1,atom_index]=np.array([x,y,z])
+            else:
+                x, y, z = current_atom[1:4]
+                array[model_id,res_id-1,atom_index]=np.array([x,y,z])
+
+            atom_index+=1
+        return array
     
         
     def flattenMolecule(self, rna_molecule):
