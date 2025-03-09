@@ -123,7 +123,7 @@ class Processor:
         # print(f'no of tomas in list: {len(self.atoms)}')#returned 2048
         # print(f'from createArray this is self.atoms[-1]: {self.atoms[-1]}')
 
-        print(self.atoms)
+        # print(self.atoms)
 
         first_model=self.atoms[0][-1] #access the model_id of the first atom
         if first_model==0:
@@ -132,14 +132,12 @@ class Processor:
         else:
             single_model=False
             models_no=self.atoms[-1][-1] #access the model_id of the last atom (if non single model, 1st model will be 1)
-            print(models_no)
+            print(f'-- reading multiple models structure with {models_no} models --')
 
         residues_no=self.atoms[-1][6] #access the res_id (indexing starts at 1)
         for atom in self.atoms:
             if atom[6]>residues_no:
                 residues_no=atom[6] #get max residues no between all models
-
-
         
         array=np.ones((models_no, residues_no, 60, 3)) #initialize the array with ones
         array=array*-1 #initialize the array with -1 (better than 0s bcs (0,0,0) are valid coordinates and we wanna represent empty cells)
