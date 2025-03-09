@@ -78,9 +78,8 @@ class Processor:
         return self.rna_molecule
     
     def createArray(self):
-        print(f'--createArray--')
         '''
-        Creates a 3D array representation of the RNA molecule.
+        Creates an array representation of the RNA molecule.
         The array has dimensions (number of models, max_residues_no, max_atoms_per_residue_no, 3) and stores the x,y,z coordinates of each atom.
         Empty cells are filled with nan.
         '''

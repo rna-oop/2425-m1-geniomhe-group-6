@@ -47,14 +47,4 @@ if __name__ == "__main__":
     print(mol.shape)
     print(mol[0, -1, 0, :])
     
-    """
-    rna_io.write(mol, "1r7w_test.pdb", "PDB")
     
-    mol1=rna_io.read(pdb_path_test, "PDB")
-    
-    print(mol)
-    import numpy as np
-    print(np.shape(mol1))
-    print(mol1[0, -1, 0, :])
-    
-    """
