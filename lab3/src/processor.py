@@ -171,6 +171,7 @@ class Processor:
     #         array[model_id,res_id-1,atom_no]=np.array([x,y,z])
     #     return array
 
+    """
     # -- new array implementation: returns (1, 95, 60, 3) array (60 is max no of atoms in a residue): functional one
     def createNDArray(self):
         '''
@@ -251,7 +252,7 @@ class Processor:
 
             atom_index+=1
         return array
-    
+    """
         
     def flattenMolecule(self, rna_molecule):
         """
