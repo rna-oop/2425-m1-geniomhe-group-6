@@ -132,13 +132,18 @@ class Processor:
         else:
             single_model=False
             models_no=self.atoms[-1][-1] #access the model_id of the last atom (if non single model, 1st model will be 1)
+            print(models_no)
 
         residues_no=self.atoms[-1][6] #access the res_id (indexing starts at 1)
-        atoms_no=len(self.atoms) #no of atoms
+        for atom in self.atoms:
+            if atom[6]>residues_no:
+                residues_no=atom[6] #get max residues no between all models
+
+
         
         array=np.ones((models_no, residues_no, 60, 3)) #initialize the array with ones
         array=array*-1 #initialize the array with -1 (better than 0s bcs (0,0,0) are valid coordinates and we wanna represent empty cells)
-        
+
         track_residue_id=1
         track_model_id=0
         atom_index=0
@@ -154,7 +159,7 @@ class Processor:
             model_index=model_id
 
             if not single_model:
-                model_no=model_index-1
+                model_index=model_id-1
 
             if model_id!=track_model_id: #this is useful when code is extended to account for multiple sequences
                 track_model_id=model_id #and automatically if different model then should be different resi so next condition will be met (no need to reset vars here)
