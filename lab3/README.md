@@ -6,7 +6,13 @@
   - [Table of contents](#table-of-contents)
   - [First Implementation](#first-implementation)
     - [1. Parser returns a numpy array](#1-parser-returns-a-numpy-array)
-  
+    - [2. Writing Structures into PDML/XML format](#2-writing-structures-into-pdmlxml-format)
+      - [i. Writer takes numpy array](#i-writer-takes-numpy-array)
+      - [ii. Writer returns PDBML format](#ii-writer-returns-pdbml-format)
+        - [file format description](#file-format-description)
+        - [implementation: object to xml](#implementation-object-to-xml)
+        - [implementation: ndarray to xml](#implementation-ndarray-to-xml)
+      - [dev](#dev)
 
 ## First Implementation
 
