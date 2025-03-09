@@ -60,3 +60,4 @@ if __name__ == "__main__":
     cg_mol=rna_io.read(pdb_path_test, "PDB", coarse_grained=True)
     rna_io.write(cg_mol, "7eaf_test_cg.pdb", "PDB")
     """
+

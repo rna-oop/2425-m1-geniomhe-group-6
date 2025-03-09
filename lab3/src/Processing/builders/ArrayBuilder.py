@@ -25,6 +25,8 @@ class ArrayBuilder(Builder):
             for atom_id, coords in enumerate(atoms):
                 np_array[model_id, residue_id, atom_id] = coords
                 
+        self.reset()
+        
         return np_array
         
     def add_model(self, model_id):
