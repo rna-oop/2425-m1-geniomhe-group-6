@@ -10,43 +10,7 @@ class Element(Enum):
     O = "O"
     N = "N"
     P = "P"
-
-
-#Define the AtomName enum
-class AtomName(Enum):
-    #Ribose atoms
-    C1_prime = "C1'"
-    C2_prime = "C2'"
-    C3_prime = "C3'"
-    C4_prime = "C4'"
-    C5_prime = "C5'"
-    O2_prime = "O2'"
-    O3_prime = "O3'"
-    O4_prime = "O4'"
-    O5_prime = "O5'"
-    #Phosphate atoms
-    P = "P"
-    OP1 = "OP1"
-    OP2 = "OP2"
-    OP3 = "OP3"
-    #Base atoms
-    N1 = "N1"
-    N3 = "N3"
-    N7 = "N7"
-    N9 = "N9"
-    C2 = "C2"
-    C4 = "C4"
-    C5 = "C5"
-    C6 = "C6"
-    N6 = "N6"
-    N2 = "N2"
-    O6 = "O6"
-    C8 = "C8"
-    N4 = "N4"
-    O2 = "O2"
-    O4 = "O4"
-
-atom_name_lookup = {atom.value: atom for atom in AtomName} #To look for the AtomName enum by its value
+    H = "H"
 
 class Atom:
 
@@ -70,10 +34,7 @@ class Atom:
     def name(self, name):
         if not isinstance(name, str):
             raise TypeError(f"atom_name must be a string, got {type(name)}")
-        #Check if the string is a valid AtomName
-        if not name in atom_name_lookup:
-            raise ValueError(f"{name} is not a valid AtomName value")
-        self._name=atom_name_lookup[name]
+        self._name=name
 
     @property
     def element(self):

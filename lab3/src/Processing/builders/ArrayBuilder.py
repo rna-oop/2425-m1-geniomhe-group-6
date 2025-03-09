@@ -16,19 +16,29 @@ class ArrayBuilder(Builder):
         
     @property
     def molecule(self):
-        np_array = np.zeros((self.__model_id + 1, self.__residue_id + 1, 3))
-        for key, value in self.__array.items():
-            np_array[key[0], key[1]] = value
+        max_atoms_no_per_residue = max((len(atoms) for atoms in self.__array.values()), default=1)
+        max_residues_no = max((key[1] for key in self.__array.keys())) + 1
+        
+        np_array = np.full((self.__model_id + 1, max_residues_no, max_atoms_no_per_residue, 3), np.nan)
+        
+        for (model_id, residue_id), atoms in self.__array.items():
+            for atom_id, coords in enumerate(atoms):
+                np_array[model_id, residue_id, atom_id] = coords
+                
         return np_array
         
     def add_model(self, model_id):
-        self.__model_id = model_id
+        if model_id != 0:
+            self.__model_id = model_id - 1
         
     def add_chain(self, chain_id):
         pass
     
     def add_residue(self, residue_name, residue_id, i_code):
-        self.__residue_id = residue_id
+        self.__residue_id = residue_id -1 
+        if (self.__model_id, self.__residue_id) not in self.__array:
+            self.__array[(self.__model_id, self.__residue_id)] = []
         
     def add_atom(self, atom_name, x, y, z, *args):
-        self.__array[(self.__model_id, self.__residue_id)] = [x, y, z]
+        
+        self.__array[(self.__model_id, self.__residue_id)].append([x, y, z])

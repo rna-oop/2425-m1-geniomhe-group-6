@@ -38,11 +38,19 @@ from utils import pathify_pdb
 if __name__ == "__main__":
     rna_io=RNA_IO()
 
-    pdb_path_test=pathify_pdb("7eaf")
+    pdb_path_test=pathify_pdb("1r7w")
 
-    mol=rna_io.read(pdb_path_test, "PDB")
+    mol=rna_io.read(pdb_path_test, "PDB", array=False)
+    
+    rna_io.write(mol, "1r7w_test.pdb", "PDB")
+    
+    mol1=rna_io.read(pdb_path_test, "PDB")
     
     print(mol)
+    import numpy as np
+    print(np.shape(mol))
+    print(mol[0, -1, 0, :])
+    
     """
     rna_io.write(mol, "7eaf_test.pdb", "PDB")
     

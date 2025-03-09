@@ -64,7 +64,7 @@ class PDB_Writer(RNA_Writer):
         temp_factor_formatted = f"{temp_factor:6.2f}" if isinstance(temp_factor, float) else ' ' * 6  
 
         return (
-            f"ATOM  {serial:>5} {atom.name.value:<4}{altloc:1}{residue.type.value:>3} "
+            f"ATOM  {serial:>5} {atom.name:<4}{altloc:1}{residue.type.value:>3} "
             f"{chain.id:1}{residue.position:>4}{i_code:1}{'':3}"
             f"{atom.x:8.3f}{atom.y:8.3f}{atom.z:8.3f}"
             f"{occupancy_formatted}{temp_factor_formatted}{'':10}"

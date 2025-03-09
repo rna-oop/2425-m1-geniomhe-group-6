@@ -3,7 +3,7 @@ module RNA_Molecule contains class RNA_Molecule
 '''
 
 import os,sys
-sys.path.append(os.path.abspath('lab2/src'))
+sys.path.append(os.path.abspath('lab3/src'))
 
 from Structure.Model import Model
 from Families.species import Species

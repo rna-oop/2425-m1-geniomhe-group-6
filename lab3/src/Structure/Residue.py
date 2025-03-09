@@ -3,7 +3,7 @@ Residue module containing class Residue and enum NBase
 '''
 
 import os,sys
-sys.path.append(os.path.abspath('lab2/src'))
+sys.path.append(os.path.abspath('lab3/src'))
 
 from enum import Enum
 from Structure.Atom import Atom
@@ -68,15 +68,15 @@ class Residue:
     def add_atom(self, atom):
         if not isinstance(atom, Atom):
             raise TypeError(f"Expected an Atom instance, got {type(atom)}")
-        if (atom.name.value, atom.altloc) not in self._atoms:
-            self._atoms[(atom.name.value, atom.altloc)] = atom
+        if (atom.name, atom.altloc) not in self._atoms:
+            self._atoms[(atom.name, atom.altloc)] = atom
             atom._add_residue(self)
 
     def get_atoms(self):
         return self._atoms
     
     def remove_atom(self, atom):
-        self._atoms.pop((atom.name.value, atom.altloc))
+        self._atoms.pop((atom.name, atom.altloc))
 
     def __repr__(self):
         return f"Residue type:{self.type.value} position:{self.position}"
