@@ -13,14 +13,14 @@ import numpy as np
 class RNA_Writer(ABC):
     
     @abstractmethod
-    def write(self, rna_molecule: Union[RNA_Molecule, np.ndarray], path_to_file:str):
+    def write(self, rna_molecule, path_to_file:str):
         '''
         this abstract method is enforced by all classes that inherit from RNA_Writer
 
-        *can not check for input type from this method since it's abstract, but it's expected to get an RNA_Molecule object or a numpy array representing the RNA molecule, as per the header description*
+        *can not check for input type from this method since it's abstract, but it's expected to get an RNA_Molecule object for now*
 
         it takes as parameters:
-        - rna_molecule: an RNA_Molecule object or a numpy array representing the RNA molecule
+        - rna_molecule: an RNA_Molecule
         - path_to_file: the path to the file where the RNA molecule will be written
         '''
         pass

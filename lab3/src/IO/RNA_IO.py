@@ -52,12 +52,3 @@ if __name__ == "__main__":
     print(np.shape(mol))
     print(mol[0, -1, 0, :])
     
-    """
-    rna_io.write(mol, "7eaf_test.pdb", "PDB")
-    
-    mol1=rna_io.read("7eaf_test.pdb", "PDB")
-    rna_io.write(mol1, "7eaf_test1.pdb", "PDB")
-    
-    cg_mol=rna_io.read(pdb_path_test, "PDB", coarse_grained=True)
-    rna_io.write(cg_mol, "7eaf_test_cg.pdb", "PDB")
-    """

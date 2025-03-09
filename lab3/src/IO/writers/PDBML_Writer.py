@@ -21,11 +21,11 @@ def wrap_str_to_xml(s,name='pdbml_output.xml'):
 
 class PDBML_Writer(RNA_Writer):
     
-    def write(self, rna_molecule: Union[RNA_Molecule, np.ndarray], path_to_file):
+    def write(self, rna_molecule, path_to_file):
         '''
         writes the RNA molecule object to a PDBML/XML file
         '''
-        if (not isinstance(rna_molecule, RNA_Molecule)) and (type(rna_molecule) is not np.ndarray):
+        if (not isinstance(rna_molecule, RNA_Molecule)):
             raise TypeError(f"Expected an RNA_Molecule object or a numpy array, got {type(rna_molecule)}")
 
         processor=Processor()
