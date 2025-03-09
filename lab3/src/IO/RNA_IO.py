@@ -8,13 +8,11 @@ from IO.parsers.PDB_Parser import PDB_Parser
 from IO.writers.PDB_Writer import PDB_Writer
 from IO.writers.PDBML_Writer import PDBML_Writer
 
-import numpy as np
-
 class RNA_IO:
     
     def __init__(self):
         self.__parsers={"PDB": PDB_Parser()}
-        self.__writers={"PDB": PDB_Writer(),'PDBML': PDBML_Writer(), 'XML': PDBML_Writer()}
+        self.__writers={"PDB": PDB_Writer(),'PDBML': PDBML_Writer(),'XML': PDBML_Writer()}
     
     def read(self, path_to_file, format, coarse_grained=False, atom_name="C1'", array=True):
         """
@@ -39,16 +37,22 @@ class RNA_IO:
 from utils import pathify_pdb
 
 if __name__ == "__main__":
-    
     rna_io=RNA_IO()
 
-    pdb_path_test=pathify_pdb("7eaf")
+    pdb_path_test=pathify_pdb("1r7w")
 
-    mol=rna_io.read(pdb_path_test, "PDB")
-    print(mol)
-    print("shape:", np.shape(mol))
+    mol=rna_io.read(pdb_path_test, "PDB", array=False)
     
-    '''
+    rna_io.write(mol, "1r7w_test.pdb", "PDB")
+    
+    mol1=rna_io.read(pdb_path_test, "PDB")
+    
+    print(mol)
+    import numpy as np
+    print(np.shape(mol))
+    print(mol[0, -1, 0, :])
+    
+    """
     rna_io.write(mol, "7eaf_test.pdb", "PDB")
     
     mol1=rna_io.read("7eaf_test.pdb", "PDB")
@@ -56,4 +60,4 @@ if __name__ == "__main__":
     
     cg_mol=rna_io.read(pdb_path_test, "PDB", coarse_grained=True)
     rna_io.write(cg_mol, "7eaf_test_cg.pdb", "PDB")
-    '''
+    """
