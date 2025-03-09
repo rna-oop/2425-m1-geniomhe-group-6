@@ -123,11 +123,22 @@ class Processor:
         # print(f'no of tomas in list: {len(self.atoms)}')#returned 2048
         # print(f'from createArray this is self.atoms[-1]: {self.atoms[-1]}')
 
-        models_no=self.atoms[-1][-1]+1 #access the model_id of the last atom +1 (if one model it'll be 0)
+        print(self.atoms)
+
+        first_model=self.atoms[0][-1] #access the model_id of the first atom
+        if first_model==0:
+            single_model=True
+            models_no=1
+        else:
+            single_model=False
+            models_no=self.atoms[-1][-1] #access the model_id of the last atom (if non single model, 1st model will be 1)
+
         residues_no=self.atoms[-1][6] #access the res_id (indexing starts at 1)
         atoms_no=len(self.atoms) #no of atoms
+        
         array=np.ones((models_no, residues_no, 60, 3)) #initialize the array with ones
         array=array*-1 #initialize the array with -1 (better than 0s bcs (0,0,0) are valid coordinates and we wanna represent empty cells)
+        
         track_residue_id=1
         track_model_id=0
         atom_index=0
@@ -139,6 +150,12 @@ class Processor:
             current_atom=atom #save atom for next iteration compare with next atom (if same atom with alt location replace with the one with highest occupancy) 
 
             model_id, res_id=atom[-1], atom[6]
+
+            model_index=model_id
+
+            if not single_model:
+                model_no=model_index-1
+
             if model_id!=track_model_id: #this is useful when code is extended to account for multiple sequences
                 track_model_id=model_id #and automatically if different model then should be different resi so next condition will be met (no need to reset vars here)
 
@@ -163,14 +180,14 @@ class Processor:
                     
                     #--replace the last array element with the one with highest occupancy
                     x, y, z = highest_occupancy[1:4]
-                    array[model_id,res_id-1,atom_index]=np.array([x,y,z])
+                    array[model_index,res_id-1,atom_index]=np.array([x,y,z])
 
                 else:
                     x, y, z = current_atom[1:4]
-                    array[model_id,res_id-1,atom_index]=np.array([x,y,z])
+                    array[model_index,res_id-1,atom_index]=np.array([x,y,z])
             else:
                 x, y, z = current_atom[1:4]
-                array[model_id,res_id-1,atom_index]=np.array([x,y,z])
+                array[model_index,res_id-1,atom_index]=np.array([x,y,z])
 
             atom_index+=1
         return array
