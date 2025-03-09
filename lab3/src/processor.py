@@ -82,7 +82,7 @@ class Processor:
         return array
 
     
-
+    # new array implementation: returns (1, 95, 2048, 3) array
     def createNDArray(self):
         '''
         Creates a 3D array representation of the RNA molecule.
