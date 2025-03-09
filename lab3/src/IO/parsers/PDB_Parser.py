@@ -45,7 +45,7 @@ class PDB_Parser(RNA_Parser):
                             processor.atom_info(*atom_info, model_id)
                             
         if array:
-            return processor.createArray()
+            return processor.createNDArray()
         else:         
             return processor.createMolecule() 
 

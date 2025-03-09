@@ -70,12 +70,8 @@ class Processor:
                 
         return self.rna_molecule
     
-
+    #--old implementation -> returns (1,95,3) array
     def createArray(self):
-        '''
-        Creates a 3D array representation of the RNA molecule.
-        The array has dimensions (number of models, number of residues, 3) and stores the x,y,z coordinates of each atom.
-        '''
         max_model_id=self.atoms[-1][-1] #access the model_id of the last atom 
         max_res_id=self.atoms[-1][6] #access the res_id of the last atom
         array=np.zeros((max_model_id+1, max_res_id+1, 3)) #initialize the array with zeros
@@ -84,6 +80,33 @@ class Processor:
             x, y, z = atom[1:4] #access the x,y,z coordinates of the atom
             array[model_id,res_id]=np.array([x,y,z]) #store the coordinates in the array
         return array
+
+    
+
+    def createNDArray(self):
+        '''
+        Creates a 3D array representation of the RNA molecule.
+        The array has dimensions (number of models, number of residues, number of atoms, 3) and stores the x,y,z coordinates of each atom.
+        '''
+        print(f'no of tomas in list: {len(self.atoms)}')#returned 2048
+        print(f'from createArray this is self.atoms[-1]: {self.atoms[-1]}')
+
+        models_no=self.atoms[-1][-1]+1 #access the model_id of the last atom +1 (if one model it'll be 0)
+        residues_no=self.atoms[-1][6] #access the res_id (indexing starts at 1)
+        atoms_no=len(self.atoms) #no of atoms
+        array=np.zeros((models_no, residues_no, atoms_no, 3)) #initialize the array with zeros
+        track_residue_id=1
+        track_model_id=0
+        for atom_no, atom in enumerate(self.atoms):
+            model_id, res_id=atom[-1], atom[6]
+            if model_id!=track_model_id:
+                track_model_id=model_id
+            if res_id!=track_residue_id:
+                track_residue_id=res_id
+            x, y, z = atom[1:4]
+            array[model_id,res_id-1,atom_no]=np.array([x,y,z])
+        return array
+
     
         
     def flattenMolecule(self, rna_molecule):
@@ -185,7 +208,7 @@ class Processor:
                         }
 
                         atoms_list.append(atom_data)
-        
+        self.atoms=atoms_list
         return atoms_list
 
 
