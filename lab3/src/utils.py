@@ -19,7 +19,7 @@ import os
 from Bio import PDB
 
 import os,sys
-sys.path.append(os.path.abspath('lab2/src')) 
+sys.path.append(os.path.abspath('lab3/src')) 
 
 from Structure.RNA_Molecule import RNA_Molecule
 from Structure.Model import Model
@@ -180,8 +180,8 @@ def create_RNA_Molecule(pdb_entry_id):
 
 # -- Rfam api: https://docs.rfam.org/en/latest/api.html
 
-r = requests.get('https://rfam.org/family/SAM?content-type=application/json')
-print (r.json()['rfam']['acc'])
+# r = requests.get('https://rfam.org/family/SAM?content-type=application/json')
+# print (r.json()['rfam']['acc'])
 
 def get_rfam(q:str):
     r = requests.get(f'https://rfam.org/family/{q}?content-type=application/json')

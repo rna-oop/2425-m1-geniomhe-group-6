@@ -1,6 +1,6 @@
 
 import os,sys
-sys.path.append(os.path.abspath('lab2/src'))
+sys.path.append(os.path.abspath('lab3/src'))
 
 from Structure.Residue import Residue
 

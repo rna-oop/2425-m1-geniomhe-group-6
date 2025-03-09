@@ -3,7 +3,7 @@ Residue module containing class Residue and enum NBase
 '''
 
 import os,sys
-sys.path.append(os.path.abspath('lab2/src'))
+sys.path.append(os.path.abspath('lab3/src'))
 
 from enum import Enum
 from Structure.Atom import Atom

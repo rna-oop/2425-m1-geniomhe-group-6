@@ -6,6 +6,7 @@ sys.path.append(os.path.abspath('lab3/src'))
 
 from IO.parsers.PDB_Parser import PDB_Parser
 from IO.writers.PDB_Writer import PDB_Writer
+from IO.writers.PDBML_Writer import PDBML_Writer
 
 import numpy as np
 
@@ -13,7 +14,7 @@ class RNA_IO:
     
     def __init__(self):
         self.__parsers={"PDB": PDB_Parser()}
-        self.__writers={"PDB": PDB_Writer()}
+        self.__writers={"PDB": PDB_Writer(),'PDBML': PDBML_Writer(), 'XML': PDBML_Writer()}
     
     def read(self, path_to_file, format, coarse_grained=False, atom_name="C1'", array=True):
         """

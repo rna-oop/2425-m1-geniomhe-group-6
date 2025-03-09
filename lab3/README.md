@@ -74,3 +74,21 @@ The output was the following:
 
 The output is a numpy array with the shape `(1, 95, 3)` which is the expected shape for the molecule `7eaf` that has 1 model and 94 residues.
 
+### 2. Writing Structures into PDML/XML format
+
+_these are notes for dev purposes, to be removed later_
+
+> [!CAUTION]
+> the np array is currently of dimensions (no_models, no_atoms, 3) where the last dimension is the x,y,z coordinates of the atom. We need to change this to (no_models, no_residues, no_atoms, 3) making it 4dimensional (practically the first dim=1) because residue information is lost in the current implementation. Description states each row is an array of residues (this would allow proper indexing of residues). Respectively need to change the functions that were based on the old array structure in processor
+
+> The issue arises when checking the pdb output, all atoms are by default belonging to one residue, souldn't seperate. Can take advantage of this issue to fix teh indexing of residues in the array, this way can seperate to chains too in processing. Assume one model and infer chains from the gaps between residues (even model num can be taken from first dim). (check the file viz on mol viewer, clearly shows different representation, line rep can not be dont since no residue type info is saved within the array)
+
+
+
+- [x] added first implementation of PDBWriter to allow taking an np array
+- [ ] fix the latter implementation after fixing array dimensions
+- [x] xml formatting and creation function added to processor (for rna mol) includes `atomSiteCategory` as the only category since no other info on bonds and symmetry is saved within our rna object
+- [x] add PDML_Writer class
+- [x] added xml and pdbl writing options in rna_io, tested with 7eaf (sample output in [demo.xml](./demo.xml))
+- [ ] xml reader from array (check dimensions or temp implementation on the current array)
+

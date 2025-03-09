@@ -3,7 +3,7 @@ family module contains class Family
 '''
 
 import os,sys
-sys.path.append(os.path.abspath('lab2/src'))
+sys.path.append(os.path.abspath('lab3/src'))
 
 from Structure.RNA_Molecule import RNA_Molecule
 from Families.tree import Phylotree
