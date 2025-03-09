@@ -18,19 +18,21 @@
 
 ## First Implementation
 
+**This implementation is in the branch `previous-model-extension `.**
+
 In this lab, we extended our previous model to include the following functionalities:
 - The parser returns a numpy array representation of the molecule.
 - Writing structures into PDML/XML format.
 
 ### Class Diagram for the Previous-Model-Extension 
 
-![Class-Diagram](model/Class-Diagram.jpg)
+![Class-Diagram](model/Class-Diagram-Previous.jpg)
 
 The new changes are highlighted in white.
 
 ### Object Diagram for the Previous-Model-Extension
 
-![Object-Diagram](model/Object-Diagram.jpg)
+![Object-Diagram](model/Object-Diagram-Previous.jpg)
 
 ### 1. Parser returns a numpy array
 
