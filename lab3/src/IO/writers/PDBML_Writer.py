@@ -8,11 +8,16 @@ sys.path.append(os.path.abspath('lab3/src'))
 
 from IO.writers.RNA_Writer import RNA_Writer
 from Structure.RNA_Molecule import RNA_Molecule
-from processor import Processor, wrap_str_to_xml
+from processor import Processor
 
 import numpy as np
 
 import xml.etree.ElementTree as ET
+
+# -- helpers (maybe add to util since related to formatting files)
+def wrap_str_to_xml(s,name='pdbml_output.xml'):
+    with open(name, "w") as f:
+        f.write(s)
 
 class PDBML_Writer(RNA_Writer):
     

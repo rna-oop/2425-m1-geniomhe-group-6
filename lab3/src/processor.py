@@ -17,10 +17,7 @@ import numpy as np
 import xml.etree.ElementTree as ET
 from xml.dom import minidom
 
-# -- helpers (maybe add to util since related to formatting files)
-def wrap_str_to_xml(s,name='pdbml_output.xml'):
-    with open(name, "w") as f:
-        f.write(s)
+
 
 def pretty_print_xml(func): #--used as decorator
     def wrapper(*args, **kwargs):
@@ -156,16 +153,15 @@ class Processor:
 
     def extract_xml_atoms_from_rna(self, rna_molecule):
         atoms_list = []
-        # model = rna_molecule.get_models()[0]  # testing
 
-        for model_num,_ in enumerate(rna_molecule.get_models()):  
+        for model_num,_ in enumerate(rna_molecule.get_models()):  #--looping through all models 
             model=rna_molecule.get_models()[_] # --model object from dict key
         
-            for chain in model.get_chains().values():  
-                for residue in chain.get_residues().values():  
-                    for atom_key, atom in residue.get_atoms().items(): 
+            for chain in model.get_chains().values(): #--looping through all chains
+                for residue in chain.get_residues().values(): #--looping through all residues  
+                    for atom_key, atom in residue.get_atoms().items(): #--looping through all atoms
                         atom_id, alt_id = atom_key  # unpacking atom key (alt_id is '' if no alt location)
-                        
+                        # --keys defined identically to pdbml format, values extracted directly from atom object
                         atom_data = {
                             "id": str(len(atoms_list) + 1),  # Assign a sequential ID
                             "B_iso_or_equiv": str(atom.temp_factor),
@@ -188,10 +184,6 @@ class Processor:
                             "type_symbol": atom.element.name
                         }
 
-                        #if atom.occupancy == 1:
-                        #    atom_data["label_alt_id"] = {"xsi:nil": "true"}
-                        # --will try adding it in xml formatting
-                        
                         atoms_list.append(atom_data)
         
         return atoms_list
@@ -208,9 +200,8 @@ class Processor:
             "xsi:schemaLocation": "http://pdbml.pdb.org/schema/pdbx-v50.xsd pdbx-v50.xsd"
         })
 
-        atom_site_category = ET.SubElement(root, "PDBx:atom_siteCategory")
-
-        atoms = self.extract_xml_atoms_from_rna(rna_molecule)
+        atom_site_category = ET.SubElement(root, "PDBx:atom_siteCategory") #creates root with entry id
+        atoms = self.extract_xml_atoms_from_rna(rna_molecule) # rna_molecule -> list of atom dictionaries
 
         for atom in atoms:
             atom_site = ET.SubElement(atom_site_category, "PDBx:atom_site", {"id": atom["id"]})
@@ -222,11 +213,7 @@ class Processor:
                 if value is None:
                     element.set("xsi:nil", "true")
                 else:
-                    element.text = str(value)  # Convert value to string
-
-        # tree = ET.ElementTree(root)
-        # with open("pdbml_output.xml", "wb") as f:
-        #     tree.write(f, encoding="utf-8", xml_declaration=True)
+                    element.text = str(value) 
 
         xml_string = ET.tostring(root, encoding="unicode", method="xml")
         return xml_string
