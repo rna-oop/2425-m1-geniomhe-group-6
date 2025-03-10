@@ -14,8 +14,8 @@
     - [Class Diagram](#class-diagram)
     - [Object Diagram](#object-diagram)
     - [1. Builder Design Pattern](#1-builder-design-pattern)
-      - [iii. ObjectBuilder class](#iii-objectbuilder-class)
-      - [iv. ArrayBuilder class](#iv-arraybuilder-class)
+      - [ObjectBuilder class](#objectbuilder-class)
+      - [ArrayBuilder class](#arraybuilder-class)
     - [2. Visitor Design Pattern](#2-visitor-design-pattern)
   - [Advantages and Disadvantages](#advantages-and-disadvantages)
     - [For the Builder Design Pattern](#for-the-builder-design-pattern)
@@ -172,13 +172,14 @@ In this lab, we used the `Builder` design pattern to separate the construction o
 - Instead of using the `Processor` class to create the molecule object when reading the PDB file, we used the `Director` class and the corresponding `Builder` class. 
    ```python
     director = Director()
-        
-        if array == True:
-            builder = ArrayBuilder()
-        else:
-            builder = ObjectBuilder()
-            
-        director.builder = builder
+
+    if array == True:
+        builder = ArrayBuilder()
+    else:
+        builder = ObjectBuilder()
+
+    director.builder = builder
+
     ```
 
 - Instead of `processor.molecule_info()` that used to store the molecule info (id, experiment, species), we added a new method in the `ObjectBuilder` class called `add_molecule_info()` that adds the molecule info to the molecule object, and we used it in the `PDB_Parser`'s `read() function` as follows:
@@ -191,14 +192,14 @@ In this lab, we used the `Builder` design pattern to separate the construction o
 
 - Finally, instead of `processor.createMolecule()` that creates only an object, we return `builder.molecule` to get the built molecule that can be an object or a numpy array depending on the builder used.
 
-#### i. Director class
+#### Director class
 
-The `Director` class serves as a director for the `Builder` classes. 
+- The `Director` class serves as a director for the `Builder` classes. 
 
-- Attributes:
+- **Attributes:**
     - `__builder`: The builder object that will be used to build the object. Initialized to `None`.
 
-- Methods:
+- **Methods:**
     - @property `builder`: Returns the builder object.
     - @builder.setter `builder`: Sets the builder object after checking if it is an instance of the `Builder` class.
     - `add_atom_info`: serves as a common recipe on how to build the molecule for the different `Builder` classes:
@@ -212,11 +213,11 @@ The `Director` class serves as a director for the `Builder` classes.
         ```
         - The method takes the model_id and atom_info as arguments that are retrieved from the  `Parser` and calls the corresponding methods in the builder object in a specific order to add the model, chain, residue, and atom information.
 
-#### ii. Builder class
+#### Builder class
 
-The `Builder` class is an interface, implemented as an abstract class with all its methods being abstract. 
+- The `Builder` class is an interface, implemented as an abstract class with all its methods being abstract. 
 
-It defines the methods that the concrete `Builder` classes should implement.
+- It defines the methods that the concrete `Builder` classes should implement.
 
 ```python
 
@@ -249,7 +250,7 @@ It defines the methods that the concrete `Builder` classes should implement.
 - The `reset` method is used to reset the builder object to its initial state.
 - The other methods are used to add atom, residue, chain, and model information to the molecule object.
 
-#### iii. ObjectBuilder class
+#### ObjectBuilder class
 
 - The `ObjectBuilder` class is a concrete builder class that implements the `Builder` interface.
 - It is responsible for constructing the RNA molecule object.
@@ -288,7 +289,7 @@ It defines the methods that the concrete `Builder` classes should implement.
         - Additional method specific for this builder.
         - Adds the entry_id, experiment, and species information to the molecule object.
   
-#### iv. ArrayBuilder class
+#### ArrayBuilder class
 
 - The `ArrayBuilder` class is a concrete builder class that implements the `Builder` interface.
 
@@ -327,6 +328,7 @@ It defines the methods that the concrete `Builder` classes should implement.
         - The keys are tuples of the form `(model_id, residue_id)` and the values are lists of atom coordinates.
         - This structure allows for easy retrieval and addition of atom coordinates for each residue.
         - The dictionary is cleared after constructing the numpy array.
+
 
 ### 2. Visitor Design Pattern
 
