@@ -18,6 +18,8 @@
       - [iv. ArrayBuilder class](#iv-arraybuilder-class)
     - [2. Visitor Design Pattern](#2-visitor-design-pattern)
   - [Advantages and Disadvantages](#advantages-and-disadvantages)
+    - [For the Builder Design Pattern](#for-the-builder-design-pattern)
+    - [For the Visitor Design Pattern](#for-the-visitor-design-pattern)
 
 ## First Implementation
 
@@ -332,7 +334,7 @@ It defines the methods that the concrete `Builder` classes should implement.
 
 ## Advantages and Disadvantages
 
-**For the Builder Design Pattern:**
+### For the Builder Design Pattern
 
 What we might consider as a disadvantage of the Builder Design Pattern over the previous implementation:
 - The Builder Design Pattern adds complexity to the code by introducing additional classes and methods.
@@ -344,7 +346,7 @@ But on the other hand, it has also introduced many advantages:
 - It provides a single recipe for the construction, that is common to all representations, which ensures consistency in how different representations are generated, reducing redundancy and potential errors.
 - It breaks the construction into smaller steps, making it easier to modify or extend the building process without affecting the entire system, allowing for greater flexibility and maintainability.
   
-**For the Visitor Design Pattern:**
+### For the Visitor Design Pattern
 
 
 
