@@ -29,5 +29,8 @@ class Builder(ABC):
     def add_model(self):
         pass
     
+    @abstractmethod
+    def reset(self):
+        pass
     
     

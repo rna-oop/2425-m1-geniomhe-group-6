@@ -14,12 +14,13 @@ class ObjectBuilder(Builder):
     """
     def __init__(self):
         self.reset()
-        self.__model_id = 0
-        self.__chain_id = 0
-        self.__residue_id = 0
+    
         
     def reset(self):
         self.__molecule = RNA_Molecule("")
+        self.__model_id = 0
+        self.__chain_id = 0
+        self.__residue_id = 0
         
     @property
     def molecule(self):
