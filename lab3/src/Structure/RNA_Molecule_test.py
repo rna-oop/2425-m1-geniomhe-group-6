@@ -13,7 +13,7 @@ from Families.species import Species
 
 from abc import ABC, abstractmethod
 
-# from Processing.visitors.visitor import Visitor as V #circular imports
+from Processing.visitors.visitor import Visitor as V
 
 class Structure:
     '''
@@ -25,7 +25,7 @@ class Structure:
     '''
 
     @abstractmethod
-    def accept(self, visitor:'Visitor'):
+    def accept(self, visitor:V):
         '''
         abstract method that is meant to be implemented by the classes that inherit from Structure;  
         allows the visitor to visit the class that implements this method
@@ -97,7 +97,7 @@ class RNA_Molecule(Structure):
     def __repr__(self):
         return f"ID: {self.entry_id} Experiment: {self.experiment} {self.species}"
 
-    def accept(self, visitor:'Visitor'):
+    def accept(self, visitor:V):
         visitor.visit_RNA_Molecule(self)
 
         
