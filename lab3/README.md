@@ -189,7 +189,6 @@ In this lab, we used the `Builder` design pattern to separate the construction o
 
 - Finally, instead of `processor.createMolecule()` that creates only an object, we return `builder.molecule` to get the built molecule that can be an object or a numpy array depending on the builder used.
 
-
 #### i. Director class
 
 The `Director` class serves as a director for the `Builder` classes. 
@@ -210,7 +209,6 @@ The `Director` class serves as a director for the `Builder` classes.
             self.builder.add_atom(atom_name, x, y, z, element, altloc, occupancy, temp_factor, charge)
         ```
         - The method takes the model_id and atom_info as arguments that are retrieved from the  `Parser` and calls the corresponding methods in the builder object in a specific order to add the model, chain, residue, and atom information.
-
 
 #### ii. Builder class
 
@@ -334,11 +332,19 @@ It defines the methods that the concrete `Builder` classes should implement.
 
 ## Advantages and Disadvantages
 
+**For the Builder Design Pattern:**
 
+What we might consider as a disadvantage of the Builder Design Pattern over the previous implementation:
+- The Builder Design Pattern adds complexity to the code by introducing additional classes and methods.
+- The previous model just required a single additional method `createArray()` in the `Processor` class to return the numpy array representation of the molecule. 
 
-
-
-
+But on the other hand, it has also introduced many advantages:
+- Each representation has its own dedicated builder class, making the code cleaner and more maintainable, especially if more representations are needed in the future. 
+- The Builder Pattern enables the direct construction of the required representation without unnecessary intermediate objects.
+- It provides a single recipe for the construction, that is common to all representations, which ensures consistency in how different representations are generated, reducing redundancy and potential errors.
+- It breaks the construction into smaller steps, making it easier to modify or extend the building process without affecting the entire system, allowing for greater flexibility and maintainability.
+  
+**For the Visitor Design Pattern:**
 
 
 
