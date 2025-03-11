@@ -9,12 +9,6 @@
     - [Object Diagram for the Previous-Model-Extension](#object-diagram-for-the-previous-model-extension)
     - [1. Parser returns a numpy array](#1-parser-returns-a-numpy-array)
     - [2. Writing Structures into PDML/XML format](#2-writing-structures-into-pdmlxml-format)
-      - [i. Writer takes numpy array](#i-writer-takes-numpy-array)
-      - [ii. Writer returns PDBML format](#ii-writer-returns-pdbml-format)
-        - [file format description](#file-format-description)
-        - [implementation: object to xml](#implementation-object-to-xml)
-        - [implementation: ndarray to xml](#implementation-ndarray-to-xml)
-      - [dev](#dev)
 
 ## First Implementation
 
@@ -86,19 +80,7 @@ The output:
 
 ### 2. Writing Structures into PDML/XML format
 
-#### i. Writer takes numpy array
-
-_tentative implementation_
-
-recheck info stored in numpy array, should be of this form:
-
-1 seq has 95 residues, **each residue having a list of atoms** (how is this represented, so far there are only 1 atom per residue?, should be a list of atoms), each atom has x,y,z coordinates.
-
-
-
-#### ii. Writer returns PDBML format
-
-##### file format description
+**File format description:**
 
 An PDBML file is an XML file that contains protein/nucleic acid structure information within an _xml format_. This is an efficient data storing format is widely used in databases and software tools to store and exchange data files in a structured manner. It was introduced to PDBe as the "PDBML" format by Westbrook et al. in a 2005 in a paper published in _Bioinformatics_ entitled "PDBML: the representation of archival macromolecular structure data in XML"[^1].
 
@@ -207,32 +189,7 @@ The `<PDBx:atom_siteCategory>` tag contains all the information about the atoms 
 ```
 
 > [!IMPORTANT]
-> The atom_siteCategory tag is the only category that reflects teh information that we're capturing in this library, whether thorugh the RNA_Molecule object or the numpy array representation of it. This is the only category that will be included in the xml file. Others include information about bonds, symmetry, experimental setting and other metadata that is not captured in our object.
-
-<!-- This is one atom entry in the file:
-
-```xml
-    <PDBx:atom_site id="1">
-      <PDBx:B_iso_or_equiv>110.87</PDBx:B_iso_or_equiv>
-      <PDBx:Cartn_x>-9.698</PDBx:Cartn_x>
-      <PDBx:Cartn_y>3.426</PDBx:Cartn_y>
-      <PDBx:Cartn_z>-31.854</PDBx:Cartn_z>
-      <PDBx:auth_asym_id>A</PDBx:auth_asym_id>
-      <PDBx:auth_atom_id>OP3</PDBx:auth_atom_id>
-      <PDBx:auth_comp_id>G</PDBx:auth_comp_id>
-      <PDBx:auth_seq_id>1</PDBx:auth_seq_id>
-      <PDBx:group_PDB>ATOM</PDBx:group_PDB>
-      <PDBx:label_alt_id xsi:nil="true"/>
-      <PDBx:label_asym_id>A</PDBx:label_asym_id>
-      <PDBx:label_atom_id>OP3</PDBx:label_atom_id>
-      <PDBx:label_comp_id>G</PDBx:label_comp_id>
-      <PDBx:label_entity_id>1</PDBx:label_entity_id>
-      <PDBx:label_seq_id>1</PDBx:label_seq_id>
-      <PDBx:occupancy>1.0</PDBx:occupancy>
-      <PDBx:pdbx_PDB_model_num>1</PDBx:pdbx_PDB_model_num>
-      <PDBx:type_symbol>O</PDBx:type_symbol>
-    </PDBx:atom_site>
-```  -->
+> The atom_siteCategory tag is the only category that reflects the information that we're capturing in this library, whether thorugh the RNA_Molecule object or the numpy array representation of it. This is the only category that will be included in the xml file. Others include information about bonds, symmetry, experimental setting and other metadata that is not captured in our object.
 
 This is how the hierarchy leading to an atom representation is portrayed in the `.xml` file.
 
@@ -324,110 +281,178 @@ Notice a slight difference between the representation of an atom with $occupancy
 
 _in this example id 171 is alt location B of the same atom in 170, and shows different occupancy_
 
-##### implementation: object to xml
+**Implementation: object to xml**
 
-Luckily, _because our class implementation is well designed :)_, from an `RNA_Molecule` object, we are able to retrieve all information needed from an atom level. In other words, from each atom we can access to 1. which residue it belongs to 2. on which chain 3. of which model, besides the well defined attributes like coordinates, atom type, occupancy, etc.
+Thanks to the hierarchical class design of the molecule object, we're able to retrieve all information needed describing an atom, for each atom in the molecule.
 
-In porcessor, this method takes an object and returns a lsit of atom dictionaries, where the keys of each dictionary are named exactly as the tags in the xml file. This way, we can easily create the xml file by iterating over the list of atoms and creating the corresponding tags.
+In porcessor, this method `flattenMolecule_to_dict` takes an object and returns a list of atom dictionaries, where the keys of each dictionary are named exactly as the tags in the xml file. This way, we can easily create the xml file by iterating over the list of atoms and creating the corresponding tags.
 
 ```python
-def extract_xml_atoms_from_rna(self, rna_molecule):
-    atoms_list = []
+    def flattenMolecule_to_dict(self,rna_molecule:RNA_Molecule):
+        '''
+        rna_molecule: RNA_Molecule object -> RNA molecule to be flattened -> list of atom dictionaries
+        '''
+        atoms_list = []
 
-    for model_num,_ in enumerate(rna_molecule.get_models()):  #--looping through all models 
-        model=rna_molecule.get_models()[_] # --model object from dict key
-    
-        for chain in model.get_chains().values(): #--looping through all chains
-            for residue in chain.get_residues().values(): #--looping through all residues  
-                for atom_key, atom in residue.get_atoms().items(): #--looping through all atoms
-                    atom_id, alt_id = atom_key  # unpacking atom key (alt_id is '' if no alt location)
-                    # --keys defined identically to pdbml format, values extracted directly from atom object
-                    atom_data = {
-                        "id": str(len(atoms_list) + 1),  # Assign a sequential ID
-                        "B_iso_or_equiv": str(atom.temp_factor),
-                        "Cartn_x": str(atom.x),
-                        "Cartn_y": str(atom.y),
-                        "Cartn_z": str(atom.z),
-                        "auth_asym_id": chain.id,
-                        "auth_atom_id": atom_id,
-                        "auth_comp_id": residue.type.name,
-                        "auth_seq_id": str(residue.position),
-                        "group_PDB": "ATOM", # assuming afor now that all are ATOM records
-                        "label_alt_id": None if alt_id == "" else alt_id,
-                        "label_asym_id": chain.id,
-                        "label_atom_id": atom_id,
-                        "label_comp_id": residue.type.name,
-                        "label_entity_id": "1",  # should be one entity per xml for now
-                        "label_seq_id": str(residue.position),
-                        "occupancy": str(atom.occupancy),
-                        "pdbx_PDB_model_num": model_num+1,
-                        "type_symbol": atom.element.name
-                    }
-
-                    atoms_list.append(atom_data)
+        for model_num,_ in enumerate(rna_molecule.get_models()):  #--looping through all models 
+            model=rna_molecule.get_models()[_] # --model object from dict key
+            
+            for chain in model.get_chains().values(): #--looping through all chains
+                for residue in chain.get_residues().values(): #--looping through all residues  
+                    for atom_key, atom in residue.get_atoms().items(): #--looping through all atoms
+                        atom_id, alt_id = atom_key  # unpacking atom key (alt_id is '' if no alt location)
+                        # --keys defined identically to pdbml format, values extracted directly from atom object
+                        atom_data = {
+                            "atom_id": str(len(atoms_list) + 1),  # Assign a sequential ID
+                            "B": str(atom.temp_factor),
+                            "x": str(atom.x),
+                            "y": str(atom.y),
+                            "z": str(atom.z),
+                            "chain_id": chain.id,
+                            "atom_id": atom_id,
+                            "residue_type": residue.type.name,
+                            "residue_pos": str(residue.position),
+                            "alt_id": None if alt_id == "" else alt_id,
+                            "occupancy": str(atom.occupancy),
+                            "model_no": model_num+1,
+                            "atom_element": atom.element.name
+                        }
+                        atoms_list.append(atom_data)
+        return atoms_list
 ```
 
-To convert to pdbml, xml library has been used, xml indettaion is handled by the `prettify_print_xml` decorator that uses teh `xml.dom.minidom` module. 
+To convert to PDBML, xml formatting private functions have been implemented in `PDBML_Writer` submodule. 
 
 ```python
-# --helper function in processor module (not a method)
-def pretty_print_xml(func):
-    def wrapper(*args, **kwargs):
-        xml_string = func(*args, **kwargs)
-        xml_string = minidom.parseString(xml_string).toprettyxml(indent="    ")
-        return xml_string
-    return wrapper
-```
+# --helper methods
+    def _wrap_str_to_xml(self,s,name='pdbml_output.xml'):
+        with open(name, "w") as f:
+            f.write(s)
 
-
-and hierarchical xml structure is created by the `xml.etree.ElementTree` module.
-
-```python
-@pretty_print_xml
-def create_xml_from_molecule(self,rna_molecule):
-    root = ET.Element("PDBx:datablock", {
-        "datablockName": rna_molecule.entry_id,
-        "xmlns:PDBx": "http://pdbml.pdb.org/schema/pdbx-v50.xsd",
-        "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
-        "xsi:schemaLocation": "http://pdbml.pdb.org/schema/pdbx-v50.xsd pdbx-v50.xsd"
-    })
-
-    atom_site_category = ET.SubElement(root, "PDBx:atom_siteCategory") #creates root with entry id
-    atoms = self.extract_xml_atoms_from_rna(rna_molecule) # rna_molecule -> list of atom dictionaries
-
-    for atom in atoms:
-        atom_site = ET.SubElement(atom_site_category, "PDBx:atom_site", {"id": atom["id"]})
-
-        for key, value in atom.items():
-            if key == "id":
-                continue
-            element = ET.SubElement(atom_site, f"PDBx:{key}")
-            if value is None:
-                element.set("xsi:nil", "true")
+    def _format_atom_info(self, atoms_list,entry_id):
+        '''
+        formats a list of atoms dicts into XML format
+        '''
+        s='''<?xml version="1.0" encoding="UTF-8" ?>
+<PDBx:datablock datablockName="'''+entry_id+'''"
+   xmlns:PDBx="http://pdbml.pdb.org/schema/pdbx-v50.xsd"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://pdbml.pdb.org/schema/pdbx-v50.xsd pdbx-v50.xsd">'''
+        s+='\n\t<PDBx:atom_siteCategory>\n'
+        for atom in atoms_list:
+            s+='\t\t<PDBx:atom_site id="'+atom["atom_id"]+'">\n'
+            s+='\t\t\t<PDBx:B_iso_or_equiv>'+str(atom['B'])+'</PDBx:B_iso_or_equiv>\n'
+            s+='\t\t\t<PDBx:Cartn_x>'+str(atom['x'])+'</PDBx:Cartn_x>\n'
+            s+='\t\t\t<PDBx:Cartn_y>'+str(atom['y'])+'</PDBx:Cartn_y>\n'
+            s+='\t\t\t<PDBx:Cartn_z>'+str(atom['z'])+'</PDBx:Cartn_z>\n'
+            s+='\t\t\t<PDBx:auth_asym_id>'+atom['chain_id']+'</PDBx:auth_asym_id>\n'
+            s+='\t\t\t<PDBx:auth_atom_id>'+atom['atom_id']+'</PDBx:auth_atom_id>\n'
+            s+='\t\t\t<PDBx:auth_comp_id>'+atom['residue_type']+'</PDBx:auth_comp_id>\n'
+            s+='\t\t\t<PDBx:auth_seq_id>'+str(atom['residue_pos'])+'</PDBx:auth_seq_id>\n'
+            s+='\t\t\t<PDBx:group_PDB>ATOM</PDBx:group_PDB>\n'
+            if atom['alt_id'] is not None:
+                s+='\t\t\t<PDBx:label_alt_id xsi:nil="true" />\n'
             else:
-                element.text = str(value) 
-
-    xml_string = ET.tostring(root, encoding="unicode", method="xml")
-    return xml_string
+                atom['alt_id']='A'
+            s+='\t\t\t<PDBx:label_asym_id>'+atom['alt_id']+'</PDBx:label_asym_id>\n'
+            s+='\t\t\t<PDBx:label_atom_id>'+atom['atom_id']+'</PDBx:label_atom_id>\n'
+            s+='\t\t\t<PDBx:label_comp_id>'+atom['residue_type']+'</PDBx:label_comp_id>\n'
+            s+='\t\t\t<PDBx:label_entity_id>1</PDBx:label_entity_id>\n'
+            s+='\t\t\t<PDBx:label_seq_id>'+str(atom['residue_pos'])+'</PDBx:label_seq_id>\n'
+            s+='\t\t\t<PDBx:occupancy>'+str(atom['occupancy'])+'</PDBx:occupancy>\n'
+            s+='\t\t\t<PDBx:pdbx_PDB_model_num>'+str(atom['model_no'])+'</PDBx:pdbx_PDB_model_num>\n'
+            s+='\t\t\t<PDBx:type_symbol>'+atom['atom_element']+'</PDBx:type_symbol>\n'
+            s+='\t\t</PDBx:atom_site>\n'
+        s+='\t</PDBx:atom_siteCategory>\n'
+        s+='</PDBx:datablock>'
+        return s
 ```
 
-Eventually teh created xml string will be written into a file in `PDBML_Writer` class through a helper function
+**Code usage:**
 
 ```python
-def wrap_str_to_xml(s,name='pdbml_output.xml'):
-    with open(name, "w") as f:
-        f.write(s)
+mol: RNA_Molecule #suppose a declared instance of RNA_Molecule
+
+rna_io=RNA_IO()
+rna_io.write(mol, "7eaf_object.xml",'PDBML')
 ```
 
-##### implementation: ndarray to xml
+_example output:_
 
+```bash
+cat 7eaf_object.xml
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<PDBx:datablock datablockName="7EAF"
+   xmlns:PDBx="http://pdbml.pdb.org/schema/pdbx-v50.xsd"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://pdbml.pdb.org/schema/pdbx-v50.xsd pdbx-v50.xsd">
+	<PDBx:atom_siteCategory>
+		<PDBx:atom_site id="OP3">
+			<PDBx:B_iso_or_equiv>110.87</PDBx:B_iso_or_equiv>
+			<PDBx:Cartn_x>-9.698</PDBx:Cartn_x>
+			<PDBx:Cartn_y>3.426</PDBx:Cartn_y>
+			<PDBx:Cartn_z>-31.854</PDBx:Cartn_z>
+			<PDBx:auth_asym_id>A</PDBx:auth_asym_id>
+			<PDBx:auth_atom_id>OP3</PDBx:auth_atom_id>
+			<PDBx:auth_comp_id>G</PDBx:auth_comp_id>
+			<PDBx:auth_seq_id>1</PDBx:auth_seq_id>
+			<PDBx:group_PDB>ATOM</PDBx:group_PDB>
+			<PDBx:label_asym_id>A</PDBx:label_asym_id>
+			<PDBx:label_atom_id>OP3</PDBx:label_atom_id>
+			<PDBx:label_comp_id>G</PDBx:label_comp_id>
+			<PDBx:label_entity_id>1</PDBx:label_entity_id>
+			<PDBx:label_seq_id>1</PDBx:label_seq_id>
+			<PDBx:occupancy>1.0</PDBx:occupancy>
+			<PDBx:pdbx_PDB_model_num>1</PDBx:pdbx_PDB_model_num>
+			<PDBx:type_symbol>O</PDBx:type_symbol>
+		</PDBx:atom_site>
+...
+```
+
+a minor addition to `RNA_IO` class was made to include the option of writing in PDBML format. 
+
+```python
+class RNA_IO:
+    def __init__(self):
+        ...
+        self.__writers={"PDB": PDB_Writer(),'PDBML': PDBML_Writer(),'XML': PDBML_Writer()}
+```
+
+
+
+**Parallelism with PDB_Writer**
+
+- [x] user interface:
+```python
+rna_io=RNA_IO()
+mol: RNA_Molecule 
+
+rna_io.write(mol, "7eaf_object.xml",'PDBML') #also works by specifying XML
+rna_io.write(mol, "7eaf_object.pdb",'PDB')
+```
+
+
+| PDB_Writer | PDBML_Writer |
+|------------|--------------|
+| inherits RNA_Writer abstract class | inherits RNA_Writer abstract class |
+| `write(molecule: RNA_Molecule, file_path: str)` | `write(molecule: RNA_Molecule, file_path: str) |
+| takes an RNA_Molecule object | takes an RNA_Molecule object |
+| uses processor instance to get the atom information | uses processor instance to get the atom information |
+| uses processor.flattenMolecule() | uses processor.flattenMolecule_to_dict() |
+| has format specific private method `_format_atom_info()` and `_format_molecule_info` | has format specific private method `_format_atom_info()` and `_wrap_str_to_xml()` |
+| writes the pdb file | writes the pdbml file |
+
+<!-- 
 #### dev
 _these are notes for dev purposes, to be removed later_
 
 > [!CAUTION]
 > the np array is currently of dimensions (no_models, no_atoms, 3) where the last dimension is the x,y,z coordinates of the atom. We need to change this to (no_models, no_residues, no_atoms, 3) making it 4dimensional (practically the first dim=1) because residue information is lost in the current implementation. Description states each row is an array of residues (this would allow proper indexing of residues). Respectively need to change the functions that were based on the old array structure in processor
 
-> The issue arises when checking the pdb output, all atoms are by default belonging to one residue, souldn't seperate. Can take advantage of this issue to fix teh indexing of residues in the array, this way can seperate to chains too in processing. Assume one model and infer chains from the gaps between residues (even model num can be taken from first dim). (check the file viz on mol viewer, clearly shows different representation, line rep can not be dont since no residue type info is saved within the array)
+> The issue arises when checking the pdb output, all atoms are by default belonging to one residue, souldn't seperate. Can take advantage of this issue to fix the indexing of residues in the array, this way can seperate to chains too in processing. Assume one model and infer chains from the gaps between residues (even model num can be taken from first dim). (check the file viz on mol viewer, clearly shows different representation, line rep can not be dont since no residue type info is saved within the array)
 
 
 
@@ -437,4 +462,4 @@ _these are notes for dev purposes, to be removed later_
 - [x] add PDML_Writer class
 - [x] added xml and pdbl writing options in rna_io, tested with 7eaf (sample output in [demo.xml](./demo.xml))
 - [ ] xml reader from array (temp implementation on the current array)
-
+ -->

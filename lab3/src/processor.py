@@ -144,114 +144,6 @@ class Processor:
             current_atom_name=atom[0]
             
         return array
-    
-    # -- v2 array implementation: returns (1, 95, 2048, 3) array
-    # def createNDArray(self):
-    #     '''
-    #     Creates a 3D array representation of the RNA molecule.
-    #     The array has dimensions (number of models, number of residues, number of atoms, 3) and stores the x,y,z coordinates of each atom.
-    #     '''
-    #     print(f'no of tomas in list: {len(self.atoms)}')#returned 2048
-    #     print(f'from createArray this is self.atoms[-1]: {self.atoms[-1]}')
-
-    #     models_no=self.atoms[-1][-1]+1 #access the model_id of the last atom +1 (if one model it'll be 0)
-    #     residues_no=self.atoms[-1][6] #access the res_id (indexing starts at 1)
-    #     atoms_no=len(self.atoms) #no of atoms
-    #     array=np.zeros((models_no, residues_no, atoms_no, 3)) #initialize the array with zeros
-    #     track_residue_id=1
-    #     track_model_id=0
-    #     for atom_no, atom in enumerate(self.atoms):
-    #         model_id, res_id=atom[-1], atom[6]
-    #         if model_id!=track_model_id:
-    #             track_model_id=model_id
-    #         if res_id!=track_residue_id:
-    #             track_residue_id=res_id
-    #         x, y, z = atom[1:4]
-    #         array[model_id,res_id-1,atom_no]=np.array([x,y,z])
-    #     return array
-
-    """
-    # -- new array implementation: returns (1, 95, 60, 3) array (60 is max no of atoms in a residue): functional one
-    def createNDArray(self):
-        '''
-        Creates a 3D array representation of the RNA molecule.
-        The array has dimensions (number of models, number of residues, number of atoms, 3) and stores the x,y,z coordinates of each atom.
-        '''
-        # print(f'no of tomas in list: {len(self.atoms)}')#returned 2048
-        # print(f'from createArray this is self.atoms[-1]: {self.atoms[-1]}')
-
-        # print(self.atoms)
-
-        first_model=self.atoms[0][-1] #access the model_id of the first atom
-        if first_model==0:
-            single_model=True
-            models_no=1
-        else:
-            single_model=False
-            models_no=self.atoms[-1][-1] #access the model_id of the last atom (if non single model, 1st model will be 1)
-            print(f'-- reading multiple models structure with {models_no} models --')
-
-        residues_no=self.atoms[-1][6] #access the res_id (indexing starts at 1)
-        for atom in self.atoms:
-            if atom[6]>residues_no:
-                residues_no=atom[6] #get max residues no between all models
-        
-        array=np.ones((models_no, residues_no, 60, 3)) #initialize the array with ones
-        array=array*-1 #initialize the array with -1 (better than 0s bcs (0,0,0) are valid coordinates and we wanna represent empty cells)
-
-        track_residue_id=1
-        track_model_id=0
-        atom_index=0
-        prev_atom=None
-        current_atom=None
-
-        for atom_no, atom in enumerate(self.atoms):
-            prev_atom=current_atom
-            current_atom=atom #save atom for next iteration compare with next atom (if same atom with alt location replace with the one with highest occupancy) 
-
-            model_id, res_id=atom[-1], atom[6]
-
-            model_index=model_id
-
-            if not single_model:
-                model_index=model_id-1
-
-            if model_id!=track_model_id: #this is useful when code is extended to account for multiple sequences
-                track_model_id=model_id #and automatically if different model then should be different resi so next condition will be met (no need to reset vars here)
-
-            if res_id!=track_residue_id:
-                track_residue_id=res_id
-                atom_index=0
-                prev_atom=None #resets it   
-            
-            if prev_atom is not None: #if res_id is the same as the previous atom
-                
-                prev_type=prev_atom[0]
-                current_type=current_atom[0]
-
-                if prev_type==current_type: #if same atom type
-
-                    #-- first thing to do in order to keep everything clear is decrease the atom_index by 1
-                    #   this is essential bcs we are not aiming to create a new cell for the current atom, we're stuck at prev
-                    #   if current is of highest occup it will replace the prev entered entry, else same entry will be in pllace without losing track of indexing
-                    atom_index-=1
-
-                    highest_occupancy=max_occupancy(prev_atom, current_atom) #get the atom with highest occupancy
-                    
-                    #--replace the last array element with the one with highest occupancy
-                    x, y, z = highest_occupancy[1:4]
-                    array[model_index,res_id-1,atom_index]=np.array([x,y,z])
-
-                else:
-                    x, y, z = current_atom[1:4]
-                    array[model_index,res_id-1,atom_index]=np.array([x,y,z])
-            else:
-                x, y, z = current_atom[1:4]
-                array[model_index,res_id-1,atom_index]=np.array([x,y,z])
-
-            atom_index+=1
-        return array
-    """
         
     def flattenMolecule(self, rna_molecule):
         """
@@ -317,75 +209,34 @@ class Processor:
         return atoms
 
     # -- xml processing
-
-    def extract_xml_atoms_from_rna(self, rna_molecule):
+    def flattenMolecule_to_dict(self,rna_molecule:RNA_Molecule):
+        '''
+        rna_molecule: RNA_Molecule object -> RNA molecule to be flattened -> list of atom dictionaries
+        '''
         atoms_list = []
 
         for model_num,_ in enumerate(rna_molecule.get_models()):  #--looping through all models 
             model=rna_molecule.get_models()[_] # --model object from dict key
-        
+            
             for chain in model.get_chains().values(): #--looping through all chains
                 for residue in chain.get_residues().values(): #--looping through all residues  
                     for atom_key, atom in residue.get_atoms().items(): #--looping through all atoms
                         atom_id, alt_id = atom_key  # unpacking atom key (alt_id is '' if no alt location)
                         # --keys defined identically to pdbml format, values extracted directly from atom object
                         atom_data = {
-                            "id": str(len(atoms_list) + 1),  # Assign a sequential ID
-                            "B_iso_or_equiv": str(atom.temp_factor),
-                            "Cartn_x": str(atom.x),
-                            "Cartn_y": str(atom.y),
-                            "Cartn_z": str(atom.z),
-                            "auth_asym_id": chain.id,
-                            "auth_atom_id": atom_id,
-                            "auth_comp_id": residue.type.name,
-                            "auth_seq_id": str(residue.position),
-                            "group_PDB": "ATOM", # assuming afor now that all are ATOM records
-                            "label_alt_id": None if alt_id == "" else alt_id,
-                            "label_asym_id": chain.id,
-                            "label_atom_id": atom_id,
-                            "label_comp_id": residue.type.name,
-                            "label_entity_id": "1",  # should be one entity per xml for now
-                            "label_seq_id": str(residue.position),
+                            "atom_id": str(len(atoms_list) + 1),  # Assign a sequential ID
+                            "B": str(atom.temp_factor),
+                            "x": str(atom.x),
+                            "y": str(atom.y),
+                            "z": str(atom.z),
+                            "chain_id": chain.id,
+                            "atom_id": atom_id,
+                            "residue_type": residue.type.name,
+                            "residue_pos": str(residue.position),
+                            "alt_id": None if alt_id == "" else alt_id,
                             "occupancy": str(atom.occupancy),
-                            "pdbx_PDB_model_num": model_num+1,
-                            "type_symbol": atom.element.name
+                            "model_no": model_num+1,
+                            "atom_element": atom.element.name
                         }
-
                         atoms_list.append(atom_data)
-        self.atoms=atoms_list
         return atoms_list
-
-
-
-
-    @pretty_print_xml
-    def create_xml_from_molecule(self,rna_molecule):
-        root = ET.Element("PDBx:datablock", {
-            "datablockName": rna_molecule.entry_id,
-            "xmlns:PDBx": "http://pdbml.pdb.org/schema/pdbx-v50.xsd",
-            "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
-            "xsi:schemaLocation": "http://pdbml.pdb.org/schema/pdbx-v50.xsd pdbx-v50.xsd"
-        })
-
-        atom_site_category = ET.SubElement(root, "PDBx:atom_siteCategory") #creates root with entry id
-        atoms = self.extract_xml_atoms_from_rna(rna_molecule) # rna_molecule -> list of atom dictionaries
-
-        for atom in atoms:
-            atom_site = ET.SubElement(atom_site_category, "PDBx:atom_site", {"id": atom["id"]})
-
-            for key, value in atom.items():
-                if key == "id":
-                    continue
-                element = ET.SubElement(atom_site, f"PDBx:{key}")
-                if value is None:
-                    element.set("xsi:nil", "true")
-                else:
-                    element.text = str(value) 
-
-        xml_string = ET.tostring(root, encoding="unicode", method="xml")
-        return xml_string
-
-
-#--testing (non method function stage)
-# s=create_xml_from_molecule(rna_molecule)
-# wrap_str_to_xml(s)
