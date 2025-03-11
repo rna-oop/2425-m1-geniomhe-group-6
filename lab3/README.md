@@ -14,8 +14,8 @@
     - [Class Diagram](#class-diagram)
     - [Object Diagram](#object-diagram)
     - [1. Builder Design Pattern](#1-builder-design-pattern)
-      - [ObjectBuilder class](#objectbuilder-class)
-      - [ArrayBuilder class](#arraybuilder-class)
+      - [iii. ObjectBuilder class](#iii-objectbuilder-class)
+      - [iv. ArrayBuilder class](#iv-arraybuilder-class)
     - [2. Visitor Design Pattern](#2-visitor-design-pattern)
   - [Advantages and Disadvantages](#advantages-and-disadvantages)
     - [For the Builder Design Pattern](#for-the-builder-design-pattern)
@@ -192,7 +192,7 @@ In this lab, we used the `Builder` design pattern to separate the construction o
 
 - Finally, instead of `processor.createMolecule()` that creates only an object, we return `builder.molecule` to get the built molecule that can be an object or a numpy array depending on the builder used.
 
-#### Director class
+#### i. Director
 
 - The `Director` class serves as a director for the `Builder` classes. 
 
@@ -213,7 +213,7 @@ In this lab, we used the `Builder` design pattern to separate the construction o
         ```
         - The method takes the model_id and atom_info as arguments that are retrieved from the  `Parser` and calls the corresponding methods in the builder object in a specific order to add the model, chain, residue, and atom information.
 
-#### Builder class
+#### ii. Builder class
 
 - The `Builder` class is an interface, implemented as an abstract class with all its methods being abstract. 
 
@@ -250,7 +250,7 @@ In this lab, we used the `Builder` design pattern to separate the construction o
 - The `reset` method is used to reset the builder object to its initial state.
 - The other methods are used to add atom, residue, chain, and model information to the molecule object.
 
-#### ObjectBuilder class
+#### iii. ObjectBuilder class
 
 - The `ObjectBuilder` class is a concrete builder class that implements the `Builder` interface.
 - It is responsible for constructing the RNA molecule object.
@@ -289,7 +289,7 @@ In this lab, we used the `Builder` design pattern to separate the construction o
         - Additional method specific for this builder.
         - Adds the entry_id, experiment, and species information to the molecule object.
   
-#### ArrayBuilder class
+#### iv. ArrayBuilder class
 
 - The `ArrayBuilder` class is a concrete builder class that implements the `Builder` interface.
 
