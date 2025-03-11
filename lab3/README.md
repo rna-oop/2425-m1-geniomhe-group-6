@@ -452,6 +452,10 @@ graph TD
     style D fill:#12387F,stroke:#333,stroke-width:2px
 ```
 
+_Conceptually, this is how visitor's design is portrayed in an RNA molecule context:_
+
+![vis](./assets/visitor_design.jpg)
+
 ## Advantages and Disadvantages
 
 ### For the Builder Design Pattern
