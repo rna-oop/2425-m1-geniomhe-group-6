@@ -6,9 +6,9 @@ import os,sys
 sys.path.append(os.path.abspath('lab3/src'))
 
 from IO.parsers.RNA_Parser import RNA_Parser
-from Processing.builders.Director import Director
-from Processing.builders.ArrayBuilder import ArrayBuilder
-from Processing.builders.ObjectBuilder import ObjectBuilder
+from Processing.Director import Director
+from Processing.ArrayBuilder import ArrayBuilder
+from Processing.ObjectBuilder import ObjectBuilder
 
 
 class PDB_Parser(RNA_Parser):

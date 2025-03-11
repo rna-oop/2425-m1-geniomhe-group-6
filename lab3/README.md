@@ -8,21 +8,20 @@
     - [Class Diagram for the Previous-Model-Extension](#class-diagram-for-the-previous-model-extension)
     - [Object Diagram for the Previous-Model-Extension](#object-diagram-for-the-previous-model-extension)
     - [1. Parser returns a numpy array](#1-parser-returns-a-numpy-array)
+    - [2. Writing Structures into PDML/XML format](#2-writing-structures-into-pdmlxml-format)
   - [Main Implementation using Design Patterns](#main-implementation-using-design-patterns)
     - [Demo](#demo)
     - [Library Structure](#library-structure)
     - [Class Diagram](#class-diagram)
     - [Object Diagram](#object-diagram)
     - [1. Builder Design Pattern](#1-builder-design-pattern)
-        - [i. Director class](#i-director-class)
-        - [ii. Builder class](#ii-builder-class)
-        - [iii. ObjectBuilder class](#iii-objectbuilder-class)
-        - [iv. ArrayBuilder class](#iv-arraybuilder-class)
-    - [2. Visitor Design Pattern](#2-visitor-design-pattern)
-        - [i. Visitor interface](#i-visitor-interface)
-        - [ii. PDBExportVisitor class](#ii-pdbexportvisitor-class)
-        - [iii. XMLExportVisitor class](#iii-xmlexportvisitor-class)
-        - [iii. Structure interface](#iii-element-interface)
+      - [iii. ObjectBuilder class](#iii-objectbuilder-class)
+      - [iv. ArrayBuilder class](#iv-arraybuilder-class)
+    - [2. Visitor design pattern](#2-visitor-design-pattern)
+      - [i. Visitor interface](#i-visitor-interface)
+      - [ii. PDBExportVisitor class](#ii-pdbexportvisitor-class)
+      - [iii. XMLExportVisitor class](#iii-xmlexportvisitor-class)
+      - [iv. Structure interface](#iv-structure-interface)
   - [Advantages and Disadvantages](#advantages-and-disadvantages)
     - [For the Builder Design Pattern](#for-the-builder-design-pattern)
     - [For the Visitor Design Pattern](#for-the-visitor-design-pattern)
@@ -44,7 +43,7 @@ First, we kept our previous model and extended it with the minimal changes possi
 
 ![Class-Diagram](model/Class-Diagram-Previous.jpg)
 
-The new changes are highlighted in white; note that `flattenMolecule_to_dict()` is a new method to provide an extra utility to the Processor class, not mandatory for the implementation (e.g., some libraris like numpy, pandas, etc. provide similar functionalities that transforms their main objects to different types of data structures).
+The new changes are highlighted in white; note that `flattenMolecule_to_dict()` is a new method to provide an extra utility to the Processor class, not mandatory for the implementation (e.g., some libraries like numpy, pandas, etc. provide similar functionalities that transforms their main objects to different types of data structures).
 
 ### Object Diagram for the Previous-Model-Extension
 
@@ -488,7 +487,7 @@ For a demonstration of the Builder and Visitor Design Patterns, you can check th
 
 ### Library Structure
 
-In this lab, we added `Processing` module that contains `builders` and `visitors` submodules. 
+In this lab, we added `Processing` module that contains the classes of the `Builder Design Pattern` and `visitors_writers` module that contains the classes of the `Visitor Design Pattern`inside `IO` module.
 
 The classes are organized in modules and submodules as follows:
 
@@ -525,7 +524,6 @@ The classes are organized in modules and submodules as follows:
 │   ├── RNA_Molecule.py
 │   ├── Residue.py
 │   └── __init__.py
-├── processor.py
 └── utils.py
 
 10 directories, 21 files
@@ -888,6 +886,6 @@ But on the other hand, it has also introduced many advantages:
 
 _As previously discussed, equivalent notions have been found between this and the prior implementation (check [visitor pattern explanation](#2-visitor-design-pattern))_
 
-There is 2 advantages of the Visitor Design Pattern, only thanks to its indirect reltion to the object structure (`accept` method that takes a `Visitor` object): 
+There is 2 advantages of the Visitor Design Pattern, only thanks to its indirect relation to the object structure (`accept` method that takes a `Visitor` object): 
 * [x] The user now can perform exporting from an `RNA_Molecule` object, a functionality that we wanted to have access to initially while keeping the object clean and decoupled. Noting that it can take _any_ visitor type, it allows for a more flexible and extensible design.
-* [x] Having a `Structure` parent, we can add as many as children as we want in the future without needing to worry about decoupling them everytime we implement them, but rather directly overridign the `accept` method in the new class and providing `Visitor` with an overloaded `visit` method (efficiency in terms of code writing).
+* [x] Having a `Structure` parent, we can add as many as children as we want in the future without needing to worry about decoupling them everytime we implement them, but rather directly overriding the `accept` method in the new class and providing `Visitor` with an overloaded `visit` method (efficiency in terms of code writing).

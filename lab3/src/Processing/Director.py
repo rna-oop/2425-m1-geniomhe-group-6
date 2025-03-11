@@ -1,7 +1,7 @@
 import os,sys
 sys.path.append(os.path.abspath('lab3/src'))
 
-from Processing.builders.Builder import Builder
+from Processing.Builder import Builder
 
 class Director:
     

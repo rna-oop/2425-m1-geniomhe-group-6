@@ -7,7 +7,7 @@ from Structure.Chain import Chain
 from Structure.Residue import Residue
 from Structure.Atom import Atom
 from Families.species import Species
-from Processing.builders.Builder import Builder
+from Processing.Builder import Builder
 class ObjectBuilder(Builder):
     """
     The ObjectBuilder class is responsible for constructing the RNA molecule object.

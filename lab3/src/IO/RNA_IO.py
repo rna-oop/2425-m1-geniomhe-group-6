@@ -23,7 +23,7 @@ class RNA_IO:
         parser=self.__parsers[format]
         return parser.read(path_to_file, coarse_grained, atom_name, array)
     
-    def write(self, structure, format): #removed path as can not take it
+    def write(self, structure, path, format): #removed path as can not take it
         """
         Writes the RNA molecule object to a PDB file
         can take any instance that is a child of Structure (globality in method signature)

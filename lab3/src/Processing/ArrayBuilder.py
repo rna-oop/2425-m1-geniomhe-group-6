@@ -2,7 +2,7 @@ import os,sys
 sys.path.append(os.path.abspath('lab3/src'))
 
 import numpy as np
-from Processing.builders.Builder import Builder
+from Processing.Builder import Builder
 
 class ArrayBuilder(Builder):
     
