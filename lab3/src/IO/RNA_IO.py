@@ -5,13 +5,14 @@ import os,sys
 sys.path.append(os.path.abspath('lab3/src'))
 
 from IO.parsers.PDB_Parser import PDB_Parser
-from IO.writers.PDB_Writer import PDB_Writer
+from IO.visitor_writers.pdb_visitor import PDBExportVisitor
+from IO.visitor_writers.xml_visitor import XMLExportVisitor
 
 class RNA_IO:
     
     def __init__(self):
         self.__parsers={"PDB": PDB_Parser()}
-        self.__writers={"PDB": PDB_Writer()}
+        self.__writers={"PDB": PDBExportVisitor(), "XML": XMLExportVisitor(), "PDBML": XMLExportVisitor()}
     
     def read(self, path_to_file, format, coarse_grained=False, atom_name="C1'", array=True):
         """
@@ -22,14 +23,15 @@ class RNA_IO:
         parser=self.__parsers[format]
         return parser.read(path_to_file, coarse_grained, atom_name, array)
     
-    def write(self, rna_molecule, path_to_file, format):
+    def write(self, structure, format): #removed path as can not take it
         """
-        Writes the RNA molecule object to a PDB file.
+        Writes the RNA molecule object to a PDB file
+        can take any instance that is a child of Structure (globality in method signature)
         """
         if format not in self.__writers:
             raise ValueError(f"Format {format} is not supported")
-        writer=self.__writers[format]
-        writer.write(rna_molecule, path_to_file)
+        exporter=self.__writers[format]
+        structure.accept(exporter)
     
 #Example Usage
 

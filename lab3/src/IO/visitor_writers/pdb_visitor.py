@@ -5,10 +5,13 @@
 - The visitor visits the RNA_Molecule object and exports it to a PDB file
 '''
 
-from Processing.visitors.visitor import Visitor
+
 
 import os,sys
 sys.path.append(os.path.abspath('lab3/src'))
+
+from IO.visitor_writers.visitor import Visitor
+
 from Structure.RNA_Molecule import RNA_Molecule
 from utils import flattenMolecule
 

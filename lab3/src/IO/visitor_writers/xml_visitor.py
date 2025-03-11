@@ -10,7 +10,7 @@ sys.path.append(os.path.abspath('lab3/src'))
 from Structure.RNA_Molecule import RNA_Molecule
 from utils import flattenMolecule_to_dict
 
-from Processing.visitors.visitor import Visitor
+from IO.visitor_writers.visitor import Visitor
 
 class XMLExportVisitor(Visitor):
     '''
