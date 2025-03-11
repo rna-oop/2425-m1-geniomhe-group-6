@@ -30,7 +30,9 @@
 ## First Implementation
 
 **This implementation is in the branch `previous-model-extension `.**  
-[![branch1](https://img.shields.io/badge/branch_previous-model-extension.ipynb-green)]([./demo/reading_writing.ipynb](https://github.com/rna-oop/2425-m1-geniomhe-group-6/blob/previous-model-extension/lab3/))
+
+[![branch1](https://img.shields.io/badge/branch-previous--model--extension-green)](https://github.com/rna-oop/2425-m1-geniomhe-group-6/blob/previous-model-extension/lab3/)
+
 
 In this lab, we extended our previous model to include the following functionalities:
 - The parser returns a numpy array representation of the molecule.
@@ -76,7 +78,7 @@ else:
 
 **Code Usage**
 An example can be found in the notebook [reading.ipynb](https://github.com/rna-oop/2425-m1-geniomhe-group-6/blob/previous-model-extension/lab3/demo/reading.ipynb) from the other branch.
-[![Demo](https://img.shields.io/badge/open-in-jupyter-view_reading.ipynb-orange)]([./demo/reading_writing.ipynb](https://github.com/rna-oop/2425-m1-geniomhe-group-6/blob/previous-model-extension/lab3/demo/reading.ipynb))
+[![Demo](https://img.shields.io/badge/open_in_jupyter_view-reading.ipynb-orange)](https://github.com/rna-oop/2425-m1-geniomhe-group-6/blob/previous-model-extension/lab3/demo/reading.ipynb)
 
 We read a molecule that contains 1 model and another molecule that contains multiple models, and showed the resulting arrays. 
 A brief example:
@@ -480,7 +482,7 @@ The implementation of the classes is available in the [src](https://github.com/r
 
 For a demonstration of the Builder and Visitor Design Patterns, you can check the notebook [reading-writing.ipynb](./demo/reading.ipynb)
 
-[![Demo](https://img.shields.io/badge/open-in-jupyter-view_reading-writing.ipynb-orange)](./demo/reading_writing.ipynb)
+[![Demo](https://img.shields.io/badge/open_in_jupyter_view-reading--writing.ipynb-orange)](./demo/reading_writing.ipynb)
 
 
 
@@ -858,10 +860,10 @@ graph TD
     A[RNA Molecule] -.-> B[Visitor]
     B -.-> C[PDB Export Visitor]
     B -.-> D[XML Export Visitor]
-    style A fill:#12CDD4,stroke:#333,stroke-width:2px
-    style B fill:#12CDD4,stroke:#333,stroke-width:2px
-    style C fill:#12CDD4,stroke:#333,stroke-width:2px
-    style D fill:#12CDD4,stroke:#333,stroke-width:2px
+    style A fill:#12387F,stroke:#333,stroke-width:2px
+    style B fill:#12387F,stroke:#333,stroke-width:2px
+    style C fill:#12387F,stroke:#333,stroke-width:2px
+    style D fill:#12387F,stroke:#333,stroke-width:2px
 ```
 
 <!-- _Conceptually, this is how visitor's design is portrayed in an RNA molecule context:_
