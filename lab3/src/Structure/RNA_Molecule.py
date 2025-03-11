@@ -1,5 +1,8 @@
 '''
-module RNA_Molecule contains class RNA_Molecule
+--- RNA_Molecule submodule ---
+contains the implementation of:
+> Structure interface (abstract class)
+> RNA_Molecule class implements Structure interface (inherits from abstract class)
 '''
 
 import os,sys
@@ -8,8 +11,30 @@ sys.path.append(os.path.abspath('lab3/src'))
 from Structure.Model import Model
 from Families.species import Species
 
+from abc import ABC, abstractmethod
 
-class RNA_Molecule:
+# from Processing.visitors.visitor import Visitor as V #circular imports
+
+class Structure:
+    '''
+    abstract class defined in order to build the _Visitor_ design pattern
+    >meant to be inherted by *RNA_Molecule* class and enforces the implementation of the *accept* method
+
+    - abstract methods:
+        accept(visitor) -> None
+    '''
+
+    @abstractmethod
+    def accept(self, visitor:'Visitor'):
+        '''
+        abstract method that is meant to be implemented by the classes that inherit from Structure;  
+        allows the visitor to visit the class that implements this method
+        '''
+        pass
+
+
+
+class RNA_Molecule(Structure):
     
     def __init__(self, entry_id: str, experiment=None, species=None, models=None):
         self.entry_id = entry_id
@@ -72,6 +97,8 @@ class RNA_Molecule:
     def __repr__(self):
         return f"ID: {self.entry_id} Experiment: {self.experiment} {self.species}"
 
+    def accept(self, visitor:'Visitor'):
+        visitor.visit_RNA_Molecule(self)
 
         
 #Example usage

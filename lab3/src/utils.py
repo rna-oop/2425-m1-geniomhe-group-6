@@ -19,7 +19,7 @@ import os
 from Bio import PDB
 
 import os,sys
-sys.path.append(os.path.abspath('lab2/src')) 
+sys.path.append(os.path.abspath('lab3/src')) 
 
 from Structure.RNA_Molecule import RNA_Molecule
 from Structure.Model import Model
@@ -98,7 +98,7 @@ def fetch_pdb_file(pdb_entry_id, save_directory=CACHE_DIR):
 
 pathify_pdb=fetch_pdb_file
 
-def create_RNA_Molecule(pdb_entry_id):
+def create_RNA_Molecule(pdb_entry_id): #still not deleted bcs of dependencies (needs fixing -> last function in this module)
     
     pdb_file_path=fetch_pdb_file(pdb_entry_id)
     
@@ -121,62 +121,6 @@ def create_RNA_Molecule(pdb_entry_id):
             #Stop reading if line starts with "ATOM"
             if line.startswith("ATOM"):
                 break  #Exit the loop
-
-    #Create the RNA_Molecule object with the extracted information
-    rna_molecule = RNA_Molecule(pdb_entry_id, experiment, species)
-
-    #Continue processing the file to extract the structural information
-    with open(pdb_file_path, 'r') as pdb_file:
-        
-        has_models = False
-        current_model = None
-        current_chain = None
-        current_residue = None
-    
-        for line in pdb_file:
-            if line.startswith("MODEL"):
-                has_models = True  #The file contains multiple models
-                model_id = int(line.split()[1])  #Extract model ID
-                current_model = Model(model_id)  #Create Model object
-                rna_molecule.add_model(current_model)  #Store the model
-                
-            elif line.startswith("ATOM"):
-                #Extract chain ID (Column 22 in PDB format)
-                chain_id = line[21]  
-
-                #If there are no models, create a default model with ID 0
-                if not has_models and current_model is None:
-                    current_model = Model(0)
-                    rna_molecule.add_model(current_model)
-
-                #If new chain, create and add to current model
-                if current_model is not None and (current_chain is None or current_chain.id != chain_id):
-                    current_chain = Chain(chain_id)
-                    current_model.add_chain(current_chain)
-
-                #Extract residue information (Columns 18-20 for residue name, 23-26 for residue number)
-                residue_name = line[17:20].strip()
-                #Stop if the residue is not a RNA nucleotide
-                if residue_name not in ['A', 'C', 'G', 'U']:
-                        break
-                residue_id = int(line[22:26].strip())  
-
-                #If new residue, create and add to current chain
-                if current_chain is not None and (current_residue is None or current_residue.position != residue_id):
-                    current_residue = Residue(residue_name, residue_id)
-                    current_chain.add_residue(current_residue)
-
-                #Extract atom details
-                atom_name = line[12:16].strip()
-                x, y, z = map(float, [line[30:38], line[38:46], line[46:54]])  #Extract coordinates
-                element = line[76:78].strip()
-
-                #Create and add Atom object
-                atom = Atom(atom_name, x, y, z, element)
-                current_residue.add_atom(atom)
-
-    return rna_molecule #Return the RNA_Molecule object that stores the models which is turn store the rest of the structural information
-
 
 # -- Rfam api: https://docs.rfam.org/en/latest/api.html
 
@@ -236,6 +180,54 @@ def get_tree_newick_from_fam(fam_id):
         return str(e)
 
 
+def flattenMolecule(rna_molecule:RNA_Molecule):
+    """
+    Flattens the RNA molecule into a list of atoms.
+    Each atom is a tuple containing the model ID, serial number, atom, residue and chain.
+    
+    helper function in classes that implement the Visitor interface
+    """
+    atoms = []
+    model_id=0
+    for model in rna_molecule.get_models().values():
+        model_id = model.id
+        serial=1
+        for chain in model.get_chains().values():
+            for residue in chain.get_residues().values():
+                for atom in residue.get_atoms().values():
+                    atoms.append((model_id, serial, atom, residue, chain))
+                    serial += 1
+    return atoms
+
+def flattenMolecule_to_dict(rna_molecule:RNA_Molecule):
+    atoms_list = []
+
+    for model_num,_ in enumerate(rna_molecule.get_models()):  #--looping through all models 
+        model=rna_molecule.get_models()[_] # --model object from dict key
+        
+        for chain in model.get_chains().values(): #--looping through all chains
+            for residue in chain.get_residues().values(): #--looping through all residues  
+                for atom_key, atom in residue.get_atoms().items(): #--looping through all atoms
+                    atom_id, alt_id = atom_key  # unpacking atom key (alt_id is '' if no alt location)
+                    # --keys defined identically to pdbml format, values extracted directly from atom object
+                    atom_data = {
+                        "atom_id": str(len(atoms_list) + 1),  # Assign a sequential ID
+                        "B": str(atom.temp_factor),
+                        "x": str(atom.x),
+                        "y": str(atom.y),
+                        "z": str(atom.z),
+                        "chain_id": chain.id,
+                        "atom_id": atom_id,
+                        "residue_type": residue.type.name,
+                        "residue_pos": str(residue.position),
+                        "alt_id": None if alt_id == "" else alt_id,
+                        "occupancy": str(atom.occupancy),
+                        "model_no": model_num+1,
+                        "atom_element": atom.element.name
+                    }
+                    atoms_list.append(atom_data)
+    return atoms_list
+
 if __name__=='__main__':
     newick_str = '''
     (87.4_AE017263.1/29965-30028_Mesoplasma_florum_L1[265311].1:0.05592,
@@ -260,47 +252,3 @@ if __name__=='__main__':
     rna_molecule = create_RNA_Molecule("7EAF")
     # rna_molecule = RNA_Molecule.from_pdb("7EAF") #nop
     rna_molecule.print_all()
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    def createMolecule(self):
-        
-        self.rna_molecule = RNA_Molecule(self.entry_id, self.experiment, self.species)
-        
-        for atom in self.atoms:
-            
-            atom_name, x, y, z, element, residue_name, residue_id, chain_id, model_id = atom
-            
-            #Retrieve or create the model
-            if model_id not in self.models:
-                self.models[model_id] = Model(model_id)
-            model = self.models[model_id]
-            self.rna_molecule.add_model(model) #Add model to the RNA molecule
-            
-            #Retrieve or create the chain
-            if (model_id, chain_id) not in self.chains:
-                self.chains[(model_id, chain_id)] = Chain(chain_id)
-            chain = self.chains[(model_id, chain_id)]
-            self.rna_molecule.get_models()[-1].add_chain(chain) #Add chain to the model
-            
-            #Retrieve or create the residue
-            if (model_id, chain_id, residue_id) not in self.residues:
-                self.residues[(model_id, chain_id, residue_id)] = Residue(residue_name, residue_id)
-            residue = self.residues[(model_id, chain_id, residue_id)]
-            print("Test", self.rna_molecule.get_models()[-1].get_chains())
-            self.rna_molecule.get_models()[-1].get_chains()[-1].add_residue(residue) #Add residue to the chain
-            
-            # Create the atom and add it to the residue
-            atom = Atom(atom_name, x, y, z, element)
-            self.rna_molecule.get_models()[-1].get_chains()[-1].get_residues()[-1].add_atom(atom) #Add atom to the residue
-                
-        return self.rna_molecule
