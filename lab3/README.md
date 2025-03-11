@@ -14,16 +14,23 @@
     - [Class Diagram](#class-diagram)
     - [Object Diagram](#object-diagram)
     - [1. Builder Design Pattern](#1-builder-design-pattern)
-      - [iii. ObjectBuilder class](#iii-objectbuilder-class)
-      - [iv. ArrayBuilder class](#iv-arraybuilder-class)
+        - [i. Director class](#i-director-class)
+        - [ii. Builder class](#ii-builder-class)
+        - [iii. ObjectBuilder class](#iii-objectbuilder-class)
+        - [iv. ArrayBuilder class](#iv-arraybuilder-class)
     - [2. Visitor Design Pattern](#2-visitor-design-pattern)
+        - [i. Visitor interface](#i-visitor-interface)
+        - [ii. PDBExportVisitor class](#ii-pdbexportvisitor-class)
+        - [iii. XMLExportVisitor class](#iii-xmlexportvisitor-class)
+        - [iii. Structure interface](#iii-element-interface)
   - [Advantages and Disadvantages](#advantages-and-disadvantages)
     - [For the Builder Design Pattern](#for-the-builder-design-pattern)
     - [For the Visitor Design Pattern](#for-the-visitor-design-pattern)
 
 ## First Implementation
 
-**This implementation is in the branch `previous-model-extension `.**
+**This implementation is in the branch `previous-model-extension `.**  
+[![branch1](https://img.shields.io/badge/branch_previous-model-extension.ipynb-green)]([./demo/reading_writing.ipynb](https://github.com/rna-oop/2425-m1-geniomhe-group-6/blob/previous-model-extension/lab3/))
 
 In this lab, we extended our previous model to include the following functionalities:
 - The parser returns a numpy array representation of the molecule.
@@ -35,7 +42,7 @@ First, we kept our previous model and extended it with the minimal changes possi
 
 ![Class-Diagram](model/Class-Diagram-Previous.jpg)
 
-The new changes are highlighted in white.
+The new changes are highlighted in white; note that `flattenMolecule_to_dict()` is a new method to provide an extra utility to the Processor class, not mandatory for the implementation (e.g., some libraris like numpy, pandas, etc. provide similar functionalities that transforms their main objects to different types of data structures).
 
 ### Object Diagram for the Previous-Model-Extension
 
@@ -68,7 +75,9 @@ else:
 ```
 
 **Code Usage**
-An example can be found in the notebook [reading.ipynb](./demo/reading.ipynb). 
+An example can be found in the notebook [reading.ipynb](https://github.com/rna-oop/2425-m1-geniomhe-group-6/blob/previous-model-extension/lab3/demo/reading.ipynb) from the other branch.
+[![Demo](https://img.shields.io/badge/open-in-jupyter-view_reading.ipynb-orange)]([./demo/reading_writing.ipynb](https://github.com/rna-oop/2425-m1-geniomhe-group-6/blob/previous-model-extension/lab3/demo/reading.ipynb))
+
 We read a molecule that contains 1 model and another molecule that contains multiple models, and showed the resulting arrays. 
 A brief example:
 
@@ -296,7 +305,12 @@ _in this example id 171 is alt location B of the same atom in 170, and shows dif
 
 Thanks to the hierarchical class design of the molecule object, we're able to retrieve all information needed describing an atom, for each atom in the molecule.
 
-In porcessor, this method `flattenMolecule_to_dict` takes an object and returns a list of atom dictionaries, where the keys of each dictionary are named exactly as the tags in the xml file. This way, we can easily create the xml file by iterating over the list of atoms and creating the corresponding tags.
+In porcessor, this method `flattenMolecule_to_dict` takes an object and returns a list of atom dictionaries, where the keys of each dictionary are named exactly as the tags in the xml file. 
+
+> [!NOTE] 
+> It practically has the same behavior as `flattenMolecule` but returns a list of dictionaries instead of a list of atom info and objects (allowing diverse output formats).
+
+This way, we can easily create the xml file by iterating over the list of atoms and creating the corresponding tags.
 
 ```python
     def flattenMolecule_to_dict(self,rna_molecule:RNA_Molecule):
@@ -464,7 +478,10 @@ The implementation of the classes is available in the [src](https://github.com/r
 
 ### Demo
 
-For a demonstration of the Builder Design Pattern, you can check the notebook [reading.ipynb](./demo/reading.ipynb). 
+For a demonstration of the Builder and Visitor Design Patterns, you can check the notebook [reading-writing.ipynb](./demo/reading.ipynb)
+
+[![Demo](https://img.shields.io/badge/open-in-jupyter-view_reading-writing.ipynb-orange)](./demo/reading_writing.ipynb)
+
 
 
 ### Library Structure
@@ -474,56 +491,54 @@ In this lab, we added `Processing` module that contains `builders` and `visitors
 The classes are organized in modules and submodules as follows:
 
 ```text
-src/
+.
 ├── Families
 │   ├── __init__.py
 │   ├── clan.py
 │   ├── family.py
 │   ├── species.py
 │   └── tree.py
-|
 ├── IO
 │   ├── RNA_IO.py
 │   ├── __init__.py
-|   |
 │   ├── parsers
 │   │   ├── PDB_Parser.py
 │   │   ├── RNA_Parser.py
-│   │   └── __init__.py
-|   |
-│   └── writers
-│       ├── PDB_Writer.py
-│       ├── RNA_Writer.py
-│       └── __init__.py
-|
+│   │   ├── __init__.py
+│   └── visitor_writers
+│       ├── __init__.py
+│       ├── pdb_visitor.py
+│       ├── visitor.py
+│       └── xml_visitor.py
 ├── Processing
-│   ├── __init__.py
-|   |
-│   ├── builders
-│   │   ├── Director.py
-│   │   ├── Builder.py
-|   |   ├── ObjectBuilder.py
-|   |   ├── ArrayBuilder.py
-│   │   └── __init__.py
-|   |
-│   └── visitors
-│       └── __init__.py
-|
+│   ├── ArrayBuilder.py
+│   ├── Builder.py
+│   ├── Director.py
+│   ├── ObjectBuilder.py
+│   └── __init__.py
 ├── Structure
 │   ├── Atom.py
 │   ├── Chain.py
 │   ├── Model.py
 │   ├── RNA_Molecule.py
 │   ├── Residue.py
-│   └── __init__.py 
-|
+│   └── __init__.py
+├── processor.py
 └── utils.py
+
+10 directories, 21 files
+
 ```
 
 
 ### Class Diagram
 
 ![Class-Diagram](model/Class-Diagram-Main.jpg)
+
+The changes are following this color scheme:
+- ***Builder Design Pattern***: light green <span style="background-color:#EBF5B3; display:inline-block; width:10px; height:10px;"></span> 
+- ***Visitor Design Pattern***: light blue <span style="background-color:#B8F0F2; display:inline-block; width:10px; height:10px;"></span> (classes and inheritance link for our predefined RNA_Molecule class)
+- *methods added to the existing classes*: highlighted in white <span style="background-color:#FFFFFF; display:inline-block; width:10px; height:10px;"></span> 
 
 ### Object Diagram
 
@@ -560,7 +575,7 @@ In this lab, we used the `Builder` design pattern to separate the construction o
 
 - Finally, instead of `processor.createMolecule()` that creates only an object, we return `builder.molecule` to get the built molecule that can be an object or a numpy array depending on the builder used.
 
-#### i. Director
+#### i. Director class
 
 - The `Director` class serves as a director for the `Builder` classes. 
 
@@ -697,26 +712,61 @@ In this lab, we used the `Builder` design pattern to separate the construction o
         - This structure allows for easy retrieval and addition of atom coordinates for each residue.
         - The dictionary is cleared after constructing the numpy array.
 
-
-### 2. Visitor Design Pattern
-
-
 ### 2. Visitor design pattern
 
-The visitor design pattern aims to separate the algorithm from the object structure on which it operates. In this case we want to be able to operate on RNA to export it into various file formats: PDB and PDBML/XML. Our aim is to perform this withour adding a functionality to the `RNA_Molecule` class itself, but rather to create a new class that will be able to visit the RNA molecule and perform the export functionality.
+The visitor design pattern aims to separate the algorithm from the object structure on which it operates. In this case we want to be able to operate on RNA to export it into various file formats: PDB and PDBML/XML. Our aim is to perform this without adding a functionality to the `RNA_Molecule` class itself (through decoupling), but rather to create a new class that will be able to visit the RNA molecule and perform the export functionality.
 
 **Modifications done to `PDB_Writer`**
 
 
-As defined in the [lab2, The `PDB_Writer`](https://github.com/rna-oop/2425-m1-geniomhe-group-6/tree/main/lab2#pdb_writer-class) class was reposnible for generating the PDB file.
+As defined in the [lab2, The `PDB_Writer`](../lab2#pdb_writer-class) class was reposnible for generating the PDB file, we are compare it here directly with [PDBExportVisitor](./src/IO/visitor_writers/pdb_visitor.py) class in the visitor design pattern, which has the same responsibility.
 
-The same functionalities writing the file persists, however, the technicalities of handeling them are changed to account for class and method terminology and manipulation consistency with the way the _Visitor_ pattern in defined.
+The same functionalities writing the file persists, however, only some technicalities of handeling them are changed to account for class and method terminology and manipulation consistency with the way the _Visitor_ pattern in defined. On the other hand, it's almost exactly identical to the previous implementation (more on that in the [_next section_](#for-the-visitor-design-pattern)).  
+In addition, since the flattening methods in processor are not really instance-related methods, we have moved these to `utils` (`flattenMolecule` and `flattenMolecuke_to_dict`) because it would be interesting to allow the user to use these functions directly if needed (like in _torch_).
 
-* The write method is mainly substituted now by a "visit" method, which is encapsulated within the RNA_Molecule class object, in a method called `accept` (detailed later, now highlighting differences)
-* Instead of using Processor class to read the molecule info and _store_ them within a processor object's fields, Processor and PDB_Writer to Flatten an object is now a helper function in utils to allow access on the transformation Molecule -> list or Molecule -> dict (and PDB_Writer format methods are now _private_ helper functions within the pdb_visitor module since it's a PDB specific format). 
+| PDB_Writer | PDBExportVisitor |
+|------------|--------------|
+| implements `RNA_Writer` interface to enforce a method | implements `Visitor` interface to enforce a method |
+| no caching | no caching |
+| `write` method | `visit_RNA_Molecule` method |
+| takes `RNA_Molecule` object | takes `RNA_Molecule` object |
+| generates PDB file | generates PDB file |
+| uses `_format_atom_info` method | uses `_format_atom_info` method |
+| uses flattening through `flattenMolecule`, method of `processor` (static behavior) | uses flattening through `flattenMolecule_to_dict`, added function to `utils` |
 
-> [!WARNING]
-The whole class `PDB_Writer` with its parent `RNA_Writer` is deprecated now in this lab, dragging down the other classes RNA_IO and Processor which were nestedly involved in the writing process. To the user, there is a slight change within the ui provided to write in order to accomodate with what the $Visitor$ design enforces
+> [!NOTE]
+> As can be seen, in our previous decoupled design, `PDB_Writer` met an equivalent implementation of the `Visitor` design pattern: **every row in the table above is a direct correspondence**.
+
+Slight differences are within what the `Visitor` design pattern enforces, which is the `visit` method that will be called on the `RNA_Molecule` object, and the `accept` method that will be called on the `RNA_Molecule` object to accept the visitor.
+
+This design pattern thus can be used in the following way:
+
+```python
+# rna_Molecule: RNA_Molecule
+
+pdb_exporter = PDBExportVisitor()
+rna_Molecule.accept(pdb_exporter)
+
+xml_exporter = XMLExportVisitor()
+rna_Molecule.accept(xml_exporter)
+```
+
+In order to maintain an efficient user-agnostic interface that keeps export encapsulated, we have maintained the same `RNA_IO` class, with the same `write` method, that will take care of the visitor pattern implementation.
+
+First, it declares visitor instances in one of its rna_io object's attributes:
+```python
+        self.__writers={"PDB": PDBExportVisitor(), "XML": XMLExportVisitor(), "PDBML": XMLExportVisitor()}
+```
+
+```python
+    def write(self, structure, format):
+
+        if format not in self.__writers:
+            raise ValueError(f"Format {format} is not supported")
+        exporter=self.__writers[format]
+        structure.accept(exporter)
+```
+
 
 **Slight intro and background explaining the design:**
 
@@ -730,22 +780,12 @@ The visitor design pattern is composed of the following elements:
 | `PDBExportVisitor` | class | implements `Visitor` and defines the visit method for each element of the object Structure (here only `RNA_Molecule`) $\leftarrow$ exports a PDB file |
 | `XMLExportVisitor` | class | implements `Visitor` and defines the visit method for each element of the object Structure (here only `RNA_Molecule`) $\leftarrow$ exports a PDBML/XML file |
 
-this design pattern is used in the following way:
 
-```python
-# rna_Molecule: RNA_Molecule
 
-pdb_exporter = PDBExportVisitor()
-rna_Molecule.accept(pdb_exporter)
-
-xml_exporter = XMLExportVisitor()
-rna_Molecule.accept(xml_exporter)
-```
-
-_Example output files are provided (generated from [`visitor_application.py`](./demo/visitor_application.py)):_
+<!-- _Example output files are provided (generated from [`visitor_application.py`](./demo/visitor_application.py)):_
 
 * [7EAF_PDBified.pdb](./demo/7EAF_PDBified.pdb)
-* [7EAF_PDBMLified.xml](./demo/7EAF_PDBML.xml)
+* [7EAF_PDBMLified.xml](./demo/7EAF_PDBML.xml) -->
 
 
 
@@ -761,9 +801,10 @@ class Visitor(ABC):
         pass
 ```
 
-#### ii. Concrete visitors
-
 There are 2 concrete visitors in this lab, found in submodules `pdb_visitor` and `xml_visitor`. Each of these classes implements the `Visitor` interface and defines the `visit_RNA_Molecule` method, which will perform the export operation.
+
+#### ii. PDBExportVisitor class
+
 
 * `PDBExportVisitor`
 ```python
@@ -774,6 +815,9 @@ class PDBExportVisitor(Visitor):
         ...
 ```
 this class has some helper methods in order to format the data in the PDB format, which are private methods( start with `_ and not part of the class) not meant to be accessed.
+
+#### iii. XMLExportVisitor class
+
 * `XMLExportVisitor`
 ```python
 # xml_visitor.py
@@ -786,11 +830,11 @@ Formatting into XML is done manually without the use of `xml` library.
 
 Both classes use flattening functions provided in `utils` to convert the RNA_Molecule object into a list or a dictionary, which can then be used to generate the file (primitive data types to be used instead of objects, makes it more flexible to implement other similar visit methods for other types of objects).
 
-#### iii. Element interface
+#### iv. Structure interface
 
-_different ConcreteElement classes implement this interface_
+_this is the Component interface, as per the design pattern definition. Different ConcreteComponents classes implement this interface_
 
-In this implementation, this is the `Structure` interface, which is implemented by the `RNA_Molecule` module (because RNA_Molecule will implement it) and defines the `accept` method that takes _any Visitor_ as an argument and enforces it on ConcreteElement classes that implement it.
+In this implementation, the `Structure` interface is implemented by the `RNA_Molecule` module (because RNA_Molecule will implement it) and defines the `accept` method that takes _any Visitor_ as an argument and enforces it on ConcreteElement classes that implement it.
 
 Underneath the hood, the `accept` method of the `RNA_Molecule` class will call the `visit` method of the visitor class, which will then perform the export operation.
 
@@ -801,10 +845,10 @@ class RNA_Molecule(Structure):
         visitor.visit_RNA_Molecule(self)
 ```
 
-> [!NOTE]
+> [!WARNING]
 > since python does not provide direct overloading, we need to define a method for each element of the object structure that the visitor will visit. In this case, we have the `RNA_Molecule` class (instead of having several `visit` methods that take different types of arguments like in java, it'll be `visit_RNA_Molecule()`).
 
-In our case, there is only one ConcreteElement that _implements_ Structure, which is the `RNA_Molecule` class, however this decoupled design allows us at any point to define different concrete Structure classes (*e.g. different types of molecules like DNA_Molecule, protein_Molecule, etc. or different RNA mol representation objects like a RNA_ndarray class*)
+In our case, there is only one `ConcreteComponent` that _implements_ Structure, which is the `RNA_Molecule` class, however, this decoupled design allows us at any point to define different concrete Structure classes (*e.g. different types of molecules like DNA_Molecule, protein_Molecule, etc. or different RNA mol representation objects like a RNA_ndarray class*)
 
 > _The logic_
 > *RNA_Molecule will accept any visitor type, which will call the visit method for RN_Molecule of the specific visitor instanciated*
@@ -814,15 +858,15 @@ graph TD
     A[RNA Molecule] -.-> B[Visitor]
     B -.-> C[PDB Export Visitor]
     B -.-> D[XML Export Visitor]
-    style A fill:#12387F,stroke:#333,stroke-width:2px
-    style B fill:#12387F,stroke:#333,stroke-width:2px
-    style C fill:#12387F,stroke:#333,stroke-width:2px
-    style D fill:#12387F,stroke:#333,stroke-width:2px
+    style A fill:#12CDD4,stroke:#333,stroke-width:2px
+    style B fill:#12CDD4,stroke:#333,stroke-width:2px
+    style C fill:#12CDD4,stroke:#333,stroke-width:2px
+    style D fill:#12CDD4,stroke:#333,stroke-width:2px
 ```
 
-_Conceptually, this is how visitor's design is portrayed in an RNA molecule context:_
+<!-- _Conceptually, this is how visitor's design is portrayed in an RNA molecule context:_
 
-![vis](./assets/visitor_design.jpg)
+![vis](./assets/visitor_design.jpg) -->
 
 ## Advantages and Disadvantages
 
@@ -840,65 +884,8 @@ But on the other hand, it has also introduced many advantages:
   
 ### For the Visitor Design Pattern
 
+_As previously discussed, equivalent notions have been found between this and the prior implementation (check [visitor pattern explanation](#2-visitor-design-pattern))_
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+There is 2 advantages of the Visitor Design Pattern, only thanks to its indirect reltion to the object structure (`accept` method that takes a `Visitor` object): 
+* [x] The user now can perform exporting from an `RNA_Molecule` object, a functionality that we wanted to have access to initially while keeping the object clean and decoupled. Noting that it can take _any_ visitor type, it allows for a more flexible and extensible design.
+* [x] Having a `Structure` parent, we can add as many as children as we want in the future without needing to worry about decoupling them everytime we implement them, but rather directly overridign the `accept` method in the new class and providing `Visitor` with an overloaded `visit` method (efficiency in terms of code writing).
