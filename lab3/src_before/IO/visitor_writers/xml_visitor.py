@@ -66,24 +66,3 @@ class XMLExportVisitor(Visitor):
       </PDBx:atom_site>''')                        
                 f.write('''  </PDBx:atom_siteCategory>
 </PDBx:datablock>''')
-
-
-
-    def export(self, rna_molecule:RNA_Molecule, path):
-        '''
-        method to export the RNA_Molecule object to a file
-        '''
-        pass
-    
-
-    def visit_Model(self, model):
-        pass
-    
-    def visit_Chain(self, chain):
-        pass
-    
-    def visit_Residue(self, residue):
-        pass
-    
-    def visit_Atom(self, atom):
-        pass

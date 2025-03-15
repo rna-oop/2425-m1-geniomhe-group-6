@@ -7,7 +7,6 @@ sys.path.append(os.path.abspath('lab3/src'))
 from IO.parsers.PDB_Parser import PDB_Parser
 from IO.visitor_writers.pdb_visitor import PDBExportVisitor
 from IO.visitor_writers.xml_visitor import XMLExportVisitor
-from Structure.RNA_Molecule import RNA_Molecule
 
 class RNA_IO:
     
@@ -24,16 +23,15 @@ class RNA_IO:
         parser=self.__parsers[format]
         return parser.read(path_to_file, coarse_grained, atom_name, array)
     
-    def write(self, rna_molecule: RNA_Molecule, path, format): 
+    def write(self, structure, path, format): 
         """
-        Writes an RNA_Molecule object to a file of specific format.
+        Writes a structure to a file of specific format.
+        Can take any instance that is a child of Structure (globality in method signature)
         """
         if format not in self.__writers:
             raise ValueError(f"Format {format} is not supported")
         exporter=self.__writers[format]
-        if not isinstance(rna_molecule, RNA_Molecule):
-            raise ValueError("RNA_Molecule object expected")
-        exporter.export(rna_molecule, path)
+        structure.accept(exporter)
     
 #Example Usage
 

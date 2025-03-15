@@ -2,7 +2,6 @@
 Atom module contains class Atom and two enums Element and AtomName
 '''
 
-from Structure.Structure import Structure
 from enum import Enum
 
 #Define the Element enum
@@ -13,7 +12,7 @@ class Element(Enum):
     P = "P"
     H = "H"
 
-class Atom(Structure):
+class Atom:
 
     def __init__(self, name: str, x: float, y: float, z: float, element: str, altloc=None, occupancy=None, temp_factor=None, charge=None):
         self.name = name
@@ -146,9 +145,7 @@ class Atom(Structure):
         self.__residue = residue 
 
 
-    def accept(self, visitor:'Visitor'):
-        visitor.visit_atom(self)
-        
+
 #Example usage
 
 if __name__ == "__main__":

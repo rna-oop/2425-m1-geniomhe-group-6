@@ -5,10 +5,9 @@ Chain module contains class Chain
 import os,sys
 sys.path.append(os.path.abspath('lab3/src'))
 
-from Structure.Structure import Structure
 from Structure.Chain import Chain
 
-class Model(Structure):
+class Model:
     def __init__(self, id: int, chains=None):
         self.id = id
         self._chains = chains if chains is not None else {}
@@ -49,8 +48,7 @@ class Model(Structure):
     def __repr__(self):
         return f"Model {self.id}"
     
-    def accept(self, visitor:'Visitor'):
-        visitor.visit_model(self)
+    
     
 #Example usage
 

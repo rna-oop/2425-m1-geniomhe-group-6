@@ -2,10 +2,9 @@
 import os,sys
 sys.path.append(os.path.abspath('lab3/src'))
 
-from Structure.Structure import Structure
 from Structure.Residue import Residue
 
-class Chain(Structure):
+class Chain:
     def __init__(self, id: str, residues=None):
         self.id = id
         self._residues = residues if residues is not None else {}
@@ -45,8 +44,6 @@ class Chain(Structure):
     def __repr__(self):
         return f"Chain {self.id}"
 
-    def accept(self, visitor:'Visitor'):
-        visitor.visit_chain(self)
 
 #Example usage
 

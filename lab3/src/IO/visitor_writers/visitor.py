@@ -19,20 +19,43 @@ from abc import ABC, abstractmethod
 class Visitor(ABC):
     '''
     abstract class defined in order to build the _Visitor_ design pattern
-    >meant to be inherted by *XMLExportVisitor* and *PDBExportVisitor* classes and enforces the implementation of the *visit* method
-
-    - abstract methods:
-        visit_RNA_Molecule(rna:RNA_Molecule) -> None
-
-    *since there is no other concrete components*
-
+    >meant to be inherted by *XMLExportVisitor* and *PDBExportVisitor* classes 
+    >contains abstract methods to be implemented by the child classes:
+        - export
+        - visit_RNA_Molecule
+        - visit_Model
+        - visit_Chain
+        - visit_Residue
+        - visit_Atom
     '''
 
+    @abstractmethod
+    def export(self, rna_molecule:RNA_Molecule, path):
+        '''
+        method to export the RNA_Molecule object to a file
+        '''
+        pass
 
     @abstractmethod
     def visit_RNA_Molecule(self, rna:RNA_Molecule):
         '''
-        abstract method that is meant to be implemented by the classes that inherit from Visitor;  
-        allows the visitor to visit the class that implements this method
+        method to format the RNA_Molecule attributes to a string 
+        it will be implemented differently in each child class
         '''
+        pass
+
+    @abstractmethod
+    def visit_Model(self, model):
+        pass
+    
+    @abstractmethod
+    def visit_Chain(self, chain):
+        pass
+    
+    @abstractmethod
+    def visit_Residue(self, residue):
+        pass
+    
+    @abstractmethod
+    def visit_Atom(self, atom):
         pass

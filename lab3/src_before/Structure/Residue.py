@@ -6,7 +6,6 @@ import os,sys
 sys.path.append(os.path.abspath('lab3/src'))
 
 from enum import Enum
-from Structure.Structure import Structure
 from Structure.Atom import Atom
 
 class NBase(Enum):
@@ -16,7 +15,7 @@ class NBase(Enum):
     U = "U"
 
 
-class Residue(Structure):
+class Residue:
 
     def __init__(self, type: str, position: int, i_code=None, atoms=None):
         self.type = type
@@ -82,8 +81,7 @@ class Residue(Structure):
     def __repr__(self):
         return f"Residue type:{self.type.value} position:{self.position}"
     
-    def accept(self, visitor:'Visitor'):
-        visitor.visit_residue(self)
+
 
 #Example usage
 
