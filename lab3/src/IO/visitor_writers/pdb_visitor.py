@@ -116,7 +116,7 @@ class PDBExportVisitor(Visitor):
         """
         Formats atom-specific attributes.
         """
-        format=[]
+        formatted=[]
         
         altloc = atom.altloc or ' '  
         occupancy = atom.occupancy or None  
@@ -128,25 +128,25 @@ class PDBExportVisitor(Visitor):
         temp_factor_formatted = f"{temp_factor:6.2f}" if isinstance(temp_factor, float) else ' ' * 6  
 
     
-        format.append(f"{atom.name:<4}{altloc:1}")
-        format.append(f"{atom.x:8.3f}{atom.y:8.3f}{atom.z:8.3f}{occupancy_formatted}{temp_factor_formatted}{'':10}{atom.element.value:>2}{charge:2}")
+        formatted.append(f"{atom.name:<4}{altloc:1}")
+        formatted.append(f"{atom.x:8.3f}{atom.y:8.3f}{atom.z:8.3f}{occupancy_formatted}{temp_factor_formatted}{'':10}{atom.element.value:>2}{charge:2}")
         
-        return format
+        return formatted
         
 
     def visit_Residue(self, residue: Residue):
         """
         Formats residue-specific attributes.
         """
-        format=[]
+        formatted=[]
         
         i_code = residue.i_code or ' '
         
         
-        format.append(f"{residue.type.value:>3} ")
-        format.append(f"{residue.position:>4}{i_code:1}{'':3}")
+        formatted.append(f"{residue.type.value:>3} ")
+        formatted.append(f"{residue.position:>4}{i_code:1}{'':3}")
         
-        return format
+        return formatted
         
         
 
