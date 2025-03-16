@@ -505,12 +505,12 @@ The classes are organized in modules and submodules as follows:
 │   │   ├── PDB_Parser.py
 │   │   ├── RNA_Parser.py
 │   │   ├── __init__.py
-│   └── visitor_writers
+│   └── visitor_writers         #--new
 │       ├── __init__.py
 │       ├── pdb_visitor.py
 │       ├── visitor.py
 │       └── xml_visitor.py
-├── Processing
+├── Processing                  #--new
 │   ├── ArrayBuilder.py
 │   ├── Builder.py
 │   ├── Director.py
@@ -522,6 +522,7 @@ The classes are organized in modules and submodules as follows:
 │   ├── Model.py
 │   ├── RNA_Molecule.py
 │   ├── Residue.py
+
 │   └── __init__.py
 └── utils.py
 
@@ -536,8 +537,9 @@ The classes are organized in modules and submodules as follows:
 
 The changes are following this color scheme:
 - ***Builder Design Pattern***: light green <span style="background-color:#EBF5B3; display:inline-block; width:10px; height:10px;"></span> 
-- ***Visitor Design Pattern***: light blue <span style="background-color:#B8F0F2; display:inline-block; width:10px; height:10px;"></span> (classes and inheritance link for our predefined RNA_Molecule class)
+- ***Visitor Design Pattern***: light blue <span style="background-color:#B8F0F2; display:inline-block; width:10px; height:10px;"></span> (classes/interfaces and inheritance links for our predefined classes in purple)
 - *methods added to the existing classes*: highlighted in white <span style="background-color:#FFFFFF; display:inline-block; width:10px; height:10px;"></span> 
+
 
 ### Object Diagram
 
