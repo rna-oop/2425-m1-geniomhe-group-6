@@ -717,6 +717,9 @@ In this lab, we used the `Builder` design pattern to separate the construction o
 
 ### 2. Visitor design pattern
 
+> [!CAUTION]
+> We have tried to implement the Visitor Design Pattern in another way previously, with an implementation that can be found in [`src_before/`](./src_before/), and details can be found in the [`README-before.md`](./README-before.md)
+
 The visitor design pattern is implemented to be able to export an RNA object into various file formats: `PDB` and `PDBML/XML`. The aim of using this pattern is to perform this operation without adding this functionality in the `RNA_Molecule` class itself, but creates a new class that will be able to visit an RNA object and perform the export operation.
 
 **Modifications done to previous implementation:**
