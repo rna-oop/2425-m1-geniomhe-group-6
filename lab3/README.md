@@ -522,11 +522,11 @@ The classes are organized in modules and submodules as follows:
 │   ├── Model.py
 │   ├── RNA_Molecule.py
 │   ├── Residue.py
-
+│   ├── Structure.py		#--new
 │   └── __init__.py
 └── utils.py
 
-10 directories, 21 files
+10 directories, 22 files
 
 ```
 
