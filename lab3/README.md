@@ -15,14 +15,12 @@
     - [Class Diagram](#class-diagram)
     - [Object Diagram](#object-diagram)
     - [1. Builder Design Pattern](#1-builder-design-pattern)
-        - [i. Director class](#i-director-class)
-        - [ii. Builder class](#ii-builder-class)
-        - [iii. ObjectBuilder class](#iii-objectbuilder-class)
-        - [iv. ArrayBuilder class](#iv-arraybuilder-class)
+      - [iii. ObjectBuilder class](#iii-objectbuilder-class)
+      - [iv. ArrayBuilder class](#iv-arraybuilder-class)
     - [2. Visitor design pattern](#2-visitor-design-pattern)
       - [i. Visitor interface](#i-visitor-interface)
-      - [ii. PDBExportVisitor class](#ii-pdbexportvisitor-class)
-      - [iii. XMLExportVisitor class](#iii-xmlexportvisitor-class)
+      - [ii. PDBExportVisitor](#ii-pdbexportvisitor)
+      - [iii. XMLExportVisitor](#iii-xmlexportvisitor)
       - [iv. Structure interface](#iv-structure-interface)
   - [Advantages and Disadvantages](#advantages-and-disadvantages)
     - [For the Builder Design Pattern](#for-the-builder-design-pattern)
@@ -899,5 +897,5 @@ Advantages: Some of the _primary_ goals of a visitor pattern were actually met i
 * [ ] Ability to accept a visitor from any object of the structure, which can be seen as an advantage in terms of flexibility (portray the object in the way its represented in the file), however it's an encapsulated property that is generally not used in the current implementation, having the official writing interface handeled by `RNA_IO` class (takes directly an RNA object and a file format to write to).
 
 Disadvantages:  
-* Complex code: previous implementation handeled writing like the visitor pattern (in a seperate class from `RNA_Molecule`) but performed it in a more direct way by directly flattening a molecule object into a list of atoms and formatting it to a file.
+* Complex code: previous implementation handeled writing same as the visitor pattern (in a seperate class from `RNA_Molecule`) but performed it in a more direct way by directly flattening a molecule object into a list of atoms and formatting it to a file, which made the molecule representation to be decoupled from the writing process, unlike the visitor implementation. 
 
