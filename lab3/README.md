@@ -536,8 +536,8 @@ The classes are organized in modules and submodules as follows:
 ![Class-Diagram](model/Class-Diagram-Main.jpg)
 
 The changes are following this color scheme:
-- ***Builder Design Pattern***: light green <span style="background-color:#EBF5B3; display:inline-block; width:10px; height:10px;"></span> 
-- ***Visitor Design Pattern***: light blue <span style="background-color:#B8F0F2; display:inline-block; width:10px; height:10px;"></span> (classes/interfaces and inheritance links for our predefined classes in purple)
+- ***Builder Design Pattern***: light green <img src='./assets/green.png' width=10 height=10>
+- ***Visitor Design Pattern***: light blue <img src='./assets/blue.png' width=10 height=10> (classes/interfaces and inheritance links for our predefined classes in purple)
 - *methods added to the existing classes*: highlighted in white <span style="background-color:#FFFFFF; display:inline-block; width:10px; height:10px;"></span> 
 
 
