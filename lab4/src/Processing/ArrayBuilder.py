@@ -1,5 +1,5 @@
 import os,sys
-sys.path.append(os.path.abspath('lab3/src'))
+sys.path.append(os.path.abspath('lab4/src'))
 
 import numpy as np
 from Processing.Builder import Builder
