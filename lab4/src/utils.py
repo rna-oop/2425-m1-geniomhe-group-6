@@ -1,10 +1,12 @@
 doc='''
-utils module conating utilities functions for the RNA library in order to perform data retrieval and file parsing
+utils module containing utilities functions for the RNA library in order to perform data retrieval and file parsing
 
 Functions:
-    - parse_newick(newick: str) -> dict: recursively parses a Newick string into a nested dictionary
+    - parse_pdb_files(entries: list) -> np.ndarray: parses a list of PDB entries and returns a numpy array of stacked molecules
+    - flattenMolecule(rna_molecule: RNA_Molecule) -> list: flattens the RNA molecule into a list of atoms
+    - flattenMolecule_to_dict(rna_molecule: RNA_Molecule) -> list: flattens the RNA molecule into a list of atoms and returns it as a dictionary
     - fetch_pdb_file(pdb_entry_id: str, save_directory: str) -> str: fetches a PDB file given a PDB entry ID
-    - create_RNA_Molecule(pdb_entry_id: str) -> RNA_Molecule: creates an RNA_Molecule object from a PDB file
+    - parse_newick(newick: str) -> dict: recursively parses a Newick string into a nested dictionary
     - get_rfam(q: str) -> dict: retrieves information about an RNA family from the RFAM database
     - get_family_attributes(q: str) -> tuple: retrieves attributes of an RNA family from the RFAM database
     - get_pdb_ids_from_fam(fam_id: str) -> list: retrieves the PDB IDs associated with an RNA family
@@ -17,15 +19,14 @@ import json
 import requests
 import os
 from Bio import PDB
+import numpy as np
 
 import os,sys
-sys.path.append(os.path.abspath('lab3/src')) 
+sys.path.append(os.path.abspath('lab4/src')) 
 
 from Structure.RNA_Molecule import RNA_Molecule
-from Structure.Model import Model
-from Structure.Chain import Chain
-from Structure.Residue import Residue
-from Structure.Atom import Atom
+from IO.parsers.PDB_Parser import PDB_Parser
+
 
 CACHE_DIR='.rnalib_cache/'
 
@@ -96,31 +97,7 @@ def fetch_pdb_file(pdb_entry_id, save_directory=CACHE_DIR):
     
     return os.path.join(target_directory, f'{pdb_entry_id}.pdb')
 
-pathify_pdb=fetch_pdb_file
 
-def create_RNA_Molecule(pdb_entry_id): #still not deleted bcs of dependencies (needs fixing -> last function in this module)
-    
-    pdb_file_path=fetch_pdb_file(pdb_entry_id)
-    
-    with open(pdb_file_path, 'r') as pdb_file:
-        
-        experiment = "NA"
-        species = "NA"
-        
-        for line in pdb_file:
-            #Extract the EXPDTA (experiment) information
-            if line.startswith("EXPDTA"):
-                experiment = line[10:].strip()
-            
-            #Extract the species information
-            if line.startswith("SOURCE"):
-                if "ORGANISM_SCIENTIFIC" in line:
-                    species_info = line.split(":")[1].strip()
-                    species = species_info.split(";")[0].strip()
-            
-            #Stop reading if line starts with "ATOM"
-            if line.startswith("ATOM"):
-                break  #Exit the loop
 
 # -- Rfam api: https://docs.rfam.org/en/latest/api.html
 
@@ -228,7 +205,53 @@ def flattenMolecule_to_dict(rna_molecule:RNA_Molecule):
                     atoms_list.append(atom_data)
     return atoms_list
 
+
+
+
+def parse_pdb_files(entries: list):
+    """
+    Parses a list of PDB entries and returns a numpy array of stacked molecules.
+    Dimension: (number of files including different models, number of residues, number of atoms, 3)
+    """
+    
+    parser = PDB_Parser()
+    all_molecules = []
+    all_sequences = []
+    
+    for entry in entries:
+        pdb_path_test = fetch_pdb_file(entry)
+        mol = parser.read(pdb_path_test, "PDB")
+        all_molecules.append(mol[0])
+        all_sequences.append(mol[1])
+
+    max_residues = max(mol.shape[1] for mol in all_molecules)
+    max_atoms = max(mol.shape[2] for mol in all_molecules)
+
+    padded_molecules = []
+    
+    for mol in all_molecules:
+        padded = np.full((mol.shape[0], max_residues, max_atoms, 3), np.nan)
+        padded[:, :mol.shape[1], :mol.shape[2], :] = mol
+        padded_molecules.append(padded)
+
+    stacked_molecules = np.vstack(padded_molecules)
+    
+    padded_sequences = []
+    
+    for seq in all_sequences:
+        padded = np.full((seq.shape[0], max_residues), "", dtype=object)
+        padded[:, :seq.shape[1]] = seq
+        padded_sequences.append(padded)
+        
+    stacked_sequences = np.vstack(padded_sequences)
+    
+    return stacked_molecules, stacked_sequences
+
+
+
 if __name__=='__main__':
+    
+    """
     newick_str = '''
     (87.4_AE017263.1/29965-30028_Mesoplasma_florum_L1[265311].1:0.05592,
     _URS000080DE91_2151/1-68_Mesoplasma_florum[2151].1:0.08277,
@@ -249,6 +272,9 @@ if __name__=='__main__':
 
     print(get_tree_newick_from_fam('RF00162'))
 
-    rna_molecule = create_RNA_Molecule("7EAF")
-    # rna_molecule = RNA_Molecule.from_pdb("7EAF") #nop
-    rna_molecule.print_all()
+    """
+
+    array, seq=parse_pdb_files(['7eaf', '1r7w'])
+    print(array.shape)
+    print(seq.shape)
+    print(seq)

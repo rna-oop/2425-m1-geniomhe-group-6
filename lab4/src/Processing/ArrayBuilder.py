@@ -11,6 +11,7 @@ class ArrayBuilder(Builder):
         
     def reset(self):
         self.__array = {}
+        self.__sequence = {}
         self.__model_id = 0
         self.__residue_id = 0
         self.__prev_atom=["", 0.0] #[atom_name, occupancy]
@@ -26,9 +27,14 @@ class ArrayBuilder(Builder):
             for atom_id, coords in enumerate(atoms):
                 np_array[model_id, residue_id, atom_id] = coords
                 
+        np_sequence = np.full((self.__model_id + 1, max_residues_no), "", dtype=object)
+        
+        for (model_id, residue_id), residue_name in self.__sequence.items():
+            np_sequence[model_id, residue_id] = residue_name
+            
         self.reset()
         
-        return np_array
+        return np_array, np_sequence
         
     def add_model(self, model_id):
         if model_id != 0:
@@ -41,6 +47,8 @@ class ArrayBuilder(Builder):
         self.__residue_id = residue_id -1 
         if (self.__model_id, self.__residue_id) not in self.__array:
             self.__array[(self.__model_id, self.__residue_id)] = []
+            self.__sequence[(self.__model_id, self.__residue_id)] = residue_name
+            
         
     def add_atom(self, atom_name, x, y, z, element, altloc, occupancy, temp_factor, charge):
         #if a residue contains same atom with different altloc, add the one with the highest occupancy
