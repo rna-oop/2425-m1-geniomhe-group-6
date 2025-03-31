@@ -2,6 +2,7 @@ import os,sys
 sys.path.append(os.path.abspath('lab4/src'))
 
 from Transformations.transformers.BaseTransformer import BaseTransformer
+import numpy as np
 
 class Kmers(BaseTransformer):
 
@@ -24,11 +25,13 @@ class Kmers(BaseTransformer):
         if self._k <= 0:
             raise ValueError("k must be greater than 0")
         
-        #Generate k-mers
-        X_transformed = []
-        for seq in X:
-            kmers = [seq[i:i+self._k] for i in range(len(seq) - self._k + 1)]
-            X_transformed.append(kmers)
+        #Generate k-mers in numpy array
+        X_transformed = np.empty((len(X), len(X[0]) - self._k + 1), dtype=object)
+        
+        #Iterate through each sequence and generate k-mers
+        for i, seq in enumerate(X):
+            kmers = [seq[j:j+self._k] for j in range(len(seq) - self._k + 1)]
+            X_transformed[i] = kmers
         
         return super().transform(X_transformed, Y)
     
