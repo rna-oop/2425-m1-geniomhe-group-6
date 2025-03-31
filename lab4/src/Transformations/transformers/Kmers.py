@@ -7,7 +7,7 @@ class Kmers(BaseTransformer):
 
     def __init__(self, k):
         self._k=k
-        
+    
     def transform(self, X, Y=None):
         """
         Transform the input data into k-mers.
