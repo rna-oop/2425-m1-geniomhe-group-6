@@ -27,11 +27,13 @@ class Kmers(BaseTransformer):
         
         #Generate k-mers in numpy array
         X_transformed = np.empty((len(X), len(X[0]) - self._k + 1), dtype=object)
-        
+
         #Iterate through each sequence and generate k-mers
         for i, seq in enumerate(X):
-            kmers = [seq[j:j+self._k] for j in range(len(seq) - self._k + 1)]
+            kmers = [''.join(seq[j:j+self._k]) for j in range(len(seq) - self._k + 1)]
             X_transformed[i] = kmers
+
+
         
         return super().transform(X_transformed, Y)
     
