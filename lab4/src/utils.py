@@ -221,8 +221,8 @@ def parse_pdb_files(entries: list):
     for entry in entries:
         pdb_path_test = fetch_pdb_file(entry)
         mol = parser.read(pdb_path_test, "PDB")
-        all_molecules.append(mol[0])
-        all_sequences.append(mol[1])
+        all_molecules.append(mol[1])
+        all_sequences.append(mol[0])
 
     max_residues = max(mol.shape[1] for mol in all_molecules)
     max_atoms = max(mol.shape[2] for mol in all_molecules)
@@ -245,7 +245,7 @@ def parse_pdb_files(entries: list):
         
     stacked_sequences = np.vstack(padded_sequences)
     
-    return stacked_molecules, stacked_sequences
+    return stacked_sequences, stacked_molecules
 
 pathify_pdb=fetch_pdb_file
 

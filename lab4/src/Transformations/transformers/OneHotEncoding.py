@@ -46,6 +46,8 @@ class OneHotEncoding(BaseTransformer):
 
         for i, seq in enumerate(X):
             for j, kmer in enumerate(seq):
+                if j=='':
+                    continue
                 index=colnames_all_kmers.index(kmer)
                 X_transformed[i,j,index]=1
 

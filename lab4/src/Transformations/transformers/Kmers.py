@@ -31,6 +31,10 @@ class Kmers(BaseTransformer):
         #Iterate through each sequence and generate k-mers
         for i, seq in enumerate(X):
             kmers = [''.join(seq[j:j+self._k]) for j in range(len(seq) - self._k + 1)]
+            for _ in range(len(kmers)):
+                if len(kmers[_]) != self._k:
+                    kmers[_]= ''
+
             X_transformed[i] = kmers
 
 

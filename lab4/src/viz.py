@@ -94,7 +94,7 @@ def view_distogram(y_transformed:dict,
                     opacity=0.5,  # set transparency for overlapping slices
                     name=f"Slice {i}"
                 ))
-    b = 0 if distogram.ndim == 4 else distogram.shape[4] 
+    b = 0 #if distogram.ndim == 4 else distogram.shape[3] 
 
     # -- unified layout
     title_str = '3D vis distogram landscape'
