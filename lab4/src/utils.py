@@ -247,7 +247,7 @@ def parse_pdb_files(entries: list):
     
     return stacked_molecules, stacked_sequences
 
-
+pathify_pdb=fetch_pdb_file
 
 if __name__=='__main__':
     

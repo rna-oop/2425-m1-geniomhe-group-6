@@ -15,7 +15,7 @@ class Transformer(ABC):
     """
 
     @abstractmethod
-    def set_next(self, transformer: Transformer):
+    def set_next(self, transformer: 'Transformer'):
         pass
 
     @abstractmethod

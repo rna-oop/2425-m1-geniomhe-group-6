@@ -34,7 +34,7 @@ class ArrayBuilder(Builder):
             
         self.reset()
         
-        return np_array, np_sequence
+        return np_sequence, np_array
         
     def add_model(self, model_id):
         if model_id != 0:

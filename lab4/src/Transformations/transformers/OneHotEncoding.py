@@ -9,7 +9,7 @@ import numpy as np
 
 
 class OneHotEncoding(BaseTransformer):
-    ALPHABET=['A','C','U','G'] #-- class attribute (defining RNA alphabet)
+    ALPHABET=['A','C','U','G'] #-- class attribute (defining ordered RNA alphabet, other excpetional and unusual residues can be considered in future model by just simply adding them to this list)
     
     def __init__(self):
         pass
@@ -21,7 +21,7 @@ class OneHotEncoding(BaseTransformer):
         
     def transform(self, X, Y=None):
         '''
-        OneHotEncoding().transform(X): transforms a numpy array representing RNA kmers (or base pairs, i.e. kmers of length 1)
+        `OneHotEncoding().transform(X)`: transforms a numpy array representing RNA kmers (or base pairs, i.e. kmers of length 1)
         into a nd array of all possible kmers on the columns and the ones in X on the rows: 
         values are binary (0 or 1) indicating the presence of a kmer in the sequence.  
 
