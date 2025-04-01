@@ -1,5 +1,17 @@
+'''
+visualization module: functions to visualize rna data representations
+
+each transformation can provide a different rna representation, these functions cretae an interactive figure to portray each
+
+- view_distogram: takes a dict of y transformations, and viz the distogram through interactive landscape and heatmaps
+- view_one_hot: takes an one-hot-encoded X nd array and visualize inf the form of a table
+
+'''
+
 import plotly.graph_objects as go
 import numpy as np
+import math
+from itertools import product
 
 def view_distogram(y_transformed:dict, 
                     structure_no=0, 
@@ -80,6 +92,87 @@ def view_distogram(y_transformed:dict,
         ),
         margin=dict(l=10, r=10, t=30, b=10)
     )
-    b=None if distogram.ndim==4 else distogram.shape[4]
+    b=None if distogram.ndim==4 else distogram.shape[4] 
     print('num_atoms:',num_atoms,'; num_buckets:', b,'; structure_no:',structure_no)
     fig.show()
+
+def view_one_hot(X_transformed:np.ndarray):
+    '''
+    takes an one-hot-encoded X nd array and visualize inf the form of a table
+    '''
+    # plotly table that takes a ndarray of 1s and 0s
+    fig = go.Figure(data=[go.Table(
+        header=dict(values=['Residue', 'One-Hot Encoding']),
+        cells=dict(values=[np.arange(X_transformed.shape[0]), X_transformed])
+    )])
+    fig.update_layout(
+        title="One-Hot Encoding Visualization",
+        height=600,
+        width=800
+    )
+    fig.show()
+
+def viz_one_hot(X, structure_no=0,width=None,height=None):
+    """
+    Visualize the one-hot encoded matrix for a given structure
+
+    first starts by reconstructing the colnames, the idea is the ncols=4^k (if encoded directly on seq will be k=1, if kmerized before will get the k)
+    then will reconstruct the colnames for the one-hot encoding (all combinations of kmers of length k)
+    and then will plot the one-hot encoding as a heatmap
+
+    paramters:
+    - X: one-hot encoded matrix
+    - structure_no: index of the structure to visualize (default is 0)
+
+    returns:
+    - fig (plotly figure): heatmap of the one-hot encoded matrix
+
+    """
+    data=X[structure_no]
+
+    alphabet=['A','C','U','G']
+    k=int(math.log2(X.shape[2])/math.log2(4))
+    all_kmers_comb_reconstructed =["".join(i) for i in product(alphabet, repeat=k)]
+    
+    col_names = all_kmers_comb_reconstructed
+    row_names = [f"{i+1}" for i in range(data.shape[0])]
+
+    fig = go.Figure(data=go.Heatmap(
+        z=data,
+        colorscale=[[0, 'white'], [1, 'black']],  # White for 0, Black for 1
+        showscale=False
+    ))
+
+    cell_size = 70  # Adjust this value for larger/smaller squares
+
+    # Calculate the figure size dynamically
+    if width is not None:
+        fig_width = width
+    else:
+        fig_width = cell_size * len(col_names)
+
+    if height is not None:
+        fig_height = height
+    else:
+        fig_height = int(cell_size * len(row_names) * 0.45 )
+
+    # Update layout
+    fig.update_layout(
+        height=fig_height,
+        width=fig_width,
+        title="Binary Matrix Visualization",
+        xaxis=dict(
+            tickmode='array',
+            tickvals=list(range(len(col_names))),
+            ticktext=col_names
+        ),
+        yaxis=dict(
+            tickmode='array',
+            tickvals=list(range(len(row_names))),
+            ticktext=row_names
+        ),
+        plot_bgcolor='white'
+    )
+
+    fig.show()
+    return fig
