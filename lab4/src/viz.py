@@ -15,9 +15,22 @@ from itertools import product
 
 def view_distogram(y_transformed:dict, 
                     structure_no=0, 
-                    colormaps=['viridis', 'plasma', 'magma', 'cividis', 'inferno', 'YlGnBu', 'YlOrRd', 'Blues', 'Greens', 'Reds']):
+                    colormaps=['viridis', 'plasma', 'magma', 'cividis', 'inferno', 'YlGnBu', 'YlOrRd', 'Blues', 'Greens', 'Reds'],
+                    plot=True,
+                    save=False):
     '''
     takes a dict of y transformations, and viz the distogram through interactive landscape and heatmaps
+    
+    parameters:
+    - y_transformed: dict of y transformations (works also on the distograms saved in ndarray)
+    - structure_no: index of the structure to visualize (default is 0)
+    - colormaps: list of colormaps to use for the distogram (default is a list of 10 colormaps)
+    - plot: boolean to show the figure (default is True)
+    - save: boolean to save the figure as html (default is False)
+
+    returns:
+    - fig (plotly figure): interactive distogram visualization
+    
     '''
     if isinstance(y_transformed,dict): #temp for testing
         y_transformed=y_transformed['Distogram'] #
@@ -81,10 +94,17 @@ def view_distogram(y_transformed:dict,
                     opacity=0.5,  # set transparency for overlapping slices
                     name=f"Slice {i}"
                 ))
+    b = 0 if distogram.ndim == 4 else distogram.shape[4] 
 
     # -- unified layout
+    title_str = '3D vis distogram landscape'
+    if num_atoms > 1:
+        title_str += f' for {num_atoms} stacked plot/atom'
+    if b > 0:
+        title_str += f' (discretized)'
+        
     fig.update_layout(
-        title=f"Distogram (3D Visualization of {num_atoms} Slices)",
+        title=title_str,
         scene=dict(
             xaxis_title="X-axis residues",
             yaxis_title="Y-axis residues",
@@ -92,27 +112,17 @@ def view_distogram(y_transformed:dict,
         ),
         margin=dict(l=10, r=10, t=30, b=10)
     )
-    b=None if distogram.ndim==4 else distogram.shape[4] 
-    print('num_atoms:',num_atoms,'; num_buckets:', b,'; structure_no:',structure_no)
-    fig.show()
+    
+    if plot:
+        fig.show()
+    if save:
+        fig.write_html(f"distogram_{structure_no}_{num_atoms}_{b}.html")
 
-def view_one_hot(X_transformed:np.ndarray):
-    '''
-    takes an one-hot-encoded X nd array and visualize inf the form of a table
-    '''
-    # plotly table that takes a ndarray of 1s and 0s
-    fig = go.Figure(data=[go.Table(
-        header=dict(values=['Residue', 'One-Hot Encoding']),
-        cells=dict(values=[np.arange(X_transformed.shape[0]), X_transformed])
-    )])
-    fig.update_layout(
-        title="One-Hot Encoding Visualization",
-        height=600,
-        width=800
-    )
-    fig.show()
+    return fig
 
-def viz_one_hot(X, structure_no=0,width=None,height=None):
+
+
+def view_one_hot(X, structure_no=0,width=None,height=None,y_ticks=False,plot=True,save=False):
     """
     Visualize the one-hot encoded matrix for a given structure
 
@@ -123,6 +133,10 @@ def viz_one_hot(X, structure_no=0,width=None,height=None):
     paramters:
     - X: one-hot encoded matrix
     - structure_no: index of the structure to visualize (default is 0)
+    - width: width of the figure (defaulting to cell-based scaling)
+    - height: height of the figure (defaulting to cell-based scaling)
+    - plot: boolean to show the figure (default is True)
+    - save: boolean to save the figure as html (default is False)
 
     returns:
     - fig (plotly figure): heatmap of the one-hot encoded matrix
@@ -168,11 +182,16 @@ def viz_one_hot(X, structure_no=0,width=None,height=None):
         ),
         yaxis=dict(
             tickmode='array',
-            tickvals=list(range(len(row_names))),
+            tickvals=list(range(len(row_names))) if y_ticks else [],
             ticktext=row_names
         ),
         plot_bgcolor='white'
     )
+    if plot:
+        fig.show()
 
-    fig.show()
+    if save:
+        # saves as html
+        fig.write_html(f"one_hot_{structure_no}.html")
+        
     return fig
