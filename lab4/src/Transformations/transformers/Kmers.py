@@ -33,7 +33,7 @@ class Kmers(BaseTransformer):
             kmers = [''.join(seq[j:j+self._k]) for j in range(len(seq) - self._k + 1)]
             for _ in range(len(kmers)):
                 if len(kmers[_]) != self._k:
-                    kmers[_]= ''
+                    kmers[_]= '' 
 
             X_transformed[i] = kmers
 
