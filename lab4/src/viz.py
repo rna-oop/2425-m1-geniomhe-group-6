@@ -1,11 +1,13 @@
 '''
 visualization module: functions to visualize rna data representations
 
-each transformation can provide a different rna representation, these functions cretae an interactive figure to portray each
+each transformation can provide a different rna representation, these functions create an interactive figure to portray each
 
 - view_distogram: takes a dict of y transformations, and viz the distogram through interactive landscape and heatmaps
 - view_one_hot: takes an one-hot-encoded X nd array and visualize inf the form of a table
-
+- view_ss_arcs: takes the dot-bracket notation, the sequences, and sequence number (default viz all), and visualizes the secondary structure as arcs
+- view_ss_network: takes the dot-bracket notation, the sequences, and sequence number (default viz all), and visualizes the secondary structure as a network
+- view_ss_2d: takes the dot-bracket notation, the sequences, and sequence number (default viz all), and visualizes the secondary structure as a 2D plot
 '''
 
 import plotly.graph_objects as go

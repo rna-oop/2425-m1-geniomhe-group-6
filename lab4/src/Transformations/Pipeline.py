@@ -3,9 +3,9 @@
                                 pipeline module
 ------------------------------------------------------------------------------------
 
-Home for Pipeline classe
+Home for Pipeline class
 
-classes in this module are used to create a pipleine of transformations to be applied
+classes in this module are used to create a pipeline of transformations to be applied
 RNA structure data (as numpy arrays) to be used in ML models.
 
 this will be built by taking into consideration  
@@ -18,18 +18,31 @@ this will be built by taking into consideration
 import os,sys
 sys.path.append(os.path.abspath('lab4/src'))
 
+from Transformations.transformers.BaseTransformer import BaseTransformer
 from Transformations.transformers.Normalize import Normalize
 class Pipeline:
     
     def __init__(self, transformers):
+        
+        #Ensure the transformers are valid classes and that the first one is Normalize if present
+        for i, transformer in enumerate(transformers):
+            if not isinstance(transformer, BaseTransformer):
+                raise ValueError(f"{transformer} is invalid transformer.")
+            if isinstance(transformer, Normalize) and i != 0:
+                raise ValueError("Normalize transformer must be the first in the pipeline.")
+            
         self.transformers = transformers
+        
+        #Set the next transformer in the chain for each transformer
         for i in range(len(self.transformers)-1):
             self.transformers[i].set_next(self.transformers[i+1])
 
+
     def transform(self, X, Y):
-        for transformer in self.transformers:
-            if isinstance(transformer, Normalize) and self.transformers[0] != transformer:
-                raise ValueError("Normalize transformer must be the first in the pipeline.")
-            X, Y = transformer.transform(X, Y)
-        return X, Y
+        
+        if not self.transformers:
+            return X, Y  #No transformation if pipeline is empty
+        
+        #Start transformation from the first transformer
+        return self.transformers[0].transform(X, Y)
     
