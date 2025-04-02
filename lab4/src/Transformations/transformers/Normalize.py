@@ -30,7 +30,7 @@ class Normalize(BaseTransformer):
         if self.crop:
             
             #Find the minimum length of sequences by ignoring only trailing empty strings at the end of each sequence
-            min_length = min([len(sequence) - len(list(iter(lambda: sequence[-1] == "", True))) for sequence in X])
+            min_length = min(len(sequence) - next((i for i, char in enumerate(reversed(sequence)) if char != ""), 0) for sequence in X)
             
             #Crop the sequences to the minimum length
             X_transformed = [sequence[:min_length] for sequence in X]
