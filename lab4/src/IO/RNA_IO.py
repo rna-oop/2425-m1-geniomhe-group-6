@@ -34,41 +34,13 @@ class RNA_IO:
         if not isinstance(rna_molecule, RNA_Molecule):
             raise ValueError("RNA_Molecule object expected")
         exporter.export(rna_molecule, path)
-    
-    
-    def parse_pdb_files(entries: list):
-        """
-        Parses a list of PDB entries and returns a numpy array of stacked molecules.
-        Dimension: (number of files including different models, number of residues, number of atoms, 3)
-        """
-        rna_io = RNA_IO()
-        all_molecules = []
 
-        for entry in entries:
-            pdb_path_test = fetch_pdb_file(entry)
-            mol_array = rna_io.read(pdb_path_test, "PDB")
-            all_molecules.append(mol_array)
 
-        max_residues = max(mol.shape[1] for mol in all_molecules)
-        max_atoms = max(mol.shape[2] for mol in all_molecules)
-
-        padded_molecules = []
-        
-        for mol in all_molecules:
-            padded = np.full((mol.shape[0], max_residues, max_atoms, 3), np.nan)
-            padded[:, :mol.shape[1], :mol.shape[2], :] = mol
-            padded_molecules.append(padded)
-
-        stacked_molecules = np.vstack(padded_molecules)
-        
-        return stacked_molecules
-    
-    
 #Example Usage
 
-from utils import fetch_pdb_file
-
 if __name__ == "__main__":
+    
+    from utils import fetch_pdb_file
     
     rna_io=RNA_IO()
 
@@ -78,7 +50,7 @@ if __name__ == "__main__":
     
     rna_io.write(mol, "1r7w_test.pdb", "PDB")
     
-    array, seq =rna_io.read(pdb_path_test, "PDB")
+    seq, array =rna_io.read(pdb_path_test, "PDB")
     
     print(array)
     import numpy as np

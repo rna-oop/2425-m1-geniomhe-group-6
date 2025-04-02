@@ -27,7 +27,6 @@ import os,sys
 sys.path.append(os.path.abspath('lab4/src')) 
 
 from Structure.RNA_Molecule import RNA_Molecule
-from IO.parsers.PDB_Parser import PDB_Parser
 from IO.RNA_IO import RNA_IO
 
 
@@ -213,8 +212,6 @@ def parse_pdb_files(entries: list):
     Parses a list of PDB entries and returns a numpy array of stacked molecules.
     Dimension: (number of files including different models, number of residues, number of atoms, 3)
     """
-    
-    # parser = PDB_Parser() #--not parsing correct dimensions
     rna_io=RNA_IO()
     all_molecules = []
     all_sequences = []
