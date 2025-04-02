@@ -1,5 +1,14 @@
 # Lab 4 Report
 
+In this lab, we have implemented bonus questions that were mentioned:
+
+- [x] "Bonus: you can further bucketize the distances to fit a machine learning classification problem like in AlphaFold" 
+- [x] "Bonus: You can also detect tertiary motifs like hairpins, loops, and pseudoknots"
+
+In addition to what's required, we have also added:
+- 2ary structure transformation into a dot-bracket notation by implementing `Nussinov` algorithm as an extra option
+- a `viz` module where we created visualization functions for all kind of RNA structure representations (will be displayed throughout the report)
+
 ## Table of contents
 
 - [Lab 4 Report](#lab-4-report)
@@ -33,6 +42,10 @@
 
 
 ## Demo
+
+[![Demo1](https://img.shields.io/badge/jupter_notebook_view-pipeline-orange)](./demo/pipeline.ipynb)
+
+[![Demo2](https://img.shields.io/badge/jupter_notebook_view-visualization-orange)](./demo/visualization.ipynb)
 
 ## Class Diagram
 
@@ -129,6 +142,14 @@ The `Pipeline` class is responsible for managing the transformation process.
 `X`, `Y` are the sequences numpy array `(number of molecules including models, max number of residues)` and the coordinates numpy array `(number of molecules including models, max number of residues, max number of atoms, 3)` respectively. 
 
 
+
+_This pipeline chains the transformations in form of a __LinkedList__ rather than a __Directed Acyclic Graph__ as is the case in `sklearn`, which is logical since this data structure is enforced by the CoR design pattern that supports a `next` pointer to the next transformer._ 
+_When printing the pipeline, `__repr__` will be called which is implemented recursively in the `BaseTransformer` class to display the links:_
+
+<p align='center'>
+<img src="./demo/_cached_pipeline_graph.png" width="50%">
+</p>
+
 ### Transformer interface
 
 The `Transformer` interface defines the contract for all transformer classes. It specifies the methods that must be implemented by any transformer class, including:
@@ -149,9 +170,120 @@ The concrete transformers are the classes that implement the transformation logi
 
 #### Normalize
 
+
+Normalization is a common preprocessing step in machine learning that involves scaling the input data to a standard range. In the context of RNA sequences, normalization can be used to ensure that the input data is consistent and comparable across different sequences. This is particularly important when working with RNA sequences of varying lengths, in which case, normalization will either pad or crop the sequences to a fixed length.
+
+By default, when several sequnces are read at once (`parse_pd_files(a:list)` function in utils), the sequences are padded to the length of the longest sequence. Normalize will crop to match the length of the smallest sequence, to get rid of as many gaps possible. It takes a boolean parameter `crop`. 
+
+> [!IMPORTANT]
+> This transformation can only be used as the 1st transformation in the pipeline, since it's not changing nature of data, only length of one dimension. An error in pipeline is thrown if it's not the case.
+
+This being said, this is the only transformation whose output can be used as an input to all others.
+
+```python
+X, y = Normalize().transform(X, y)
+```
+
+params:
+- X: 2d array of sequences `a x b`
+- y: 4d array of pdb structure (defined in prev labs) `a x b x c x 3`
+
+return:
+- X: 2d array of sequences `a x min_length`
+- y: 4d array of pdb structure `a x min_length x c x 3`
+
+
+
 #### Kmers
 
+
+Kmers are a common way to represent sequences in bioinformatics. They are contiguous subsequences of length k within a longer sequence. For example, the sequence "AUGC" has the following kmers of size 2: `AU`, `UG`, `GC` (always considered with overalps). The number of kmers of length k in a sequence of length L is $L-k+1$.
+This transformation is done on the _sequence_ level (X). It will split the sequence into kmers: given an X which is `no_sequences x length_seq` 2d array of base pairs, it will return a 2d array of kmers of size `no_sequences x (length_seq-k+1)` of kmers.
+
+Thus, takes as input raw sequence (or normalized), 2d array and returns a 2d array as well, which _can only serve as an input to one-hot encoding (see next section)_.
+
+```python
+X, y = Kmers(k=2).transform(X, y)
+```
+
+params: 
+- X: 2d array of sequences
+- y: 4d array of coordinates
+
+return:
+- X: 2d array of kmers
+- y: y
+
 #### OneHotEncoding
+
+
+One hot encoding is a common technique used in machine learning to represent categorical variables as binary vectors. In the context of RNA sequences, one hot encoding can be used to represent the four nucleotides (A, U, C, G) as binary vectors (of size 4).  
+
+In fact, this can be done either on the nucleotide level or on **Kmers** level. It will indicate the presence of a specific nucleotide or Kmer in the sequence. For example, the sequence "AUGC" can be represented as:
+
+|seq| A | U | G | C |
+|---|---|---|---|---|
+| A | 1 | 0 | 0 | 0 |
+| U | 0 | 1 | 0 | 0 |
+| G | 0 | 0 | 1 | 0 |
+| C | 0 | 0 | 0 | 1 |
+
+Kmers of size 2 have the following representation:
+
+|seq| AA | AC | AU | AG | CA | CC | CU | CG | UA | UC | UU | UG | GA | GC | GU | GG |
+|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|
+| AA | 1 | 0 |0 |0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| AC | 0 | 1 |0 | 0| 0 | 0 | 0| 0| 0| 0| 0| 0| 0| 0| 0| 0|
+...
+...
+| GG | 0 | 0| 0 | 0|0|0|0|0|0|0|0|0|0|0|0|1|
+
+> [!TIP] 
+> A generalized point of view would be to say that it's always encoding kmers, with the possibility of having a size 1 kmer (nucleotide level). A formalism that we have followed in implementation to allow for encoding the output of a previous kmer transformation as well as the raw sequence fo nucleotides (considered kmer=1 transformation).
+
+```mermaid
+graph TD
+    A[raw X] --> B[kmer]
+    A[raw X] --> C[one-hot encoding]
+    B[kmer] --> C
+```
+
+The way to run:
+
+```python
+X, y = OneHotEncoding().transform(X, y)
+
+# -- viz option
+view_one_hot(X,y)
+```
+
+
+| encoding raw X | encoding Kmer transformed X (k=2) |
+|----------------|----------------------------------|
+| ![onehot](./figures/one-hot-raw-kmer-1-1.png) | ![onehot k=2](./figures/one-hot-kmer-2.png) |
+
+> [!IMPORTANT]
+> The output of this transformation will change the dimensionality of teh original input, that was once `no_sequences x length_seq` 2d array, into a `no_sequences x (length_seq-k+1) x 4^k` 3d array. This output can not be considered as an input for Kmer transformation, for this purpose, we overrided the `set_next` method of `BaseTransformer` class to allow for a resitriction on the type of transformer to follow the chain of transformations; likewise, can not be input to 2ary or 3ary structure transformation.
+
+```python
+    def set_next(self, transformer):
+        if isinstance(transformer, Kmers) or isinstance(transformer, TertiaryMotifs):
+            raise ValueError(f"OneHotEncoding transformer cannot be followed by {type(transformer)} transformer.")
+        return super().set_next(transformer)
+```
+
+<!-- <div style="display: flex; align-items: center;">
+    <img src="./figures/one-hot-raw-kmer-1.png" width="45%">
+    <img src="./figures/one-hot-kmer-2.png" width="45%">
+</div> -->
+
+params:
+- X: 2d array of sequences, or 2d array of kmers
+- y: 4d array of coordinates
+
+return:
+- X: 3d array of one-hot encoded sequences, or 3d array of one-hot encoded kmers
+- y: y
 
 #### Distogram
 
