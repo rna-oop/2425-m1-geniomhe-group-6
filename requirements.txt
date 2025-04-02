@@ -1,2 +1,6 @@
 biopython   # -- Bio.PDB for PDB api
 requests    # -- requests for HTTP api (rfam rest api)
+plotly      # -- interactive plots
+pandas      # -- dataframes (tests)
+numpy       # -- numerical operations
+matplotlib  # -- plotting

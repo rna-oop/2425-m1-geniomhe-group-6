@@ -67,8 +67,8 @@ class Distogram(BaseTransformer):
 
         if isinstance(Y, np.ndarray):
             raw_y=Y
-        elif isinstance(Y, dict) and 'original' in list(Y.keys()):
-            raw_y=Y['original']
+        elif isinstance(Y, dict) and 'Original' in list(Y.keys()):
+            raw_y=Y['Original']
         else:
             raise ValueError("Invalid input for Y: Expected numpy array or dictionary with 'original' key")
         

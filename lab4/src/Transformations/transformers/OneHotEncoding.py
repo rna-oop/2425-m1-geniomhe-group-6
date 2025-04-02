@@ -39,15 +39,20 @@ class OneHotEncoding(BaseTransformer):
         > p.s. it will be 3-dimensional: d1= for the number of sequences, d2= for the number of kmers in each sequence, d3= for the number of kmers combinations (4^k)  
         '''
 
-        k=len(X[0]) if len(X.shape)==1 else len(X[0][0])
+        # -- this step is crucial to know if seq data is stored as residues or kmers and kmers of what length in X (some entried can be empty but length is consistent)
+        max_len=0
+        for i in range(len(X[0])):
+            if len(X[0][i])>max_len:
+                max_len=len(X[0][i])
+        k=max_len #-- successful
         colnames_all_kmers=["".join(i) for i in product(self.ALPHABET, repeat=k)] #--successful (ordered by A, C, U, G)
         
         X_transformed=np.zeros((X.shape[0],X.shape[1],len(colnames_all_kmers)),dtype=int)
 
         for i, seq in enumerate(X):
             for j, kmer in enumerate(seq):
-                # if j=='':
-                #     continue
+                if kmer=='':
+                    continue
                 index=colnames_all_kmers.index(kmer)
                 X_transformed[i,j,index]=1
 
