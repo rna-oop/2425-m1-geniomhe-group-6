@@ -10,6 +10,15 @@
   - [Object Diagram](#object-diagram)
   - [Library Structure](#library-structure)
   - [Implementation](#implementation)
+    - [Design Pattern: CoR](#design-pattern-cor)
+    - [Transformer interface](#transformer-interface)
+    - [BaseTransformer abstract class](#basetransformer-abstract-class)
+    - [Concrete transformers](#concrete-transformers)
+      - [Normalize](#normalize)
+      - [Kmers](#kmers)
+      - [OneHotEncoding](#onehotencoding)
+      - [Distogram](#distogram)
+      - [SecondaryStructure](#secondarystructure)
 
 ## Added Functionality to Previous Classes
 
@@ -17,22 +26,23 @@
 
 - A new function `parse_pdb_files` has been added to utils.py. This function takes a list of PDB entries, parses the files, and returns two NumPy arrays:
 
+    - A `sequence array` with the shape `(number of molecules including models, max number of residues)`, where missing values are filled with `""`.
     - A `coordinate array` with the shape `(number of molecules including models, max number of residues, max number of atoms, 3)`, where missing values are filled with `NaNs`.
 
-    - A `sequence array` containing the RNA sequences for each molecule and model.
 
 ## Demo
 
 ## Class Diagram
 
-![Class-Diagram](model/Class-Diagram-final.jpg)
+![Class-Diagram](model/class-diagram.jpg)
 
 The changes resulting from CoR transformations are added in light red <img src='./assets/red.png' width=10 height=10>
+The new functionality of the `ArrayBuilder` class return function is highlighted in white. 
 
 
 ## Object Diagram
 
-![Object-Diagram](model/Object-Diagram-Main.jpg)
+![Object-Diagram](model/object-diagram.jpg)
 
 
 ## Library Structure
