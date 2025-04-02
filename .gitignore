@@ -2,7 +2,7 @@
 test/
 todo.md
 test.py
-test.ipynb
+*test*.ipynb
 __pycache__/
 examples/
 .rnalib_cache/
