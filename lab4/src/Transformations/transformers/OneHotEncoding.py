@@ -4,7 +4,6 @@ sys.path.append(os.path.abspath('lab4/src'))
 
 from Transformations.transformers.BaseTransformer import BaseTransformer
 from Transformations.transformers.Kmers import Kmers
-from Transformations.transformers.SecondaryStructure import SecondaryStructure
 from Transformations.transformers.TertiaryMotifs import TertiaryMotifs
 
 import numpy as np
@@ -17,7 +16,7 @@ class OneHotEncoding(BaseTransformer):
         pass
     
     def set_next(self, transformer):
-        if isinstance(transformer, Kmers) or isinstance(transformer, SecondaryStructure) or isinstance(transformer, TertiaryMotifs):
+        if isinstance(transformer, Kmers) or isinstance(transformer, TertiaryMotifs):
             raise ValueError(f"OneHotEncoding transformer cannot be followed by {type(transformer)} transformer.")
         return super().set_next(transformer)
         

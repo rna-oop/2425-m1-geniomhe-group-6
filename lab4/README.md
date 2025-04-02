@@ -159,6 +159,8 @@ how different matrices would look like (+dimension of teh output ndarray):
 > [!CAUTION]
 > IMPORTANT POINT ON CHANGE of y TYPE TO DICTIONARY
 
-...
+This model tries to take input data that can either be sequence or structure, and generally in a machine learning model we'd want to consider the structure as a label y, and the sequence as a feature X. Since we are having many transformations on the y, this is similar to having a _multi-labeled_ classification problem[^2]; the labels do not get transformed successively, but rather we generate different representation of it and we'd want to save them all. Due to non consistent dimenionality between the different transformations output, the best and most efficient way to save them all is through a dictionay, whose key describes the transformation and the value is the output of the transformation. 
+
+[^2]: scikit-multilearn: multi-label classification in python _http://scikit.ml/_
 
 #### SecondaryStructure
