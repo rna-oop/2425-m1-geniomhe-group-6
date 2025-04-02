@@ -8,6 +8,6 @@ examples/
 .rnalib_cache/
 lab3/src/IO/writers/
 lab3/src/processor.py
-lab3/backup
+backup
 lib
 tools

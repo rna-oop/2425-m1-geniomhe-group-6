@@ -45,7 +45,7 @@ class SecondaryStructure(BaseTransformer):
         Y["SecondaryStructure"] = structures
         
         #Return the transformed data
-        return X, Y
+        return super().transform(X, Y)  #Call the parent class's transform method to continue the transformation chain
 
 
 
@@ -269,6 +269,9 @@ class SecondaryStructure(BaseTransformer):
                     self.__traceback(M, seq, i, k, structure, wc_pairs)
                     self.__traceback(M, seq, k+1, j, structure, wc_pairs)
                     break
+
+
+
 
 
 if __name__ == "__main__":

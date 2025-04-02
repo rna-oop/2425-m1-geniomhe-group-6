@@ -15,6 +15,13 @@ from itertools import product
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 
+import networkx as nx
+import matplotlib.pyplot as plt
+from pyvis.network import Network
+import numpy as np
+
+from draw_rna.ipynb_draw import draw_struct
+
 colors4 = ['#B7094C', '#0E87A6','#02B693','#DEAD03' ]
 color_maps = ['viridis', 'plasma', 'magma', 'cividis', 'inferno', 'YlGnBu', 'YlOrRd', 'Blues', 'Greens', 'Reds']
 
@@ -195,9 +202,11 @@ def view_one_hot(X,
         custom_colorscale.append([col_idx / len(col_names), 'white'])  # Map 0 to white
         custom_colorscale.append([(col_idx + 0.5) / len(col_names), custom_color])  # Map 1 to the column's base color
 
+    black_white=[0,'white'],[1,'black']
+
     fig = go.Figure(data=go.Heatmap(
         z=data,
-        colorscale=custom_colorscale,  
+        colorscale=black_white,  
         showscale=False
     ))
 
@@ -222,7 +231,7 @@ def view_one_hot(X,
             tickmode='array',
             tickvals=list(range(len(col_names))),
             ticktext=col_names,
-            side='top',
+            tickside='top',
             tickangle=-45
         ),
         yaxis=dict(
@@ -243,6 +252,224 @@ def view_one_hot(X,
         
     return fig
 
+def view_ss_arcs(X, y, sequence_no:int=None):
+    """
+    Visualizes RNA sequences and their secondary structure with base pair arcs: built using matplotlib
+    
+    Parameters:
+    - X (sequences): NumPy array of RNA sequences (shape: num_sequences, max_residues), padded with empty strings.
+    - y (dot_brackets): NumPy array of lists containing dot-bracket strings (shape: num_sequences, max_residues) | or y in form of dict containing ss in y['SecondaryStructure']
+    - sequence_no: int specifying the index of the sequence to visualize (default: None, visualizes all sequences).
+    
+    Returns:
+    - Displays the RNA structure as a plot. 
+    """
+
+    sequences = X
+    if isinstance(y, dict):
+        dot_brackets = y['SecondaryStructure']
+    else:
+        dot_brackets = y
+
+
+    num_sequences = sequences.shape[0]
+
+    if sequence_no is not None:
+        num_sequences=1
+    
+    # Ensure axes is iterable (for single sequence case)
+    if num_sequences == 1:
+        axes = [plt.gca()]
+    else:
+        fig, axes = plt.subplots(num_sequences, 1, figsize=(10, 2 * num_sequences))
+    
+    # Iterate through each sequence and its corresponding dot-bracket
+    for idx in range(num_sequences):
+
+        if sequence_no is not None: # --it will be one iteration of the loop and idx is reset
+            idx=sequence_no
+
+        seq = sequences[idx]
+        dot_bracket = dot_brackets[idx]
+        ax = axes[idx]
+        
+        ax.set_title(f"RNA Sequence {idx + 1}\n")
+
+        # Remove padding (empty strings)
+        valid_indices = np.where(seq != "")[0]
+        valid_seq = [seq[i] for i in valid_indices]
+        valid_dot_bracket = [dot_bracket[i] for i in valid_indices]
+
+        # Convert dot-bracket to coordinates
+        positions = np.arange(len(valid_seq))
+        base_pairs = []
+
+        # Find base pairs from dot-bracket using stack
+        stack = []
+        for i, char in enumerate(valid_dot_bracket):
+            if char == '(':
+                stack.append(i)
+            elif char == ')':
+                pair = stack.pop()
+                base_pairs.append((pair, i))
+
+        # Create a circular plot for the RNA sequence
+        num_residues = len(valid_seq)
+        angle_step = 2 * np.pi / num_residues
+        angles = np.arange(0, 2 * np.pi, angle_step)
+
+        # Plot the sequence as dots in a circle
+        for i, angle in enumerate(angles):
+            x = np.cos(angle)
+            y = np.sin(angle)
+            ax.plot(x, y, 'ko', markersize=1, color='darkblue')  # RNA residue positions
+            ax.text(x * 1.1, y * 1.1, valid_seq[i], ha='center', va='center', fontsize=8, color='darkorchid')
+        
+        # Draw arcs for base pairs
+        for start, end in base_pairs:
+            start_angle = angles[start]
+            end_angle = angles[end]
+            ax.plot([np.cos(start_angle), np.cos(end_angle)], 
+                    [np.sin(start_angle), np.sin(end_angle)], 
+                    color='skyblue', lw=1)
+
+        ax.set_aspect('equal', 'box')
+        ax.axis('off')  # Turn off the axis for clarity
+        
+        # Handle padding and show the full dot-bracket structure
+        full_structure = ['' if seq[i] == '' else '.' for i in range(len(seq))]
+        for i, idx in enumerate(valid_indices):
+            full_structure[idx] = valid_dot_bracket[i]
+        
+        # Print the full dot-bracket sequence, keeping empty residues as ''
+        print(f"Full structure for Sequence {idx + 1}: {''.join(full_structure)}")
+
+    plt.tight_layout()
+    plt.show()
+
+def view_ss_network(X, y, filename_prefix="rna_network", sequence_no:int=None):
+    """
+    Plots RNA sequences as network graphs based on dot-bracket notation: build on networkx and pyvis, saves interactive network as html in wd
+    
+    Parameters:
+    - X (sequences): NumPy array of RNA sequences (shape: num_sequences, max_residues), padded with empty strings.
+    - y (dot_brackets): NumPy array of lists containing dot-bracket strings (shape: num_sequences, max_residues) || disctionary containing the numpy array
+    - filename_prefix: Prefix for output HTML files (default: "rna_network").
+    - sequence_no: int specifying the index of teh sequence to visualize (set if dont wanna viz all sequences) (default: None)
+    
+    Displays network plots for RNA secondary structures.
+    """
+
+    sequences = X
+    if isinstance(y, dict):
+        dot_brackets = y['SecondaryStructure']
+    else:
+        dot_brackets = y
+
+    num_sequences = sequences.shape[0]
+
+    if sequence_no is not None:
+        num_sequences=1
+    
+    for idx in range(num_sequences):
+
+        if sequence_no is not None: # --it will be one iteration of the loop and idx is reset
+            idx=sequence_no
+
+        seq = sequences[idx]
+        dot_bracket = dot_brackets[idx]
+        
+        # Remove padding
+        valid_indices = np.where(seq != "")[0]
+        valid_seq = [seq[i] for i in valid_indices]
+        valid_dot_bracket = [dot_bracket[i] for i in valid_indices]
+        
+        G = nx.Graph()
+        net = Network(height="800px", width="100%", notebook=True)
+        stack = []
+        base_pairs = []
+        
+        for i, char in enumerate(valid_dot_bracket):
+            if char == "(":
+                stack.append(i)
+            elif char == ")":
+                start = stack.pop()
+                end = i
+                base_pairs.append((start, end))
+        
+        for i in range(len(valid_dot_bracket)):
+            G.add_node(i, label=valid_seq[i])
+            net.add_node(i, label=valid_seq[i], size=10)
+        
+        for i in range(len(valid_dot_bracket) - 1):  # Link sequential bases
+            G.add_edge(i, i + 1)
+            net.add_edge(i, i + 1, color="gray")
+        
+        for pair in base_pairs:  # Link base pairs
+            G.add_edge(pair[0], pair[1])
+            net.add_edge(pair[0], pair[1], color="red")
+        
+        net.force_atlas_2based()
+        net.show(f"{filename_prefix}_{idx+1}.html")
+        
+        plt.figure(figsize=(12, 8))
+        pos = nx.circular_layout(G)  # Ensure circular layout
+        labels = {i: valid_seq[i] for i in range(len(valid_seq))}
+        
+        # Draw edges with different colors
+        nx.draw_networkx_edges(G, pos, edgelist=[(i, i + 1) for i in range(len(valid_dot_bracket) - 1)], edge_color="gray", width=1)
+        nx.draw_networkx_edges(G, pos, edgelist=base_pairs, edge_color="darkmagenta", width=1)
+        
+        nx.draw_networkx_nodes(G, pos, node_size=140, node_color="skyblue")
+        nx.draw_networkx_labels(G, pos, labels=labels, font_size=7)
+        
+        plt.title(f"RNA Network Structure {idx + 1}")
+        plt.axis("off")
+        plt.show()
+
+def view_ss_2d(X, y, sequence_no:int=None, *args,**kwargs):
+    """
+    Visualizes RNA sequences and their secondary structure representation using the draw_rna library
+    
+    Parameters:
+    - X (sequences): NumPy array of RNA sequences (shape: num_sequences, max_residues), padded with empty strings.
+    - y (dot_brackets): NumPy array of lists containing dot-bracket strings (shape: num_sequences, max_residues) || or y in form of dict containing ss in y['SecondaryStructure']
+    - sequence_no: int specifying the index of the sequence to visualize (default: None, visualizes all sequences).
+    
+    *args and **kwargs are possible arguments to be given to the library's function (for options, help(draw_rna.ipynb_dra.draw_struct))
+    
+    Returns:
+    - Displays the RNA structure as a plot. 
+    """
+
+    sequences = X
+    if isinstance(y, dict):
+        dot_brackets = y['SecondaryStructure']
+    else:
+        dot_brackets = y
+
+
+    num_sequences = sequences.shape[0]
+
+    if sequence_no is not None:
+        num_sequences=1
+
+    for idx in range(num_sequences):
+
+        if sequence_no is not None: # --it will be one iteration of the loop and idx is reset
+            idx=sequence_no
+
+        seq = sequences[idx]
+        seq=str(''.join(seq))
+
+        struct= dot_brackets[idx]
+        struct=str(''.join(struct))
+
+        print(f'seq {len(seq)}: {seq}')
+        print(f'struct {len(struct)}: {struct}')
+
+        draw_struct(seq, struct)
+    
 
 ############### deprecated ######################
 
