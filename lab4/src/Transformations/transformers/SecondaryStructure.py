@@ -45,7 +45,7 @@ class SecondaryStructure(BaseTransformer):
         Y["SecondaryStructure"] = structures
         
         #Return the transformed data
-        return super.transform(X, Y)  #Call the parent class's transform method to continue the transformation chain
+        return super().transform(X, Y)  #Call the parent class's transform method to continue the transformation chain
 
 
 

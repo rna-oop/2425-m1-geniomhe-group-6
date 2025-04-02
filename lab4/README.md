@@ -25,7 +25,7 @@
 
 ## Class Diagram
 
-![Class-Diagram](model/Class-Diagram-Main.jpg)
+![Class-Diagram](model/Class-Diagram-final.jpg)
 
 The changes resulting from CoR transformations are added in light red <img src='./assets/red.png' width=10 height=10>
 
@@ -149,9 +149,9 @@ how different matrices would look like (+dimension of teh output ndarray):
 
 | `( L x L x k )` | `( L x L )`|
 |-----------------|------------|
-| | |
+| ![94x94x3](./figures/94x94x3.jpeg) | ![94x94](./figures/94x94.jpeg) |
 | `(L x L x k x b)` | `(L x L x b)` |
-| |![94x94x5](image.png) |
+| ![94x94x3x5](./figures/94x94x3x5.jpeg) |![94x94x5](./figures/94x94x5.jpeg) |
 
 [^1]: wwPDB file format documentation _https://www.wwpdb.org/documentation/file-format-content/format33/sect9.html_
 
