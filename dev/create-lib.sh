@@ -7,7 +7,8 @@ cd $lib_name
 mkdir docs
 cd docs
 
-sphinx-quickstart
+printf "y\n ${lib_name} \nm1geniomhe2425-rna-oop-group6\n0\nen" | sphinx-quickstart
+# sphinx-quickstart
 # echo multiline string
 echo '''
 extensions = [

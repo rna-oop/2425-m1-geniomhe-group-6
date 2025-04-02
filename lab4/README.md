@@ -82,4 +82,27 @@ The classes are organized in modules and submodules as follows:
 
 ## Implementation 
 
-The implementation of the classes is available in the [src](https://github.com/rna-oop/2425-m1-geniomhe-group-6/tree/main/lab4/src) directory in the `main` branch. 
+The implementation of the classes is available in the [src](./src). The added classes are inside the [`Transformations`](./src/Transformations) submodule of out library, where there exists:  
+* [`transformers`](./src/Transformations/transformers) submodule, which contains all transformers classes, each as a module in its own .py file 
+* [Pipeline](./src/Transformations/Pipeline.py) module, which contains the `Pipeline` class that is responsible for managing the transformation process (interface of teh Chain of Responsibility pattern).
+
+On the side, we created a [`viz`] module at the root of the library to handle all visualization tasks, mainly using `plotly` for interactive visualizations that can be saved as either HTML or PNG files.
+
+
+### Design Pattern: CoR
+
+### Transformer interface
+
+### BaseTransformer abstract class
+
+### Concrete transformers
+
+#### Normalize
+
+#### Kmers
+
+#### OneHotEncoding
+
+#### Distogram
+
+#### SecondaryStructure

@@ -4,3 +4,6 @@ plotly      # -- interactive plots
 pandas      # -- dataframes (tests)
 numpy       # -- numerical operations
 matplotlib  # -- plotting
+IPython
+networkx
+pyvis
