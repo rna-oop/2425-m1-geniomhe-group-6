@@ -11,6 +11,7 @@
   - [Library Structure](#library-structure)
   - [Implementation](#implementation)
     - [Design Pattern: CoR](#design-pattern-cor)
+    - [Pipeline class](#pipeline-class)
     - [Transformer interface](#transformer-interface)
     - [BaseTransformer abstract class](#basetransformer-abstract-class)
     - [Concrete transformers](#concrete-transformers)
@@ -19,6 +20,7 @@
       - [OneHotEncoding](#onehotencoding)
       - [Distogram](#distogram)
       - [SecondaryStructure](#secondarystructure)
+      - [TertiaryMotifs](#tertiarymotifs)
 
 ## Added Functionality to Previous Classes
 
@@ -102,22 +104,48 @@ The classes are organized in modules and submodules as follows:
 
 ## Implementation 
 
-The implementation of the classes is available in the [src](./src). The added classes are inside the [`Transformations`](./src/Transformations) submodule of out library, where there exists:  
+The implementation of the classes is available in the [src](./src). The added classes are inside the [`Transformations`](./src/Transformations) submodule of the library, where there exists:  
 * [`transformers`](./src/Transformations/transformers) submodule, which contains all transformers classes, each as a module in its own .py file 
-* [Pipeline](./src/Transformations/Pipeline.py) module, which contains the `Pipeline` class that is responsible for managing the transformation process (interface of teh Chain of Responsibility pattern).
+* [Pipeline](./src/Transformations/Pipeline.py) module, which contains the `Pipeline` class that is responsible for managing the transformation process (interface of the Chain of Responsibility pattern).
 
 On the side, we created a [`viz`] module at the root of the library to handle all visualization tasks, mainly using `plotly` for interactive visualizations that can be saved as either HTML or PNG files.
 
 
 ### Design Pattern: CoR
 
-Chain of Responsibilty (CoR) design pattern is used to decouple the sender and receiver of a request. It s passed along a chain of handlers until one of them handles it.
+Chain of Responsibilty (CoR) design pattern is used to decouple the sender and receiver of a request. 
+In our case, the request is the transformation of the input and output data, and the sender is the `Pipeline` class, which is responsible for managing the transformation process. The receiver is the transformer classes, which implement the transformation logic.
+The CoR pattern allows us to create a chain of transformers, where each transformer transforms the data and pass it to the next transformer in the chain. This allows for a flexible and extensible design, where new transformers can be added or removed without affecting the rest of the code.
+
+### Pipeline class
+
+The `Pipeline` class is responsible for managing the transformation process. 
+- It takes a list of transformers as input, ensures that they are valid transformer classes, and that the first transformer is a `Normalize` transformer (if present).
+- It sets the next transformer in the chain for each transformer, allowing for a flexible and extensible design.  
+- The `transform` method starts the transformation process from the first transformer in the chain, passing the input data (X, Y) through each transformer in sequence.
+- The `__repr__` method provides a string representation of the pipeline, including the names and parameters of each transformer in the chain.
+
+**NOTE**:
+`X`, `Y` are the sequences numpy array `(number of molecules including models, max number of residues)` and the coordinates numpy array `(number of molecules including models, max number of residues, max number of atoms, 3)` respectively. 
+
 
 ### Transformer interface
 
+The `Transformer` interface defines the contract for all transformer classes. It specifies the methods that must be implemented by any transformer class, including:
+- `set_next`: Sets the next transformer in the chain.
+- `transform`: Transforms the input data (X, Y) and returns the transformed data.
+
 ### BaseTransformer abstract class
 
+The `BaseTransformer` class is an abstract class that serves as a base for all transformers. 
+- It implements the `Transformer` interface and provides the default behavior for chaining transformers.
+- It has a `_next_transformer` attribute that holds the next transformer in the chain.
+- The `set_next` method sets the next transformer in the chain and returns it.
+- The `transform` method performs the transformation and passes the data to the next transformer in the chain.
+  
 ### Concrete transformers
+
+The concrete transformers are the classes that implement the transformation logic. Each transformer class inherits from the `BaseTransformer` class and implements the `transform` method to perform the specific transformation.
 
 #### Normalize
 
@@ -174,3 +202,49 @@ This model tries to take input data that can either be sequence or structure, an
 [^2]: scikit-multilearn: multi-label classification in python _http://scikit.ml/_
 
 #### SecondaryStructure
+
+The `SecondaryStructure` class is responsible for predicting the secondary structure of RNA sequences using one of two methods:
+  1- `Nussinov Algorithm` → A dynamic programming algorithm that maximizes base pairing given a sequence of nucleotides.
+  2- `Watson-Crick Distance Constraints` → Uses distance constraints based on known base-pair distances in RNA structures.
+
+**Attributes**:
+- `nussinov` (`bool`): Specifies the algorithm to use (default: `False`).
+
+**Public Method**:
+- `transform`: public method that takes as input `X, Y` and returns X and transformed Y as a dictionary with the original coordinates and the secondary structure in dot-bracket notation. It checks if the input data is a NumPy array and converts it to a dictionary if necessary. It then calls the appropriate method to compute the secondary structure based on the value of `nussinov`.
+  
+**Private Methods**:
+- `_CoM`: Computes the center of mass for each residue in the input data, handling NaN values.
+- `_distograms`: Computes the distance matrices for each sequence, handling NaN values.
+- `_WDistances_batch`: Computes the secondary structure using Watson-Crick distance constraints for a batch of sequences.
+- `__WDistances`: Implements the Watson-Crick distance constraints for secondary structure prediction for a single sequence.
+- `_nussinov_batch`: Processes a batch of sequences for the Nussinov algorithm.
+- `__nussinov`: Implements the Nussinov algorithm for RNA secondary structure prediction for a single sequence.
+- `__traceback`: Constructs the secondary structure from the DP table generated by the Nussinov algorithm.
+- `__repr__`: Provides a string representation of the transformer, including the name and parameters of the transformer.
+
+**Visualization**:
+
+
+#### TertiaryMotifs
+
+The `TertiaryMotifs` class identifies **tertiary motifs** in RNA sequences based on their **secondary structure**. It detects **hairpins, internal loops, and bulges** from **dot-bracket notation**. 
+
+***Public Methods***:
+- `set_next(next_transformer)`: Ensures `SecondaryStructure` is processed first not next, otherwise raises an error.
+- `transform(X, Y)`: detects tertiary motifs in the input data. It checks if the input data is a NumPy array and converts it to a dictionary if necessary. It then calls the `_detect_motifs` method to identify the motifs in the secondary structure. It returns X, and the transformed Y as a dictionary with the original coordinates, secondary structure and adds to it the detected motifs as a dictionary with keys indices of the sequences and values are the detected motifs as dictionaries with keys as the type of motif and values as the indices of the residues in the sequence.
+
+***Private Methods***:
+- `_detect_motifs(dot_bracket, motifs)`: Calls the private methods to detect hairpins, internal loops and bulges in the secondary structure.
+- `_detect_hairpins(dot_bracket, motifs)`: Identifies **hairpin loops**.
+- `_detect_loops(dot_bracket, motifs)`: Detects **internal loops and bulges**.
+
+***Approach used to detect motifs***:
+1. **Hairpin Detection**  
+   - Uses a **stack** to track **paired bases**.  
+   - Identifies **hairpins** when a **closing parenthesis** appears after a sequence of **dots (`'.'`)**, ensuring the loop meets a **minimum size threshold**.
+
+2. **Internal Loop & Bulge Detection**  
+   - Traverses the **dot-bracket sequence** while maintaining previous **paired positions**.  
+   - **Internal loops** are detected when two **consecutive base pairs** enclose an unpaired **loop region** on both sides.  
+   - **Bulges** are identified when **one side** of a base pair has unpaired nucleotides while the other remains paired.
