@@ -45,4 +45,15 @@ class Pipeline:
         
         #Start transformation from the first transformer
         return self.transformers[0].transform(X, Y)
-    
+
+    def __repr__(self):
+        self.transformers[0].__repr__()
+        transformers_repr = []
+        for transformer in self.transformers:
+            transformer_name = transformer.__class__.__name__
+            transformer_params = ',\n'.join(
+                [f"{k}={v}" for k, v in transformer.__dict__.items() if k != '_next_transformer']
+            )
+            transformers_repr.append(f"{transformer_name}({transformer_params})")
+        
+        return f"Pipeline(\n    {',\n    '.join(transformers_repr)}\n)"

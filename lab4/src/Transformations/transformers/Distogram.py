@@ -33,8 +33,8 @@ class Distogram(BaseTransformer):
         - buckets: int (optional), number of buckets for discretization (if None, no bucketing is performed)
 
         '''
-        self._atoms=atoms
-        self._buckets=buckets
+        self.atoms=atoms
+        self.buckets=buckets
         
 
     def transform(self, X, Y):
@@ -65,8 +65,8 @@ class Distogram(BaseTransformer):
         > it's a way to perform discretization of the distances, this model is used in AlphaFold3
 
         '''
-        atoms=self._atoms
-        b=self._buckets
+        atoms=self.atoms
+        b=self.buckets
 
         euclidean_distance=lambda coords1, coords2: float(np.sqrt(np.sum((coords1-coords2)**2)))
         L=X.shape[1] #number of residues

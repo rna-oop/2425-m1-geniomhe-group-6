@@ -10,12 +10,17 @@ the default behavior for chaining transformers and provides a method to display 
 set_next is implemented to make it inheritable directly to all ConcreteTransformers.  
 The transform method is abstract and must be implemented by all subclasses.
 
+It also enforces a __repr__ method to display the transformer in a graph format + str representation of the transformer (also becomes inherited and the default __str__ method for all transformers)
+
 '''
 import os,sys
 sys.path.append(os.path.abspath('lab4/src'))
 
 from abc import abstractmethod
 from Transformations.transformers.Transformer import Transformer
+
+from PIL import Image as PILImage
+import matplotlib.pyplot as plt
 
 
 from graphviz import Digraph
@@ -38,7 +43,7 @@ class BaseTransformer(Transformer):
         self._next_transformer = transformer
         return transformer
 
-    def __display(self):
+    def _display(self):
         """
         Recursive private method: Displays the transformer in form of a node, to be used in 
         
@@ -47,7 +52,7 @@ class BaseTransformer(Transformer):
         """
         transformer_name = self.__class__.__name__
         params=''
-        if len(self.__dict__)>1: #has attributes
+        if len(self.__dict__)>=1: #has attributes (next is not considered as an attribute in child's dict)
             params = ', '.join([f"{k}={v}" for k, v in self.__dict__.items() if k != '_next_transformer'])
 
         if self._next_transformer:
@@ -58,7 +63,7 @@ class BaseTransformer(Transformer):
         else:
             dot = Digraph(format='fig')
             dot.node(transformer_name, f"{transformer_name}\n{params}",shape="box", style="filled", fillcolor="lightblue")
-
+        
         return dot
 
 
@@ -68,3 +73,17 @@ class BaseTransformer(Transformer):
             return self._next_transformer.transform(X, Y)
 
         return X, Y
+    
+    def __repr__(self):
+        """
+        Returns a string representation of the transformer in a graph format.
+        """
+        dot=self._display()
+        dot.render("_cached_pipeline_graph", format="png")
+        img = PILImage.open("_cached_pipeline_graph.png")
+        plt.imshow(img)
+        # rmove axis
+        plt.axis('off')
+
+
+        return f'{self.__class__.__name__}({", ".join([f"{k}={v}" for k, v in self.__dict__.items() if k != "_next_transformer"])})'

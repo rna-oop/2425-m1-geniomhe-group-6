@@ -1,0 +1,16 @@
+digraph {
+	Dataset [label="Dataset
+(raw data)" fillcolor=lightgray shape=parallelogram style=filled]
+	FeatureUnion [label="Feature Union" fillcolor=lightblue shape=folder style=filled]
+	PCA [label="PCA
+(n_components=3)" fillcolor=lightblue shape=box style=filled]
+	SelectKBest [label="SelectKBest
+(k=1)" fillcolor=purple shape=box style=filled]
+	Model [label="SVC
+(C=10, kernel='linear')" fillcolor=lightgray shape=box style=filled]
+	Dataset -> FeatureUnion
+	FeatureUnion -> PCA [label=pca]
+	FeatureUnion -> SelectKBest [label=univ_select]
+	PCA -> Model
+	SelectKBest -> Model
+}
