@@ -7,20 +7,20 @@ if [ ! -d backup ]; then
    echo "Created backup directory"
 fi
 
-if [ -d $lib_name ]; then
-   echo "Directory $lib_name already exists => moving it to backup"
-   counter=1
-   while [ -d "backup/${lib_name}_$counter" ]; do
-       counter=$((counter + 1))
-   done
-   sudo mv $lib_name backup/${lib_name}_$counter
-   echo "Moved existing $lib_name directory to backup/${lib_name}_$counter"
-fi
+# if [ -d $lib_name ]; then
+#    echo "Directory $lib_name already exists => moving it to backup"
+#    counter=1
+#    while [ -d "backup/${lib_name}_$counter" ]; do
+#        counter=$((counter + 1))
+#    done
+#    sudo mv $lib_name backup/${lib_name}_$counter
+#    echo "Moved existing $lib_name directory to backup/${lib_name}_$counter"
+# fi
 
-mkdir $lib_name
+# mkdir $lib_name
 
 
-cp -r ./lab4/src/* $lib_name/
+# cp -r ./lab4/src/* $lib_name/
 
 if [ -d docs ]; then
    echo "docs directory already exists, moving it"

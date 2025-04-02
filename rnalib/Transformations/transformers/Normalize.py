@@ -36,7 +36,7 @@ class Normalize(BaseTransformer):
             X_transformed = [sequence[:min_length] for sequence in X]
             Y_transformed = [sequence[:min_length] for sequence in Y]
 
-            # make the list a numpy array
+            #Make the list a numpy array
             X_transformed = np.array(X_transformed)
             Y_transformed = np.array(Y_transformed)
             

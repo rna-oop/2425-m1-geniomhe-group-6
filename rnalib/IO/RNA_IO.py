@@ -7,7 +7,7 @@ sys.path.append(os.path.abspath('lab4/src'))
 from IO.parsers.PDB_Parser import PDB_Parser
 from IO.visitor_writers.pdb_visitor import PDBExportVisitor
 from IO.visitor_writers.xml_visitor import XMLExportVisitor
-from .Structure.RNA_Molecule import RNA_Molecule
+from Structure.RNA_Molecule import RNA_Molecule
 
 class RNA_IO:
     
