@@ -22,6 +22,12 @@ class BaseTransformer(Transformer):
         self._next_transformer = transformer
         return transformer
 
+    def _display(self):
+        """
+        Displays the transformer in form of a node, to be used in 
+        """
+        print(f"Transformer: {self.__class__.__name__}")
+
     @abstractmethod
     def transform(self, X, Y):
         if self._next_transformer:
