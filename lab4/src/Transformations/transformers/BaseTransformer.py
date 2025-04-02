@@ -8,10 +8,10 @@ class BaseTransformer(Transformer):
     """
     A base class for all transformers that implements the default behavior for chaining transformers.
 
-    Attributes:
+    :Attributes:
     - _next_transformer: Holds the next transformer in the chain.
 
-    Methods:
+    :Methods:
     - set_next: Sets the next transformer in the chain and returns it.
     - transform: Performs the transformation and passes the data to the next transformer in the chain.
     """

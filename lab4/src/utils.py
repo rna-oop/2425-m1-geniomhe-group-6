@@ -1,7 +1,7 @@
 doc='''
 utils module containing utilities functions for the RNA library in order to perform data retrieval and file parsing
 
-Functions:
+:Functions:
     - parse_pdb_files(entries: list) -> np.ndarray: parses a list of PDB entries and returns a numpy array of stacked molecules
     - flattenMolecule(rna_molecule: RNA_Molecule) -> list: flattens the RNA molecule into a list of atoms
     - flattenMolecule_to_dict(rna_molecule: RNA_Molecule) -> list: flattens the RNA molecule into a list of atoms and returns it as a dictionary
@@ -11,6 +11,8 @@ Functions:
     - get_family_attributes(q: str) -> tuple: retrieves attributes of an RNA family from the RFAM database
     - get_pdb_ids_from_fam(fam_id: str) -> list: retrieves the PDB IDs associated with an RNA family
     - get_tree_newick_from_fam(fam_id: str) -> str: retrieves the Newick tree from the RFAM database given the RNA family ID
+    - pathify_pdb(pdb_entry_id: str, save_directory: str) -> str (equivalent to fetch_pdb_file): fetches a PDB file given a PDB entry ID
+    - parse_pdb_files(entries: list) -> tuple: parses a list of PDB entries and returns a numpy array of stacked molecules and a numpy array of sequences
     
 '''
 
@@ -26,6 +28,7 @@ sys.path.append(os.path.abspath('lab4/src'))
 
 from Structure.RNA_Molecule import RNA_Molecule
 from IO.parsers.PDB_Parser import PDB_Parser
+from IO.RNA_IO import RNA_IO
 
 
 CACHE_DIR='.rnalib_cache/'
@@ -205,27 +208,30 @@ def flattenMolecule_to_dict(rna_molecule:RNA_Molecule):
                     atoms_list.append(atom_data)
     return atoms_list
 
-
-
-
 def parse_pdb_files(entries: list):
     """
     Parses a list of PDB entries and returns a numpy array of stacked molecules.
     Dimension: (number of files including different models, number of residues, number of atoms, 3)
     """
     
-    parser = PDB_Parser()
+    # parser = PDB_Parser() #--not parsing correct dimensions
+    rna_io=RNA_IO()
     all_molecules = []
     all_sequences = []
     
     for entry in entries:
         pdb_path_test = fetch_pdb_file(entry)
-        mol = parser.read(pdb_path_test, "PDB")
-        all_molecules.append(mol[1])
-        all_sequences.append(mol[0])
+        x,y = rna_io.read(pdb_path_test, "PDB")
+        all_molecules.append(y)
+        all_sequences.append(x)
+
+    for mol in all_molecules:
+        print(mol.shape)
 
     max_residues = max(mol.shape[1] for mol in all_molecules)
     max_atoms = max(mol.shape[2] for mol in all_molecules)
+
+    print(f'max_residues: {max_residues}, max_atoms: {max_atoms}')
 
     padded_molecules = []
     

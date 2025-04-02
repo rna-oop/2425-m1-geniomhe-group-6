@@ -14,10 +14,12 @@ class SecondaryStructure(BaseTransformer):
         """
         Adds to Y the secondary structure of the RNA sequences in X using either the Nussinov algorithm or Watson-Crick distance constraints.
         The secondary structure is represented in dot-bracket notation.
-        Parameters:
+        
+        :Parameters:
         - X: Input data (sequences array) of shape (num of sequences, num of residues).
         - Y: 3D coordinates array of atoms of shape (num of sequences, num of residues, max num of atoms, 3).
-        Returns:
+
+        :Returns:
         - X: Input data (unchanged).
         - Y: Dictionary containing the original coordinates and the secondary structure.
         """
@@ -52,9 +54,11 @@ class SecondaryStructure(BaseTransformer):
     def _CoM(self, Y):
         """
         Compute the center of mass for each residue, handling NaNs.
-        Parameters:
+
+        :Parameters:
         - Y: (num_sequences, max_residues, max_atoms, 3) NumPy array of atomic coordinates.
-        Returns:
+
+        :Returns:
         - CoM_array: (num_sequences, max_residues, 3) NumPy array of center of mass coordinates.
         """
         #Compute mean along axis=2 (atoms), ignoring NaNs
@@ -69,9 +73,11 @@ class SecondaryStructure(BaseTransformer):
     def _distograms(self, CoM_array):
         """
         Compute Euclidean distance matrices for each sequence, handling NaNs. 
-        Parameters:
+
+        :Parameters:
         - CoM_array: (num_sequences, num_residues, 3) NumPy array of center of mass coordinates.
-        Returns:
+
+        :Returns:
         - distograms: (num_sequences, num_residues, num_residues) NumPy array of distances, with NaNs where necessary.
         """
 
@@ -130,10 +136,12 @@ class SecondaryStructure(BaseTransformer):
     def __WDistances(self, seq, distogram):
         """
         Watson-Crick distance constraints for secondary structure prediction.
-        Parameters:
+
+        :Parameters:
         - seq: List of nucleotides (e.g., ["A", "U", "G", "C"]).
         - distogram: 2D NumPy array of distances between residues.
-        Returns:
+
+        :Returns:
         - structure: List of dot-bracket notation for the secondary structure.
         """
         #Initialize the structure with dots
@@ -160,9 +168,11 @@ class SecondaryStructure(BaseTransformer):
     def _nussinov_batch(self, sequences):
         """
         Batch processing of sequences for Nussinov algorithm.
-        Parameters:
+
+        :Parameters:
         - sequences: 2D NumPy array of sequences (num_sequences, seq_length).
-        Returns:
+
+        :Returns:
         - structures: 2D NumPy array of structures in dot-bracket notation (num_sequences, seq_length).
         """
         num_sequences, seq_length = sequences.shape
@@ -200,9 +210,9 @@ class SecondaryStructure(BaseTransformer):
     def __nussinov(self, seq):
         """
         Nussinov algorithm for RNA secondary structure prediction.
-        Parameters:
+        :Parameters:
         - seq: List of nucleotides (e.g., ["A", "U", "G", "C"]).
-        Returns:
+        :Returns:
         - structure: List of dot-bracket notation for the secondary structure.
         """
         n = len(seq)
@@ -235,7 +245,7 @@ class SecondaryStructure(BaseTransformer):
     def __traceback(self, M, seq, i, j, structure, wc_pairs):
         """
         Traceback function to construct the secondary structure.
-        Parameters:
+        :Parameters:
         - M: DP table.
         - seq: List of nucleotides.
         - i, j: Indices for the current subsequence.

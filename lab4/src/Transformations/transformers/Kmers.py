@@ -13,11 +13,11 @@ class Kmers(BaseTransformer):
         """
         Transform the input data into k-mers.
         
-        Parameters:
+        :Parameters:
         - X: Input data (sequences array).
         - Y: coordinates array (not used in this transformation).
         
-        Returns:
+        :Returns:
         - Transformed data as k-mers.
         """
         

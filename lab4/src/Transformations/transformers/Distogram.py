@@ -14,7 +14,7 @@ class Distogram(BaseTransformer):
     *Whats a distogram?*  
     A distogram is a representation of the distances between pairs of residues in a structure
 
-    This class inherits from teh abstract class BaseTransformer and implements the abstract method transform
+    This class inherits from the abstract class BaseTransformer and implements the abstract method transform
     The transformation is particularly applied to the output of the model y, which is a 3D array of coordinates
 
     usage:
@@ -78,17 +78,26 @@ class Distogram(BaseTransformer):
         for s_idx in range(Y_transformed.shape[0]): #-- loop over all structures, create a distogram for each
             distogram=np.zeros((L,L,k),dtype=float)
             y_single_structure=raw_y[s_idx]
+
+            # print(f'Y shape: {Y.shape}, y_single_s shape: {y_single_structure.shape}')
+            # print(f'y_single_structure[i] for i=0 test {y_single_structure[0]}')
+            
             for i in range(L):
                 for j in range(L):
-                    if i!=j:
+                    if i!=j and (y_single_structure[i][0] is not None and y_single_structure[j][0] is not None): 
+                        #if same residue no distogram should be filled (should be 0)
+                        #if residue doesnt exist also no entries will be filled (should be inf)
+
                         for m,atom_idx in enumerate(atoms):
                             d=euclidean_distance(y_single_structure[i][atom_idx],y_single_structure[j][atom_idx])
                             distogram[i,j,m]=d
                             if d>max_distance:
                                 max_distance=d
-                    else:
+                    elif i==j:
                         for m,atom in enumerate(atoms):
-                            distogram[i,j,m]=0.0                        
+                            distogram[i,j,m]=0.0  
+                    # else:
+
 
             Y_transformed[s_idx]=distogram #-- add distogram to the list of distograms
 

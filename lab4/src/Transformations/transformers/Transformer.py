@@ -9,7 +9,7 @@ class Transformer(ABC):
     It implements the chain of responsibility pattern, allowing transformers to be linked together.
     Concrete transformer classes must implement the methods defined in this class.
     
-    Methods:
+    :Methods:
     - set_next: Sets the next transformer in the transformation chain.
     - transform: Performs the transformation on the input data (X, Y).
     """
