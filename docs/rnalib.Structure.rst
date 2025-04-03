@@ -9,53 +9,53 @@ rnalib.Structure.Atom module
 
 .. automodule:: rnalib.Structure.Atom
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 rnalib.Structure.Chain module
 -----------------------------
 
 .. automodule:: rnalib.Structure.Chain
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 rnalib.Structure.Model module
 -----------------------------
 
 .. automodule:: rnalib.Structure.Model
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 rnalib.Structure.RNA\_Molecule module
 -------------------------------------
 
 .. automodule:: rnalib.Structure.RNA_Molecule
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 rnalib.Structure.Residue module
 -------------------------------
 
 .. automodule:: rnalib.Structure.Residue
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 rnalib.Structure.Structure module
 ---------------------------------
 
 .. automodule:: rnalib.Structure.Structure
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Module contents
 ---------------
 
 .. automodule:: rnalib.Structure
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:

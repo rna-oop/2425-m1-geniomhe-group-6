@@ -21,21 +21,21 @@ rnalib.utils module
 
 .. automodule:: rnalib.utils
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 rnalib.viz module
 -----------------
 
 .. automodule:: rnalib.viz
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Module contents
 ---------------
 
 .. automodule:: rnalib
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:

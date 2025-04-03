@@ -1,13 +1,7 @@
 digraph {
-	Distogram [label="Distogram
-atoms=[1, 3, 5], buckets=None" fillcolor=lightblue shape=box style=filled]
-	OneHotEncoding [label=OneHotEncoding
+	TertiaryMotifs [label=TertiaryMotifs
  fillcolor=lightblue shape=box style=filled]
-	OneHotEncoding -> Distogram
-	Kmers [label="Kmers
-k=3" fillcolor=lightblue shape=box style=filled]
-	Kmers -> OneHotEncoding
-	Normalize [label="Normalize
-crop=True" fillcolor=lightblue shape=box style=filled]
-	Normalize -> Kmers
+	SecondaryStructure [label="SecondaryStructure
+nussinov=False" fillcolor=lightblue shape=box style=filled]
+	SecondaryStructure -> TertiaryMotifs
 }

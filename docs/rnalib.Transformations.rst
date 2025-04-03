@@ -17,13 +17,13 @@ rnalib.Transformations.Pipeline module
 
 .. automodule:: rnalib.Transformations.Pipeline
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
 
 Module contents
 ---------------
 
 .. automodule:: rnalib.Transformations
    :members:
-   :show-inheritance:
    :undoc-members:
+   :show-inheritance:
