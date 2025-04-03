@@ -9,9 +9,9 @@ since in python there is no direct method
 '''
 
 import os,sys
-sys.path.append(os.path.abspath('lab3/src'))
+# sys.path.append(os.path.abspath('lab3/src'))
 
-from Structure.RNA_Molecule import RNA_Molecule
+from rnalib.Structure.RNA_Molecule import RNA_Molecule
 
 from abc import ABC, abstractmethod
 

@@ -3,11 +3,11 @@ family module contains class Family
 '''
 
 import os,sys
-sys.path.append(os.path.abspath('lab2/src'))
+# sys.path.append(os.path.abspath('lab2/src'))
 
-from Structure.RNA_Molecule import RNA_Molecule
-from Families.tree import Phylotree
-from utils import get_family_attributes, create_RNA_Molecule, get_tree_newick_from_fam
+from rnalib.Structure.RNA_Molecule import RNA_Molecule
+from rnalib.Families.tree import Phylotree
+from rnalib.utils import get_family_attributes, get_tree_newick_from_fam
 
 import pandas as pd
 

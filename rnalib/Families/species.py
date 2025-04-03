@@ -3,7 +3,7 @@ species module: contains class Species
 '''
 
 import sys,os
-sys.path.append(os.path.abspath('lab2/src'))
+# sys.path.append(os.path.abspath('lab2/src'))
 
 
 

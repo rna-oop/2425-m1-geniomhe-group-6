@@ -383,6 +383,9 @@ def view_ss_network(X, y, filename_prefix="rna_network", sequence_no:int=None):
 
         seq = sequences[idx]
         dot_bracket = dot_brackets[idx]
+
+        print(f'seq {len(seq)}: {seq}')
+        print(f'struct {len(dot_bracket)}: {dot_bracket}')
         
         # Remove padding
         valid_indices = np.where(seq != "")[0]

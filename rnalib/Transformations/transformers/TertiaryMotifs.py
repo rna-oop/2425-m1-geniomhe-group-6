@@ -1,8 +1,8 @@
 import os, sys
-sys.path.append(os.path.abspath('lab4/src'))
+# sys.path.append(os.path.abspath('lab4/src'))
 
-from Transformations.transformers.BaseTransformer import BaseTransformer
-from Transformations.transformers.SecondaryStructure import SecondaryStructure
+from rnalib.Transformations.transformers.BaseTransformer import BaseTransformer
+from rnalib.Transformations.transformers.SecondaryStructure import SecondaryStructure
 
 from collections import defaultdict
 import numpy as np

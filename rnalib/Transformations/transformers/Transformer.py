@@ -1,5 +1,5 @@
 import os,sys
-sys.path.append(os.path.abspath('lab4/src'))
+# sys.path.append(os.path.abspath('lab4/src'))
 
 from abc import ABC, abstractmethod
 

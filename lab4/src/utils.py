@@ -103,8 +103,8 @@ def fetch_pdb_file(pdb_entry_id, save_directory=CACHE_DIR):
 
 # -- Rfam api: https://docs.rfam.org/en/latest/api.html
 
-r = requests.get('https://rfam.org/family/SAM?content-type=application/json')
-print (r.json()['rfam']['acc'])
+# r = requests.get('https://rfam.org/family/SAM?content-type=application/json')
+# print (r.json()['rfam']['acc'])
 
 def get_rfam(q:str):
     r = requests.get(f'https://rfam.org/family/{q}?content-type=application/json')
@@ -222,13 +222,11 @@ def parse_pdb_files(entries: list):
         all_molecules.append(y)
         all_sequences.append(x)
 
-    for mol in all_molecules:
-        print(mol.shape)
+
 
     max_residues = max(mol.shape[1] for mol in all_molecules)
     max_atoms = max(mol.shape[2] for mol in all_molecules)
 
-    print(f'max_residues: {max_residues}, max_atoms: {max_atoms}')
 
     padded_molecules = []
     

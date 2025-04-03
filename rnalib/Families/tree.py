@@ -4,9 +4,9 @@ tree module contains classes TreeNode and Phylotree
 
 import json,os,sys
 
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+# sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
-from utils import * #to parse newick string
+from rnalib.utils import * #to parse newick string
 
 class TreeNode:
     '''

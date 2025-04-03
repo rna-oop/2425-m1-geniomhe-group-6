@@ -14,10 +14,10 @@ It also enforces a __repr__ method to display the transformer in a graph format 
 
 '''
 import os,sys
-sys.path.append(os.path.abspath('lab4/src'))
+# sys.path.append(os.path.abspath('lab4/src'))
 
 from abc import abstractmethod
-from Transformations.transformers.Transformer import Transformer
+from rnalib.Transformations.transformers.Transformer import Transformer
 
 from PIL import Image as PILImage
 import matplotlib.pyplot as plt

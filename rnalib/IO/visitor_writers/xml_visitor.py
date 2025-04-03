@@ -6,14 +6,14 @@ module containing the XMLExportVisitor class
 '''
 
 import os,sys
-sys.path.append(os.path.abspath('lab3/src'))
-from Structure.RNA_Molecule import RNA_Molecule
-from Structure.Model import Model
-from Structure.Chain import Chain
-from Structure.Residue import Residue
-from Structure.Atom import Atom
+# sys.path.append(os.path.abspath('lab3/src'))
+from rnalib.Structure.RNA_Molecule import RNA_Molecule
+from rnalib.Structure.Model import Model
+from rnalib.Structure.Chain import Chain
+from rnalib.Structure.Residue import Residue
+from rnalib.Structure.Atom import Atom
 
-from IO.visitor_writers.visitor import Visitor
+from rnalib.IO.visitor_writers.visitor import Visitor
 
 
 def _indent(s:str,n:int=0)->str:

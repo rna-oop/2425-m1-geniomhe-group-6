@@ -2,12 +2,12 @@
 RNA_IO module contains class RNA_IO for input/output operations
 '''
 import os,sys
-sys.path.append(os.path.abspath('lab4/src'))
+# sys.path.append(os.path.abspath('lab4/src'))
 
-from IO.parsers.PDB_Parser import PDB_Parser
-from IO.visitor_writers.pdb_visitor import PDBExportVisitor
-from IO.visitor_writers.xml_visitor import XMLExportVisitor
-from Structure.RNA_Molecule import RNA_Molecule
+from rnalib.IO.parsers.PDB_Parser import PDB_Parser
+from rnalib.IO.visitor_writers.pdb_visitor import PDBExportVisitor
+from rnalib.IO.visitor_writers.xml_visitor import XMLExportVisitor
+from rnalib.Structure.RNA_Molecule import RNA_Molecule
 
 class RNA_IO:
     

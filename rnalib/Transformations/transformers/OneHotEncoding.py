@@ -1,10 +1,10 @@
 from itertools import product
 import os,sys
-sys.path.append(os.path.abspath('lab4/src'))
+# sys.path.append(os.path.abspath('lab4/src'))
 
-from Transformations.transformers.BaseTransformer import BaseTransformer
-from Transformations.transformers.Kmers import Kmers
-from Transformations.transformers.TertiaryMotifs import TertiaryMotifs
+from rnalib.Transformations.transformers.BaseTransformer import BaseTransformer
+from rnalib.Transformations.transformers.Kmers import Kmers
+from rnalib.Transformations.transformers.TertiaryMotifs import TertiaryMotifs
 
 import numpy as np
 

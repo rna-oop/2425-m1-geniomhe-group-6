@@ -1,9 +1,9 @@
 
 import os,sys
-sys.path.append(os.path.abspath('lab3/src'))
+# sys.path.append(os.path.abspath('lab3/src'))
 
-from Structure.Structure import Structure
-from Structure.Residue import Residue
+from rnalib.Structure.Structure import Structure
+from rnalib.Structure.Residue import Residue
 
 class Chain(Structure):
     def __init__(self, id: str, residues=None):

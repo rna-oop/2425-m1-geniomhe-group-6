@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 import os,sys
-sys.path.append(os.path.abspath('lab3/src'))
+# sys.path.append(os.path.abspath('lab3/src'))
 
 class Structure(ABC):
     '''

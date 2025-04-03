@@ -3,12 +3,12 @@ PDB_Parser module contains class PDB_Parser for parsing PDB files
 '''
 
 import os,sys
-sys.path.append(os.path.abspath('lab4/src'))
+# sys.path.append(os.path.abspath('lab4/src'))
 
-from IO.parsers.RNA_Parser import RNA_Parser
-from Processing.Director import Director
-from Processing.ArrayBuilder import ArrayBuilder
-from Processing.ObjectBuilder import ObjectBuilder
+from rnalib.IO.parsers.RNA_Parser import RNA_Parser
+from rnalib.Processing.Director import Director
+from rnalib.Processing.ArrayBuilder import ArrayBuilder
+from rnalib.Processing.ObjectBuilder import ObjectBuilder
 
 
 class PDB_Parser(RNA_Parser):

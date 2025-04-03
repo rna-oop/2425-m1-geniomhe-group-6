@@ -6,11 +6,11 @@ contains the implementation of:
 '''
 
 import os,sys
-sys.path.append(os.path.abspath('lab3/src'))
+# sys.path.append(os.path.abspath('lab3/src'))
 
-from Structure.Structure import Structure
-from Structure.Model import Model
-from Families.species import Species
+from rnalib.Structure.Structure import Structure
+from rnalib.Structure.Model import Model
+from rnalib.Families.species import Species
 
 from abc import ABC, abstractmethod
 

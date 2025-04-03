@@ -1,7 +1,7 @@
 import os,sys
-sys.path.append(os.path.abspath('lab3/src'))
+# sys.path.append(os.path.abspath('lab3/src'))
 
-from Processing.Builder import Builder
+from rnalib.Processing.Builder import Builder
 
 class Director:
     

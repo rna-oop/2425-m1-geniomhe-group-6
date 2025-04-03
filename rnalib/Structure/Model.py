@@ -3,10 +3,10 @@ Chain module contains class Chain
 '''
 
 import os,sys
-sys.path.append(os.path.abspath('lab3/src'))
+# sys.path.append(os.path.abspath('lab3/src'))
 
-from Structure.Structure import Structure
-from Structure.Chain import Chain
+from rnalib.Structure.Structure import Structure
+from rnalib.Structure.Chain import Chain
 
 class Model(Structure):
     def __init__(self, id: int, chains=None):

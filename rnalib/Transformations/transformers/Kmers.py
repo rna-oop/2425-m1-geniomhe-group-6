@@ -1,9 +1,9 @@
 import os,sys
-sys.path.append(os.path.abspath('lab4/src'))
+# sys.path.append(os.path.abspath('lab4/src'))
 
-from Transformations.transformers.BaseTransformer import BaseTransformer
-from Transformations.transformers.SecondaryStructure import SecondaryStructure
-from Transformations.transformers.TertiaryMotifs import TertiaryMotifs
+from rnalib.Transformations.transformers.BaseTransformer import BaseTransformer
+from rnalib.Transformations.transformers.SecondaryStructure import SecondaryStructure
+from rnalib.Transformations.transformers.TertiaryMotifs import TertiaryMotifs
 import numpy as np
 
 class Kmers(BaseTransformer):

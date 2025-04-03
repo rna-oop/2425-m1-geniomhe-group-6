@@ -16,10 +16,10 @@ this will be built by taking into consideration
 '''
 
 import os,sys
-sys.path.append(os.path.abspath('lab4/src'))
+# sys.path.append(os.path.abspath('lab4/src'))
 
-from Transformations.transformers.Transformer import Transformer
-from Transformations.transformers.Normalize import Normalize
+from rnalib.Transformations.transformers.Transformer import Transformer
+from rnalib.Transformations.transformers.Normalize import Normalize
 class Pipeline:
     
     def __init__(self, transformers):

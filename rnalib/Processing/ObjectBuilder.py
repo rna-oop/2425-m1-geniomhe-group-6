@@ -1,13 +1,13 @@
 import os,sys
-sys.path.append(os.path.abspath('lab3/src'))
+# sys.path.append(os.path.abspath('lab3/src'))
 
-from Structure.RNA_Molecule import RNA_Molecule
-from Structure.Model import Model
-from Structure.Chain import Chain
-from Structure.Residue import Residue
-from Structure.Atom import Atom
-from Families.species import Species
-from Processing.Builder import Builder
+from rnalib.Structure.RNA_Molecule import RNA_Molecule
+from rnalib.Structure.Model import Model
+from rnalib.Structure.Chain import Chain
+from rnalib.Structure.Residue import Residue
+from rnalib.Structure.Atom import Atom
+from rnalib.Families.species import Species
+from rnalib.Processing.Builder import Builder
 class ObjectBuilder(Builder):
     """
     The ObjectBuilder class is responsible for constructing the RNA molecule object.

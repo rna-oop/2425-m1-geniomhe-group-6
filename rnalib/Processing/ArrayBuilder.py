@@ -1,8 +1,8 @@
 import os,sys
-sys.path.append(os.path.abspath('lab4/src'))
+# sys.path.append(os.path.abspath('lab4/src'))
 
 import numpy as np
-from Processing.Builder import Builder
+from rnalib.Processing.Builder import Builder
 
 class ArrayBuilder(Builder):
     
