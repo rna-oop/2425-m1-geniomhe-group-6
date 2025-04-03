@@ -94,6 +94,10 @@ The library is designed to manipulate and study RNA sequences. It provides funct
 ![Class Diagram](/model/class-diagram.jpg)
 Each color represents a different module, and opacity variations indicate different submodules.
 
+- [x] Section related to RNA object manipulation: structure in purple <img src='lab4/assets/purple.png' width=10 height=10> , family in blue <img src='lab4/assets/blue.png' width=10 height=10> (lab1)
+- [x] Section related to reading/writing in yellow <img src='lab4/assets/yellow.png' width=10 height=10> and green <img src='lab4/assets/green.png' width=10 height=10> (lab2 & lab3) ; Builder and Visitor
+- [x] Section related to transformations and pipeline construction in red <img src='lab4/assets/red.png' width=10 height=10> (lab4) ; Chain of Responsibility 
+
 ## Object Diagram
 ![Object Diagram](/model/object-diagram.jpg)
 
