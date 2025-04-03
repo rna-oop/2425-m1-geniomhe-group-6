@@ -3,7 +3,7 @@
 <!-- _Online demo available as soon as it becomes public:_   <a href="https://colab.research.google.com/github/rna-oop/2425-m1geniomhe-group-6/blob/main/demo.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open Project in colab"/></a>  -->
 
 
-[![GitHub](https://img.shields.io/badge/GitHub-rna--oop-black?logo=Github)](https://github.com/rna--oop/2425-m1geniomhe-group-6) [![Python](https://img.shields.io/badge/python-3.10+-blue?logo=Python)](https://www.python.org/downloads/release/python-390/)     [![Version](https://img.shields.io/badge/version-0.0.1-grassgreen)](./dev/changelog.md)  ![Build](https://img.shields.io/badge/installation-pip-brightgreen) [![Read the Docs](https://img.shields.io/badge/docs-read--the--docs-blue?logo=readthedocs)](./docs/_build/html/index.html) <a href="https://colab.research.google.com/github/rna-oop/2425-m1geniomhe-group-6/blob/main/demo.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open Project in colab"/></a> 
+[![GitHub](https://img.shields.io/badge/GitHub-rna--oop-black?logo=Github)](https://github.com/rna--oop/2425-m1geniomhe-group-6) [![Python](https://img.shields.io/badge/python-3.10+-blue?logo=Python)](https://www.python.org/downloads/release/python-390/)     [![Version](https://img.shields.io/badge/version-0.0.1-grassgreen)](./dev/changelog.md)  ![Build](https://img.shields.io/badge/installation-pip-brightgreen) [![Read the Docs](https://img.shields.io/badge/docs-read--the--docs-blue?logo=readthedocs)](./docs/_build/html/index.html) [![jup](https://img.shields.io/badge/Jupyter-demo-orange?logo=jupyter)](./demo.ipynb)
 <!-- deployed badge -->
 
 
@@ -204,12 +204,24 @@ The `Families` module represents the evolutionary and comparitive relationships 
 - It represents a family of RNA molecules, the way it's defined in the [`Rfam database`](https://rfam.xfam.org/).
 - Has methods to add attributes the classes that are associated with it, and have support with `rfam api` to access information while creating an object found in the database.
 - Has class attributes to ensure a family is instanciated once, dunder and helper private methods, and plotting methods to visualize distribution of species accross the family.
-- Attributes: name: str, id: str, type: str, members: list, trees: dict, clan: Clan=None
+- Attributes: name: str, id: str, type: str, members: list, trees: dict, clan: Clan=None, entries[CLASS ATTRIBUTE]: list
 
 **Clan:**
 - Same as clan, but consititues a set of families that are related, aggregation of families.
 - Attributes: id, name:str, members=list
 
+**PhyloTree**:
+- It represents a phylogenetic tree of RNA sequences belonging to a certain family, and designates a tree data structure allowing flexibility in accessing leaves (sequences) through tree traversals. 
+- Built as one of the modules in the `tree` submodule, on top of a helper TreeNode class and can be created from a Newick string, with available api functionality to access the rfam's tree of a particular family. Several trees can belong to teh saem familty depnding on the source/algorithm usd, thus family has its tree attribute as a dict whose values are PhyloTree objects.
+- Attributes: root: TreeNode, family: Family
+
+**TreeNode**:
+- Helper class, second module in teh `tree` submodule, representing a node in the phylogenetic tree. Supports node traversal algorithms, with necessary dunder methods for string representation,indexibality and equality checks.
+- Attributes: name: str, children: dict, parent: TreeNode=None, distance: float=None
+
+**Species:**
+- It represents a living species, with its scientific name. Supports only one instance of a spcies once declared, keeping track in a class attribute (for effifient database design). It appends every rna molecule that is present in a species instance to that instance through a dictionary, and has a method to get them.
+- Attributes: name: str, family: dict={}, declared_species [CLASS ATTRIBUTE]: list
 
 ### IO Module
 
@@ -248,6 +260,7 @@ The `IO` module is responsible for reading and writing RNA structures from and t
 ### Processing Module
 
 The `Processing` module is responsible for building RNA molecules and arrays from PDB files. It uses the Builder design pattern to create complex objects step by step.
+
 
 #### Builder Design Pattern
 
