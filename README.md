@@ -16,7 +16,6 @@ The goal of this series of labs is to build a library that allows easy manipulat
     - [Lab3](#lab3)
     - [Lab4](#lab4)
   - [Overview of Library Functionalities](#overview-of-library-functionalities)
-  - [Demo](#demo)
   - [Class Diagram](#class-diagram)
   - [Object Diagram](#object-diagram)
   - [Library Structure](#library-structure)
@@ -29,6 +28,7 @@ The goal of this series of labs is to build a library that allows easy manipulat
       - [Builder Design Pattern](#builder-design-pattern)
     - [Transformations Module](#transformations-module)
       - [Chain of Responsibility Design Pattern](#chain-of-responsibility-design-pattern)
+    - [Visualizations](#visualizations)
 
 
 
@@ -54,15 +54,19 @@ The library is designed to manipulate and study RNA sequences. It provides funct
 - Reading PDB file and creating an RNA molecule object or a numpy array of coordinates. 
 - Writing PDB and XML files from an RNA molecule object.
 - Reading multiple PDB files into a single numpy array of sequences, and another numpy array of coordinates.
-- Doing a Pipeline of Transformations on the sequences and coordinates arrays:
+- Creating a Pipeline of Transformations on the sequences and coordinates arrays:
   - Normalize by cropping or padding the sequences.
   - Kmers
-  - OneHotEncoding for a sequence or kmers 
+  - OneHotEncoding for a sequence or kmers. 
   - Distograms, specific atoms can be given, and there is an option to bucketize the distances.
   - Secondary Structure prediction (dot-bracket notation) using Nussinov algorithm or Watson-Crick distances. 
-  - Tertiaty Motifs detection (hairpins, internal loops, bulges) 
+  - Tertiaty Motifs detection (hairpins, internal loops, bulges). 
+- Visualizations for the following:
+  - RNA molecule coarse grained models in 3D.
+  - OneHotEncoding of the sequence or kmers.
+  - Distogram.
+  - Secondary structure in arcs, network, or 2D.
 
-## Demo 
 
 ## Class Diagram
 ![Class Diagram](/model/class-diagram.jpg)
@@ -153,7 +157,7 @@ An interface for all the classes in the Structure module. It enforces the implem
 
 **Residue**:
 - Attributes: type, position, i_code=None, atoms=None
-- Enum for the residue types (A, C, G, U, X)
+- Enum for the residue types (A, C, G, U)
 
 **Chain**:
 - Attributes: id, residues=None
@@ -176,17 +180,29 @@ An interface for all the classes in the Structure module. It enforces the implem
 
 ### IO Module
 
-The `IO` module is responsible for reading and writing RNA structures from and to various file formats. It provides functionality to parse PDB files, create RNA molecule objects, and write RNA structures to PDB and XML files.
+The `IO` module is responsible for reading and writing RNA structures from and to various file formats.
 
 **RNA_IO class**:
 
-- It serves as a user interface for reading and writing RNA structures from and to various file formats.
+- It serves as a user interface for reading and writing.
 - It contains a dictionary of parsers and writers for different formats. 
 - Currently, it supports `PDB` format for reading and PDB, `XML` or PDBML formats for writing.
 - The `read` method reads a file of a specific format and returns either a numpy array or an RNA molecule object, depending on the `array` parameter.
 - The `write` method writes an RNA molecule object to a file of a specific format.
 
 **PDB_Parser class**:
+
+- Method: `read(path_to_file, coarse_grained=False, atom_name="C1'", array=True)`
+    - path_to_file (str) – Path to the PDB file.
+    - coarse_grained (bool, default=False) – Extract only a specific atom per residue (e.g., C1' for RNA backbones).
+    - atom_name (str, default="C1'") – The atom to extract when coarse_grained=True.
+    - array (bool, default=True) – Return a **NumPy arrays for Sequences and Coordinates** if True, otherwise an **RNA_Molecule object**.
+
+- Uses the Builder pattern (Director & Builder classes) for structured data construction.
+- Extracts PDB metadata (ID, experiment type, species) via `_extract_molecule_info()`.
+- Extracts atom attributes (coordinates, element, residue info, occupancy, etc.) via `_extract_atom_info()`.
+- Supports multi-model structures, assigning atoms to their respective models.
+
 
 #### Visitor Design Pattern
 
@@ -195,10 +211,113 @@ The `IO` module is responsible for reading and writing RNA structures from and t
 
 ### Processing Module
 
+The `Processing` module is responsible for building RNA molecules and arrays from PDB files. It uses the Builder design pattern to create complex objects step by step.
+
 #### Builder Design Pattern
+
+The Builder pattern is used to construct different representations of an RNA molecule:
+1- Object-Oriented Representation (ObjectBuilder)
+2- NumPy Array Representation (ArrayBuilder)
+
+**Director class**:
+
+- The `Director` class serves as a director for the `Builder` classes. 
+- Attribute: `__builder`: The builder object that will be used to build the object. Initialized to `None`.
+- It provides a common recipe in `add_atom_info(model_id, *atom_info)` for the builder classes to follow.
+
+**Builder class**:
+
+- It defines the interface for the concrete builders:
+    - `molecule` (property) → Returns the final structure.
+    - `reset()` → Resets the builder.
+    - `add_model()`, `add_chain()`, `add_residue()`, `add_atom()` → Methods for constructing the hierarchy. 
+
+**ObjectBuilder class**:
+
+- It constructs an RNA molecule object step by step using the Builder interface.
+- Attributes:
+    - `__molecule` → Stores the RNA molecule being built.
+    - `__model_id`, `__chain_id`, `__residue_id` → Track the current model, chain, and residue IDs.
+- Methods: have the same names as the Builder interface methods and an additional method:
+    - `add_molecule_info(entry_id, experiment, species)` → Stores general metadata (entry ID, experiment type, and species).
+
+**ArrayBuilder class**:
+- It constructs a numpy array representation of the RNA molecule step by step using the Builder interface.
+- Attributes:
+    - `__array` → Stores atom coordinates for each residue.
+    - `__sequence` → Stores residue names for sequence representation.
+    - `__model_id`, `__residue_id` → Track the current model and residue IDs.
+    - `__prev_atom` → Tracks the last atom name and occupancy to handle alternate locations.
+- Methods: have the same names as the Builder interface methods.
+    - `molecule` (property) → Converts stored data into two numpy arrays:
+        - **np_sequence**: `(models, max_residues)` array storing residue names.
+        - **np_array**: `(models, max_residues, max_atoms, 3)` array storing atom coordinates.
+
+***Disadvantages of the Builder Pattern:***
+- The Builder Design Pattern adds complexity by introducing additional classes and methods.
+  
+**Advantages of the Builder Pattern:**
+- Each representation has its own dedicated builder class, making the code cleaner and more maintainable, especially for future additions.
+- It enables the direct construction of the required representation without unnecessary intermediate objects if we want to decouple parsing from representation.
+- It ensures consistency by providing a single construction recipe common to all representations, reducing redundancy and potential errors.
+- It breaks the construction into smaller steps, allowing for easier modification or extension.
 
 ---
 
 ### Transformations Module
 
+The `Transformations` module is responsible for applying various transformations to RNA sequences and coordinates. It uses the Chain of Responsibility design pattern to handle a series of transformations in a flexible and extensible manner.
+
 #### Chain of Responsibility Design Pattern
+
+The Chain of Responsibility pattern allows multiple handlers to process a request without the sender needing to know which handler will ultimately handle it. In this module, each transformation is represented as a handler in the chain. Each transformer transforms the data and passes it to the next transformer in the chain.
+
+**Pipeline class**:
+- The `Pipeline` class is the main entry point for applying transformations to RNA sequences and coordinates.
+- It takes a list of transformers as input and ensures that they are valid transformer classes.
+- The first transformer in the chain must be a `Normalize` transformer (if present).
+- It sets the next transformer in the chain for each transformer, allowing for a flexible and extensible design.
+- The `transform` method starts the transformation process from the first transformer in the chain, passing the input data (X, Y) through each transformer in sequence.
+- The `__repr__` method provides a string representation of the pipeline, including the names and parameters of each transformer in the chain.
+
+**Transformer class**:
+- The `Transformer` class is an interface for all transformers.
+- It defines the `set_next` method to set the next transformer in the chain and the `transform` method to perform the transformation.
+
+**BaseTransformer class**:
+- The `BaseTransformer` class is an abstract base class for all transformers.
+- It implements the `set_next` method to set the next transformer in the chain.
+- It defines the `transform` method as an abstract method, which must be implemented by concrete transformer classes.
+
+**Concrete Transformers**:
+- **Normalize**: Normalizes the input data by cropping or padding sequences to a fixed length.
+- **Kmers**: Generates k-mers from the input sequences.
+- **OneHotEncoding**: Encodes sequences or k-mers into one-hot encoded vectors.
+- **Distogram**: Generates a distogram from the input coordinates, with options for specific atoms and bucketization.
+- **SecondaryStructure**: Predicts the secondary structure (dot-bracket format) of the RNA molecule using the Nussinov algorithm or Watson-Crick distances.
+- **TertiaryMotifs**: Detects motifs (hairpins, internal loops, bulges) from the dot-bracket format.
+
+**Order Constraints**:
+- The first transformer in the chain must be a `Normalize` transformer (if present).
+- The `Kmers` transformer must be before the `OneHotEncoding` transformer.
+- The `SecondaryStructure` transformer must be before the `TertiaryMotifs` transformer.
+- The `Kmers` cannot be before the `SecondaryStructure` transformer.
+
+**For more details on each transformer, please refer to [lab4/README.md](lab4/README.md).**
+
+**Disadvantages of the Chain of Responsibility Pattern:**
+- Can lead to a large number of classes.
+- The sequence of transformers is important, requiring careful consideration when changed.
+  
+**Advantages of the Chain of Responsibility Pattern:**
+- Allows for a flexible and extensible design, where new transformers can be added or removed without modifying existing code.
+- It promotes the single responsibility principle, as each transformer is responsible for a specific transformation.
+- It allows for dynamic composition of transformers, enabling different combinations of transformations to be applied based on user needs.
+- It decouples the sender and receiver of the request, allowing for a more modular design.
+- It provides a clear and organized structure for handling a series of transformations, making it easier to understand and maintain the code.
+- It allows for easy testing and debugging of individual transformers, as they can be tested in isolation.
+- It enables the reuse of transformers across different pipelines, reducing code duplication.
+
+---
+
+### Visualizations
