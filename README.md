@@ -190,6 +190,9 @@ The `IO` module is responsible for reading and writing RNA structures from and t
 - The `read` method reads a file of a specific format and returns either a numpy array or an RNA molecule object, depending on the `array` parameter.
 - The `write` method writes an RNA molecule object to a file of a specific format.
 
+**RNA_Parser class**:
+- It defines the interface for all parsers, to implement the `read` method.
+
 **PDB_Parser class**:
 
 - Method: `read(path_to_file, coarse_grained=False, atom_name="C1'", array=True)`
@@ -200,7 +203,7 @@ The `IO` module is responsible for reading and writing RNA structures from and t
 
 - Uses the Builder pattern (Director & Builder classes) for structured data construction.
 - Extracts PDB metadata (ID, experiment type, species) via `_extract_molecule_info()`.
-- Extracts atom attributes (coordinates, element, residue info, occupancy, etc.) via `_extract_atom_info()`.
+- Extracts atom info (atom attributes, residue attributes, chain attribute) via `_extract_atom_info()`.
 - Supports multi-model structures, assigning atoms to their respective models.
 
 
