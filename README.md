@@ -418,3 +418,16 @@ The Chain of Responsibility pattern allows multiple handlers to process a reques
 ---
 
 ### Visualizations
+
+For a better understanding of the data, analysis, explanation and how it can be used, we have added a `viz` module at the root of the library containing functions to plot different representation of RNA, from the object 3D representation to raw and processed array representation.  
+We have used more than 5 plotting libraries, including `matplotlib`, `plotly`, `networkx`, `graphviz` and `pyvis` mainly and generated different spatial, interactive and network plots. A glimpse can be found here:
+
+<p align='center'>
+<img src='./lab4/assets/rna_obj.png'>
+</p>
+RNA object, coarse grained, representing an NMR structure of 20 models (interactive plot in plotly)
+
+![data viz](./lab4/assets/data.png)
+Visualization of the different stages of an Array object representation of the RNA, whther on sequence or structure level.
+
+The latter image creates new horizon to view where this library is heading. Machine learning and deep learning are the new trends in bioinformatics, particulalry in structural prediction in the last couple of years, and this library is a step towards that direction. RNA structure prediction is still an open challenge today, many efforts are being made to present different types of features or labels to this model. The transformations in this library provide a good starting point to train models on different kinds of features and be assessed by the way the model is able to come near oen of the RNA structural representation.
