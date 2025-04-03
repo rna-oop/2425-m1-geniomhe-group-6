@@ -1,5 +1,13 @@
 # 2425-m1geniomhe-oop2-labs
 
+<!-- _Online demo available as soon as it becomes public:_   <a href="https://colab.research.google.com/github/rna-oop/2425-m1geniomhe-group-6/blob/main/demo.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open Project in colab"/></a>  -->
+
+
+[![GitHub](https://img.shields.io/badge/GitHub-rna--oop-black?logo=Github)](https://github.com/rna--oop/2425-m1geniomhe-group-6) [![Python](https://img.shields.io/badge/python-3.10+-blue?logo=Python)](https://www.python.org/downloads/release/python-390/)     [![Version](https://img.shields.io/badge/version-0.0.1-grassgreen)](./dev/changelog.md)  ![Build](https://img.shields.io/badge/installation-pip-brightgreen) [![Read the Docs](https://img.shields.io/badge/docs-read--the--docs-blue?logo=readthedocs)](./docs/_build/html/index.html) <a href="https://colab.research.google.com/github/rna-oop/2425-m1geniomhe-group-6/blob/main/demo.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open Project in colab"/></a> 
+<!-- deployed badge -->
+
+
+
 * Joelle ASSY ([@JoelleAs](https://github.com/joelleas))
 * Rayane ADAM ([@raysas](https://github.com/raysas))
 
@@ -30,6 +38,20 @@ The goal of this series of labs is to build a library that allows easy manipulat
       - [Chain of Responsibility Design Pattern](#chain-of-responsibility-design-pattern)
     - [Visualizations](#visualizations)
 
+## Installation
+
+This library can be installed directly from github through pip:
+```python 
+pip install git+git://github.com/rna-oop/2425-m1geniomhe-group-6.git
+```
+
+_Online demo available as soon as it becomes public:_   <a href="https://colab.research.google.com/github/rna-oop/2425-m1geniomhe-group-6/blob/main/demo.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open Project in colab"/></a> 
+
+Documentation of the various functions and classes can be found in a [`Sphinx generated read-the-docs-like webpage`](./docs/_build/html/index.html) or in the docstrings of the code. _Not deployed on github pages yet because the repo is private._
+
+<p align='center'>
+<img src='./lab4/assets/image.png' height=300>
+</p>
 
 
 ## Labs
@@ -176,7 +198,18 @@ An interface for all the classes in the Structure module. It enforces the implem
 
 ### Families Module
 
----
+The `Families` module represents the evolutionary and comparitive relationships between RNA sequences. It's a module composed of several modules itself, where each contain a class of the same name.
+
+**Family:** 
+- It represents a family of RNA molecules, the way it's defined in the [`Rfam database`](https://rfam.xfam.org/).
+- Has methods to add attributes the classes that are associated with it, and have support with `rfam api` to access information while creating an object found in the database.
+- Has class attributes to ensure a family is instanciated once, dunder and helper private methods, and plotting methods to visualize distribution of species accross the family.
+- Attributes: name: str, id: str, type: str, members: list, trees: dict, clan: Clan=None
+
+**Clan:**
+- Same as clan, but consititues a set of families that are related, aggregation of families.
+- Attributes: id, name:str, members=list
+
 
 ### IO Module
 
