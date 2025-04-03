@@ -54,6 +54,8 @@ Documentation of the various functions and classes can be found in a [`Sphinx ge
 </p>
 
 
+
+
 ## Labs
 ### Lab1
 [description](lab1/lab1.pdf) | [report](lab1/README.md) | [contents](lab1/)
@@ -255,11 +257,53 @@ The `IO` module is responsible for reading and writing RNA structures from and t
 - Extracts atom info (atom attributes, residue attributes, chain attribute) via `_extract_atom_info()`.
 - Supports multi-model structures, assigning atoms to their respective models.
 
+### visitor_writers Module
+
+This module is home to the Visitor design pattern, part of teh IO subpackage due to its involvement in writing and exporting files from the RNA_Molecule object.
 
 #### Visitor Design Pattern
 
+#### Visitor Design Pattern
 
----
+The Visitor pattern is used to export an RNA molecule object into different file formats:
+1. **PDBExportVisitor** → Exports to `PDB`
+2. **XMLExportVisitor** → Exports to `PDBML/XML` (more about the format [in lab3 writing section](./lab3/README.md#2-writing-structures-into-pdmlxml-format))
+
+**Visitor interface**:
+
+- Allows the creation of various file formats exporters, referred to as "visitors" and enforces the implementation of visit methods since it's an interface
+- Defines `visit_Atom()`, `visit_Residue()`, `visit_Chain()`, `visit_Model()`, and `visit_RNA_Molecule()` methods to format data.
+- `export(rna: RNA_Molecule)` method calls the visit methods to write the file.
+
+**Structure interface**:
+
+- Created to enforce a structural entity nature on all classes in the `Structure` module by implementing the it.
+- Defines `accept(visitor)`, implemented by `Atom`, `Residue`, `Chain`, `Model`, and `RNA_Molecule`.
+- Calls the corresponding `visit_*()` method in the visitor.
+
+**PDBExportVisitor class**:
+
+- Implements `Visitor` interface.
+- Formats RNA molecule data into `PDB` format.
+- `export(rna)` writes the `PDB` file using visit methods.
+
+**XMLExportVisitor class**:
+
+- Implements `Visitor` interface.
+- Formats RNA molecule data into `PDBML/XML` format.
+- `export(rna)` writes the `XML` file using visit methods.
+
+This design separates export functionality from the `RNA_Molecule` class, ensuring modularity and flexibility.
+
+**Advantages of the Visitor Pattern:**  
+- The Visitor Pattern separates the logic of traversing the molecular structure from the operations applied to it. Instead of having the `RNA_Molecule` class handle both data representation and output formatting, the visitor encapsulates format-specific logic, keeping `RNA_Molecule` focused on molecular structure representation. 
+- It supports adding new output formats (_e.g., CSV, JSON_) at any point in development without modifying existing code, adhering to the open-closed principle. _(Met in the previous implementation)_  
+- Formatting is split across different structural elements separately, improving code readability and maintainability. However, this also increases code complexity (as discussed in disadvantages).  
+- The ability to accept a visitor from any object in the structure adds flexibility, allowing the structure to be represented as needed in the file. However, this feature is not actively used in the current implementation, as the `RNA_IO` class manages the writing process directly.  
+
+**Disadvantages of the Visitor Pattern:**  
+- **Increased complexity:** The previous implementation handled writing separately from `RNA_Molecule`, similar to the visitor pattern, but in a more direct manner. By flattening the molecule object into a list of atoms and formatting it for output, it kept the molecule representation decoupled from the writing process. The visitor pattern, in contrast, integrates traversal and formatting, making the design more structured but also more intricate.
+
 
 ### Processing Module
 
