@@ -356,7 +356,13 @@ The `SecondaryStructure` class is responsible for predicting the secondary struc
 - `__repr__`: Provides a string representation of the transformer, including the name and parameters of the transformer.
 
 **Visualization**:
-
+3 possible representations:
+  - base pair arcs (`matplotlib`):
+  ![base pair arcs](./assets/base_pair_arcs.png)
+  - base pair circular network (`networkx`,`pyvis`)
+  <img src="./assets/base_pair_circular_network.png" alt="Base Pair Circular Network" width="600">
+  - base pair 2D rna structure (`draw_rna`) 
+  ![base pair 2D rna structure](./assets/base_pair_2d.png)
 
 #### TertiaryMotifs
 
@@ -374,9 +380,13 @@ The `TertiaryMotifs` class identifies **tertiary motifs** in RNA sequences based
 ***Approach used to detect motifs***:
 1. **Hairpin Detection**  
    - Uses a **stack** to track **paired bases**.  
-   - Identifies **hairpins** when a **closing parenthesis** appears after a sequence of **dots (`'.'`)**, ensuring the loop meets a **minimum size threshold**.
+   - Identifies **hairpins** when a **closing parenthesis** appears after a sequence of **dots (`'.'`)**, ensuring the loop meets a **minimum size threshold**
+  <img src="./assets/hairpin.png" alt="Hairpin" width="600">
 
 2. **Internal Loop & Bulge Detection**  
    - Traverses the **dot-bracket sequence** while maintaining previous **paired positions**.  
-   - **Internal loops** are detected when two **consecutive base pairs** enclose an unpaired **loop region** on both sides.  
+   - **Internal loops** are detected when two **consecutive base pairs** enclose an unpaired **loop region** on both sides.
+    <img src="./assets/internal_loop.png" alt="Internal Loop" width="600"> 
    - **Bulges** are identified when **one side** of a base pair has unpaired nucleotides while the other remains paired.
+    <img src="./assets/bulge.png" alt="Bulge" width="600">
+ 
