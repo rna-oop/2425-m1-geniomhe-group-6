@@ -477,6 +477,143 @@ def view_ss_2d(X, y, sequence_no:int=None, *args,**kwargs):
         print(f'struct {len(struct)}: {struct}')
 
         draw_struct(seq, struct)
+
+
+# -- useful functionalities
+
+def max_occupancy_atom(atoms_of_res):
+    '''takes a list of atoms of different conformations (type Atom) and returns the atom with the highest occupancy'''
+    max_occ_atom=None
+    max_occ=0
+    for atom in atoms_of_res:
+        if atom.occupancy>max_occ:
+            max_occ=atom.occupancy
+            max_occ_atom=atom
+    return max_occ_atom
+
+def chain_to_atom_list(chain):
+    '''takes a chain and returns a list of atoms'''
+    res_list=chain.get_residues()
+    atom_list=[]
+    for _ in range(1,1+len(res_list)):
+        res=res_list[_]
+        atoms_of_res=list(res.get_atoms().values())
+        atom_of_res=max_occupancy_atom(atoms_of_res)
+        atom_list.append(atom_of_res)
+    return atom_list
+
+def atoms_to_coordinates(atoms):
+    '''takes a list of Atom objects and retuns a list of 3-tuples of coordinates'''
+    coordinates=[]
+    for atom in atoms:
+        x,y,z=atom.x,atom.y,atom.z
+        coordinates.append((x,y,z))
+    return coordinates
+
+def chain_to_coordinates(chain):
+    '''takes a chain and returns a list of 3-tuples of coordinates'''
+    atom_list=chain_to_atom_list(chain)
+    return atoms_to_coordinates(atom_list)
+
+def get_chain_residue_coordinates(chain):
+    '''
+    takes a Chain object and returns a (contiguous) list of residues coordinates in 3-tuple format -> [(x1,y1,z1),...,(xn,yn,zn)]
+
+    _note, res coordinates are in fact c alpha coordinates_
+    '''
+    res_list=chain.get_residues()
+    res_coords=[]
+    for _ in range(1,len(res_list)+1):
+        res=res_list[_]
+        c_atom=list(res.get_atoms().values())
+        res_coords.append((c_atom[0].x,c_atom[0].y,c_atom[0].z))
+    return res_coords
+
+import plotly.graph_objects as go
+
+def plot_chain_residue_coordinates(res_coords):
+    """
+    Plots the residue coordinates of a chain in 3D using Plotly.
+    
+    :param res_coords: List of (x, y, z) tuples representing residue coordinates
+    """
+    x, y, z = zip(*res_coords)
+    
+    fig = go.Figure()
+    
+    # Add trace for the backbone
+    fig.add_trace(go.Scatter3d(
+        x=x, y=y, z=z,
+        mode='marker',
+        # marker=dict(size=5, color='blue', opacity=0.8),
+        marker=dict(width=2, color=z, colorscale='Viridis', opacity=0.8),
+        name='Backbone'
+    ))
+
+    # line=dict(
+    #     width=2, 
+    #     color=z,  # Color based on z values
+    #     colorscale='Viridis'  # Viridis for line color
+    # ), 
+    
+    # Layout settings
+    fig.update_layout(
+        title='3D Visualization of Chain Residue Coordinates',
+        scene=dict(
+            xaxis_title='X Coordinate',
+            yaxis_title='Y Coordinate',
+            zaxis_title='Z Coordinate'
+        ),
+        margin=dict(l=0, r=0, b=0, t=40)
+    )
+    
+    fig.show()
+    return fig
+
+def plot_molecule(rna_molecule, name=None, colormap='viridis'):
+    colormap_=plt.get_cmap(colormap)
+    models=list(rna_molecule.get_models().values())
+
+    colors=[colormap_(i/len(models)) for i in range(len(models))]
+
+    fig = go.Figure()
+
+
+    for i in range(len(models)):
+        model = models[i]
+        c=colors[i]
+        chains = list(model.get_chains().values())
+
+        for chain in chains:
+            res_coords = get_chain_residue_coordinates(chain)
+
+            x, y, z = zip(*res_coords)
+
+            fig.add_trace(go.Scatter3d(
+            x=x, y=y, z=z,
+            mode='markers+lines',
+            marker=dict(size=2, color=f'rgba({c[0]},{c[1]},{c[2]},{c[3]})', opacity=0.8),
+            line=dict(width=2, color=f'rgba({c[0]},{c[1]},{c[2]},{c[3]})'),
+            name='Backbone'
+        ))
+        
+    fig.update_layout(
+        scene=dict(
+            xaxis_title='X Coordinate',
+            yaxis_title='Y Coordinate',
+            zaxis_title='Z Coordinate'
+        ),
+        margin=dict(l=0, r=0, b=0, t=40),
+        # dont put legend
+        showlegend=False,
+        title=name
+    )
+    
+    fig.show()
+    return fig
+            
+
+
     
 
 ############### deprecated ######################

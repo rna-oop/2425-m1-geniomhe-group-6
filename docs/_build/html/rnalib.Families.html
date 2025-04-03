@@ -1,0 +1,604 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>rnalib.Families package &mdash; rnalib 0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8dde47fa"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="rnalib.IO package" href="rnalib.IO.html" />
+    <link rel="prev" title="rnalib package" href="rnalib.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            rnalib
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">rnalib</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="rnalib.html">rnalib package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="rnalib.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">rnalib.Families package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rnalib.IO.html">rnalib.IO package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rnalib.Processing.html">rnalib.Processing package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rnalib.Structure.html">rnalib.Structure package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rnalib.Transformations.html">rnalib.Transformations package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rnalib.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rnalib.html#module-rnalib.utils">rnalib.utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rnalib.html#module-rnalib.viz">rnalib.viz module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rnalib.html#module-rnalib">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">rnalib</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">rnalib</a></li>
+          <li class="breadcrumb-item"><a href="rnalib.html">rnalib package</a></li>
+      <li class="breadcrumb-item active">rnalib.Families package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/rnalib.Families.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="rnalib-families-package">
+<h1>rnalib.Families package<a class="headerlink" href="#rnalib-families-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-rnalib.Families.clan">
+<span id="rnalib-families-clan-module"></span><h2>rnalib.Families.clan module<a class="headerlink" href="#module-rnalib.Families.clan" title="Link to this heading"></a></h2>
+<p>clan module contains class Clan</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="rnalib.Families.clan.Clan">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rnalib.Families.clan.</span></span><span class="sig-name descname"><span class="pre">Clan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">members</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Families.clan.Clan" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Families.clan.Clan.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">members</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Families.clan.Clan.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Families.clan.Clan.add_family">
+<span class="sig-name descname"><span class="pre">add_family</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">family</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Families.clan.Clan.add_family" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rnalib.Families.clan.Clan.entries">
+<span class="sig-name descname"><span class="pre">entries</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#rnalib.Families.clan.Clan.entries" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Families.clan.Clan.get_clan">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_clan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Families.clan.Clan.get_clan" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Families.clan.Clan.get_instances">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_instances</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Families.clan.Clan.get_instances" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rnalib.Families.clan.Clan.id">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#rnalib.Families.clan.Clan.id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rnalib.Families.clan.Clan.members">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">members</span></span><a class="headerlink" href="#rnalib.Families.clan.Clan.members" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rnalib.Families.clan.Clan.name">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#rnalib.Families.clan.Clan.name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Families.clan.Clan.remove_family">
+<span class="sig-name descname"><span class="pre">remove_family</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">family</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Families.clan.Clan.remove_family" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-rnalib.Families.family">
+<span id="rnalib-families-family-module"></span><h2>rnalib.Families.family module<a class="headerlink" href="#module-rnalib.Families.family" title="Link to this heading"></a></h2>
+<p>family module contains class Family</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="rnalib.Families.family.Family">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rnalib.Families.family.</span></span><span class="sig-name descname"><span class="pre">Family</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">members</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trees</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_database</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Families.family.Family" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<section id="family-class">
+<h3>— Family class —<a class="headerlink" href="#family-class" title="Link to this heading"></a></h3>
+<p>This class represents a family of RNA molecules.</p>
+<p>&gt; A  RNA  family  (in  the  Rfam  database)  consists  of  evolutionarily  related  RNA  sequences  sharing  commonsequence  similarity,  secondary  structure,  and  often  function.  Some  of  the  families  featured  in  the  Rfamdatabase  include  rRNA  (Ribosomal  RNA);  tRNA  (Transfer  RNA),  which  is essential  for  protein  translation;miRNA (MicroRNA), which are regulatory RNAs that inhibit gene expression; and Other ncRNAs (Non-codingRNAs).  The  RNA  structure  7EAF  described  earlier  belongs  to  the  SAM  riboswitch  Rfam  family.  Moreinformation about this family can be found here:https://rfam.org/family/SAM.</p>
+<p>This class has the following attributes:
+- Class attributes:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>entries: list of Family objects, representing all the families created to keep track and avoid duplicates</p></li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Instance attributes:</dt><dd><ul>
+<li><p>id: str, representing the family id (unique)</p></li>
+<li><p>name: str, representing the family name</p></li>
+<li><p>type: str, representing the family type</p></li>
+<li><p>members: list of RNA_Molecule objects, representing the family members</p></li>
+<li><p>trees: dict of Phylotree objects, representing the family trees</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>This class has the following methods:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>helper methods:</dt><dd><ul>
+<li><p>__validate_member(member): validate if the member is an instance of RNA_Molecule</p></li>
+<li><p>__validate_tree(tree): validate if the tree is an instance of Phylotree</p></li>
+<li><p>__delete_family(id): delete the family with the given id from the entries list</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>instance methods:</dt><dd><ul>
+<li><p><cite>add_RNA(self, RNA)</cite></p></li>
+<li><p><cite>remove_RNA(self, RNA)</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>class methods:</dt><dd><ul>
+<li><p><cite>get_instances()</cite></p></li>
+<li><p><cite>get_family(id)</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>dunders:</dt><dd><ul>
+<li><dl class="simple">
+<dt><cite>__init__(id, name, type=None, members=[], from_database=False)</cite></dt><dd><p>&gt; from_database is a flag to indicate if the object is created using the generator function from the database</p>
+</dd>
+</dl>
+</li>
+<li><p><cite>__del__(self)</cite></p></li>
+<li><p><cite>__eq__(self, other)</cite></p></li>
+<li><p><cite>__len__(self)</cite></p></li>
+<li><p><cite>__getitem__(self, key)</cite></p></li>
+<li><p><cite>__setattr__(self, name, value)</cite></p></li>
+<li><p><cite>__str__(self)</cite></p></li>
+<li><p><cite>__repr__(self)</cite></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Families.family.Family.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">members</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trees</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_database</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Families.family.Family.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Families.family.Family.add_RNA">
+<span class="sig-name descname"><span class="pre">add_RNA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">RNA</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Families.family.Family.add_RNA" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Families.family.Family.add_tree">
+<span class="sig-name descname"><span class="pre">add_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'NA'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'nwk'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Families.family.Family.add_tree" title="Link to this definition"></a></dt>
+<dd><p>takes a tree from user, it can be of types:
+- Phylotree
+- dict
+- str</p>
+<p>if it’s a string it should be either newick or json string/file path</p>
+<p>param:
+- tree: Phylotree, dict or str
+- method: str, representing the method/db used to generate the tree (default=’NA’)
+- format: str, representing the format of the tree if it’s a string (default=’nwk’ for newick)</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rnalib.Families.family.Family.clan">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">clan</span></span><a class="headerlink" href="#rnalib.Families.family.Family.clan" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Families.family.Family.distribution">
+<span class="sig-name descname"><span class="pre">distribution</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Families.family.Family.distribution" title="Link to this definition"></a></dt>
+<dd><p>returns a pandas dataframe of species distribution in the family</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rnalib.Families.family.Family.entries">
+<span class="sig-name descname"><span class="pre">entries</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#rnalib.Families.family.Family.entries" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Families.family.Family.from_rfam">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_rfam</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Families.family.Family.from_rfam" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Families.family.Family.get_family">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_family</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Families.family.Family.get_family" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Families.family.Family.get_instances">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_instances</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Families.family.Family.get_instances" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Families.family.Family.get_species_count">
+<span class="sig-name descname"><span class="pre">get_species_count</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Families.family.Family.get_species_count" title="Link to this definition"></a></dt>
+<dd><p>returns a dictionary of species distribution in the family</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rnalib.Families.family.Family.id">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#rnalib.Families.family.Family.id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rnalib.Families.family.Family.members">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">members</span></span><a class="headerlink" href="#rnalib.Families.family.Family.members" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rnalib.Families.family.Family.name">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#rnalib.Families.family.Family.name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Families.family.Family.plot_distribution">
+<span class="sig-name descname"><span class="pre">plot_distribution</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Families.family.Family.plot_distribution" title="Link to this definition"></a></dt>
+<dd><p>plots the species distribution in the family</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Families.family.Family.remove_RNA">
+<span class="sig-name descname"><span class="pre">remove_RNA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">RNA</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Families.family.Family.remove_RNA" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rnalib.Families.family.Family.trees">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trees</span></span><a class="headerlink" href="#rnalib.Families.family.Family.trees" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rnalib.Families.family.Family.type">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">type</span></span><a class="headerlink" href="#rnalib.Families.family.Family.type" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+<section id="module-rnalib.Families.species">
+<span id="rnalib-families-species-module"></span><h2>rnalib.Families.species module<a class="headerlink" href="#module-rnalib.Families.species" title="Link to this heading"></a></h2>
+<p>species module: contains class Species</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="rnalib.Families.species.Species">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rnalib.Families.species.</span></span><span class="sig-name descname"><span class="pre">Species</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Families.species.Species" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>type Species:</p>
+<p>&gt; Species refer to the organisms (bacteria, animals, plants, etc.) that contain RNA sequences belonging to a particular RNA family</p>
+<p>In this class, a species is defined solely by its name. Optionally, it can be defined by its species, genus, family, order, class, phylum, kingdom, and domain.
+All species instances are stored in the declared_species list class attribute to make sure no species is declared twice (equality is based on the name attribute) !!!</p>
+<p>Most important attributes:</p>
+<ul class="simple">
+<li><p>declared_species [CLASS ATTRIBUTE]: list, contains all the species instances declared so far to avoid duplicates (this allows saving information about a species set of families without isntanciating a family everytime)</p></li>
+<li><p>name: str, name of the species (key attribute, has to b unique for each species, can be named by accession of a sp if needed)</p></li>
+<li><p>rna_molecules: dict, contains all the RNA_Molecule instances that belong to this species</p></li>
+</ul>
+<p>Everytime we add a the species of an rna-molecule, we also add the rna molecule instance to the species instance (saving all molecules of a species), this is done in the _add_molecule method implicitly to be used from RNA_Molecule module (user should not worry about this; this is why it’s a private method)</p>
+<p>helper methods:
+- _get_species: static method, takes a name and returns the species instance with that name if it exists, otherwise returns None (to allow singleton instances with the same name)
+- _add_molecule: method to add an RNA_Molecule instance to the species instance (implicitly called from RNA_Molecule module)</p>
+<p><em>validation is handeled in setattr otherwise warning is printed</em></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Families.species.Species.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Families.species.Species.__init__" title="Link to this definition"></a></dt>
+<dd><p>when initializing a species, we check if the name is unique, if not we return the existing instance with the same name
+does not take any other attributes since we want to keep it simple and only use the name as the key attribute</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rnalib.Families.species.Species.declared_species">
+<span class="sig-name descname"><span class="pre">declared_species</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#rnalib.Families.species.Species.declared_species" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rnalib.Families.species.Species.name">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#rnalib.Families.species.Species.name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rnalib.Families.species.Species.rna_molecules">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rna_molecules</span></span><a class="headerlink" href="#rnalib.Families.species.Species.rna_molecules" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-rnalib.Families.tree">
+<span id="rnalib-families-tree-module"></span><h2>rnalib.Families.tree module<a class="headerlink" href="#module-rnalib.Families.tree" title="Link to this heading"></a></h2>
+<p>tree module contains classes TreeNode and Phylotree</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="rnalib.Families.tree.Phylotree">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rnalib.Families.tree.</span></span><span class="sig-name descname"><span class="pre">Phylotree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">from_generator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Families.tree.Phylotree" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<section id="phylogenetic-tree">
+<h3>Phylogenetic Tree<a class="headerlink" href="#phylogenetic-tree" title="Link to this heading"></a></h3>
+<p>A class to represent a phylogenetic tree for RNA sequences:
+&gt; “A phylogenetic tree represents the evolutionary relationships between RNA sequences in a given RNA family.
+It  is  constructed  using  multiple  sequence  alignments  and  computational  phylogenetics  to  illustrate  how
+different  RNA  sequences  are  related  through  common  ancestry.  These  trees  help  in  understanding  RNA
+structure conservation, functional similarities, and evolutionary divergence within RNA families. 
+You can take alook  at  the  phylogenetic  tree  of  the  SAM  riboswitch  Rfam  family,  which  includes  the  RNA structure  7EAF
+discussed earlier, here: <a class="reference external" href="https://rfam.org/family/SAM#tabview=tab5">https://rfam.org/family/SAM#tabview=tab5</a>.”</p>
+<p>This will be implemented as a tree data structure, with a root node as attribute</p>
+<p>Conceptually:</p>
+<ul class="simple">
+<li><p>internal nodes represent hypothetical common ancestral sequences</p></li>
+<li><p>leaf nodes represent RNA sequences in the family, which will be of type RNA-</p></li>
+</ul>
+<p>The string representation will be a preorder traversal of the tree, running from the root</p>
+<p>## Usage:</p>
+<p>I order to declare an object of tyep Phylotree, you can use the following methods:
+- Phylotree.from_dict(tree_dict)
+- Phylotree.from_json(json_str)
+- Phylotree.from_newick(newick_str)</p>
+<p><em>note that json_str and nwk_str can be a file path for the respective file types</em></p>
+<p>For the user to build a tree, need to have it in one of theese 3 formats, given that the dict/json format is liek the following:</p>
+<p><a href="#id1"><span class="problematic" id="id2">``</span></a><a href="#id3"><span class="problematic" id="id4">`</span></a>json
+{</p>
+<blockquote>
+<div><dl>
+<dt>“children”: [</dt><dd><p>{
+“name”: “a”,
+“branch_length”: 0.05592
+},
+{
+“name”: “b”,
+“branch_length”: 0.08277
+},
+{
+“children”: [</p>
+<blockquote>
+<div><p>{
+“name”: “c”,
+“branch_length”: 0.11049
+},
+{
+“name”: “d”,
+“branch_length”: 0.31409
+}</p>
+</div></blockquote>
+<p>],
+“branch_length”: 0.340
+}</p>
+</dd>
+</dl>
+<p>],
+“branch_length”: 0.03601</p>
+</div></blockquote>
+<section id="id5">
+<h4>}<a class="headerlink" href="#id5" title="Link to this heading"></a></h4>
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Families.tree.Phylotree.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">from_generator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Families.tree.Phylotree.__init__" title="Link to this definition"></a></dt>
+<dd><p>Constructor, takes attributes:</p>
+<dl class="simple">
+<dt>from_generator: bool</dt><dd><p>&gt; If True, the tree will be built from a generator (not normal initialization) 
+It’s used to warn the user that inisitalizating the tree directly as Phylotree() will not build the tree, it’ll be empty and requires adding entries to it manually
+Recommended usage (non developer): Phylotree.from_newick(…) which will call this constructor with from_generator=True</p>
+</dd>
+</dl>
+<p>_e.g.,_
+<a href="#id6"><span class="problematic" id="id7">``</span></a><a href="#id8"><span class="problematic" id="id9">`</span></a>python
+&gt;&gt;&gt; tree = Phylotree()
+Warning: Initializing Phylotree directly will not build the tree, it’ll be empty and requires adding entries to it manually
+&gt;&gt;&gt; tree = Phylotree.from_newick(“((A:0.1,B:0.2):0.3,C:0.4);”) #uses a static generator method to build the tree</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Families.tree.Phylotree.build_tree">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">build_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Families.tree.Phylotree.build_tree" title="Link to this definition"></a></dt>
+<dd><p>helper method to build the tree from a dictionary
+returns the root node of the tree</p>
+<p>params:
+- tree_dict: dict</p>
+<blockquote>
+<div><p>dictionary representation of the tree</p>
+</div></blockquote>
+<ul class="simple">
+<li><dl class="simple">
+<dt>parent: TreeNode  </dt><dd><p>parent node of the current node</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>returns:
+- node: TreeNode, root node of the tree</p>
+<p>note for later: check why when making the method private it’s giving error</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rnalib.Families.tree.Phylotree.family">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">family</span></span><a class="headerlink" href="#rnalib.Families.tree.Phylotree.family" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Families.tree.Phylotree.from_dict">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Families.tree.Phylotree.from_dict" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Families.tree.Phylotree.from_json">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json_str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Families.tree.Phylotree.from_json" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Families.tree.Phylotree.from_newick">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_newick</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">newick_str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Families.tree.Phylotree.from_newick" title="Link to this definition"></a></dt>
+<dd><p>provided a newick file or string, parse it and build the tree</p>
+<p>params:
+- newick_str: str (or path),</p>
+<blockquote>
+<div><p>newick string or path to a newick file</p>
+</div></blockquote>
+<p>returns:
+- tree: Phylotree,</p>
+<blockquote>
+<div><p>the built phylogenetic</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rnalib.Families.tree.Phylotree.root">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">root</span></span><a class="headerlink" href="#rnalib.Families.tree.Phylotree.root" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rnalib.Families.tree.TreeNode">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rnalib.Families.tree.</span></span><span class="sig-name descname"><span class="pre">TreeNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">branch_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Families.tree.TreeNode" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p><em>helper Tree Node class for Phylogenetic Tree</em></p>
+<p>Building blocks of the nodes list attribute in Pylotree to store node information of the graph data structure
+Hold RNA type as the data attribute and a list of children nodes</p>
+<p>Important notes on attributes:</p>
+<ul class="simple">
+<li><p>branch_lengtth as an attribute to store the distance between the node and its parent</p></li>
+<li><p>parent attribute to store the parent node of the current node</p></li>
+<li><p>children attribute to store the children nodes of the current node</p></li>
+</ul>
+<p>methods:</p>
+<ul class="simple">
+<li><p>add_child(child, weight): add a child node to the current node with a given weight (distance, no longer useful since added branch_length as an attribute)</p></li>
+<li><p>preorder_traversal(level=0): traverse the tree in preorder and return a string representation of the tree</p></li>
+</ul>
+<ul class="simple">
+<li><dl class="simple">
+<dt>dunder methods:</dt><dd><ul>
+<li><p>__repr__: representation of the node</p></li>
+<li><p>__str__: string representation of the node</p></li>
+<li><p>__getitem__: get a child node by name</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Families.tree.TreeNode.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">branch_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Families.tree.TreeNode.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Families.tree.TreeNode.add_child">
+<span class="sig-name descname"><span class="pre">add_child</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">child</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Families.tree.TreeNode.add_child" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Families.tree.TreeNode.preorder_traversal">
+<span class="sig-name descname"><span class="pre">preorder_traversal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Families.tree.TreeNode.preorder_traversal" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-rnalib.Families">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-rnalib.Families" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="rnalib.html" class="btn btn-neutral float-left" title="rnalib package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rnalib.IO.html" class="btn btn-neutral float-right" title="rnalib.IO package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, m1geniomhe2425-rna-oop-group6.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

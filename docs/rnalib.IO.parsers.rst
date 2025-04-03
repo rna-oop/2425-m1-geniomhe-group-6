@@ -9,21 +9,21 @@ rnalib.IO.parsers.PDB\_Parser module
 
 .. automodule:: rnalib.IO.parsers.PDB_Parser
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 rnalib.IO.parsers.RNA\_Parser module
 ------------------------------------
 
 .. automodule:: rnalib.IO.parsers.RNA_Parser
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Module contents
 ---------------
 
 .. automodule:: rnalib.IO.parsers
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:

@@ -37,23 +37,37 @@ fi
 mkdir docs
 cd docs
 
-printf "y\n ${lib_name} \nm1geniomhe2425-rna-oop-group6\n0\nen" | sphinx-quickstart
+printf "n\n ${lib_name} \nm1geniomhe2425-rna-oop-group6\n0\nen" | sphinx-quickstart
 
 # sphinx-quickstart
 # echo multiline string
 echo '''
-extensions = [
-   "sphinx_rtd_theme",
-   "sphinx.ext.autodoc"
-]
-
 
 import sphinx_rtd_theme
 
 html_theme = "sphinx_rtd_theme"
-''' >> source/conf.py
+
+extensions = [
+   "sphinx_rtd_theme",
+   "sphinx.ext.autodoc"
+]
+''' >> conf.py
+
+make html
 
 sphinx-apidoc -o . ../$lib_name
+
+make html
+
+echo '''
+def skip(app, what, name, obj, would_skip, options):
+    if name == "__init__":
+        return False
+    return would_skip
+
+def setup(app):
+    app.connect("autodoc-skip-member", skip)
+''' >> conf.py
 
 make clean html
 make html

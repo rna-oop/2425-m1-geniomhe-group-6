@@ -18,13 +18,13 @@ rnalib.IO.RNA\_IO module
 
 .. automodule:: rnalib.IO.RNA_IO
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Module contents
 ---------------
 
 .. automodule:: rnalib.IO
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:

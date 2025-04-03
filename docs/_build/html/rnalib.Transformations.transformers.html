@@ -1,0 +1,754 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>rnalib.Transformations.transformers package &mdash; rnalib 0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8dde47fa"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="rnalib.Transformations package" href="rnalib.Transformations.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            rnalib
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">rnalib</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="rnalib.html">rnalib package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="rnalib.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="rnalib.Families.html">rnalib.Families package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rnalib.IO.html">rnalib.IO package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rnalib.Processing.html">rnalib.Processing package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rnalib.Structure.html">rnalib.Structure package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="rnalib.Transformations.html">rnalib.Transformations package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rnalib.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rnalib.html#module-rnalib.utils">rnalib.utils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rnalib.html#module-rnalib.viz">rnalib.viz module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rnalib.html#module-rnalib">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">rnalib</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">rnalib</a></li>
+          <li class="breadcrumb-item"><a href="rnalib.html">rnalib package</a></li>
+          <li class="breadcrumb-item"><a href="rnalib.Transformations.html">rnalib.Transformations package</a></li>
+      <li class="breadcrumb-item active">rnalib.Transformations.transformers package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/rnalib.Transformations.transformers.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="rnalib-transformations-transformers-package">
+<h1>rnalib.Transformations.transformers package<a class="headerlink" href="#rnalib-transformations-transformers-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-rnalib.Transformations.transformers.BaseTransformer">
+<span id="rnalib-transformations-transformers-basetransformer-module"></span><h2>rnalib.Transformations.transformers.BaseTransformer module<a class="headerlink" href="#module-rnalib.Transformations.transformers.BaseTransformer" title="Link to this heading"></a></h2>
+<section id="basetransformer-py">
+<h3>BaseTransformer.py<a class="headerlink" href="#basetransformer-py" title="Link to this heading"></a></h3>
+<p>BaseTransformer is an abstract class that serves as a base for all transformers in the pipeline.
+It implements the interface Transformer than enforces the implementation of the transform and set_next methods,
+the default behavior for chaining transformers and provides a method to display the transformer in a graph format (using graphviz, for __repr__ method).</p>
+<p>set_next is implemented to make it inheritable directly to all ConcreteTransformers.  
+The transform method is abstract and must be implemented by all subclasses.</p>
+<p>It also enforces a __repr__ method to display the transformer in a graph format + str representation of the transformer (also becomes inherited and the default __str__ method for all transformers)</p>
+</section>
+<dl class="py class">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.BaseTransformer.BaseTransformer">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rnalib.Transformations.transformers.BaseTransformer.</span></span><span class="sig-name descname"><span class="pre">BaseTransformer</span></span><a class="headerlink" href="#rnalib.Transformations.transformers.BaseTransformer.BaseTransformer" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rnalib.Transformations.transformers.Transformer.Transformer" title="rnalib.Transformations.transformers.Transformer.Transformer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transformer</span></code></a></p>
+<p>A base class for all transformers that implements the default behavior for chaining transformers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>_next_transformer: Holds the next transformer in the chain.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Methods<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>set_next: Sets the next transformer in the chain and returns it.</p></li>
+<li><p>transform: Performs the transformation and passes the data to the next transformer in the chain.</p></li>
+</ul>
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.BaseTransformer.BaseTransformer.set_next">
+<span class="sig-name descname"><span class="pre">set_next</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transformer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rnalib.Transformations.transformers.Transformer.Transformer" title="rnalib.Transformations.transformers.Transformer.Transformer"><span class="pre">Transformer</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#rnalib.Transformations.transformers.Transformer.Transformer" title="rnalib.Transformations.transformers.Transformer.Transformer"><span class="pre">Transformer</span></a></span></span><a class="headerlink" href="#rnalib.Transformations.transformers.BaseTransformer.BaseTransformer.set_next" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.BaseTransformer.BaseTransformer.transform">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.BaseTransformer.BaseTransformer.transform" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-rnalib.Transformations.transformers.Distogram">
+<span id="rnalib-transformations-transformers-distogram-module"></span><h2>rnalib.Transformations.transformers.Distogram module<a class="headerlink" href="#module-rnalib.Transformations.transformers.Distogram" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.Distogram.Distogram">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rnalib.Transformations.transformers.Distogram.</span></span><span class="sig-name descname"><span class="pre">Distogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atoms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buckets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.Distogram.Distogram" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rnalib.Transformations.transformers.BaseTransformer.BaseTransformer" title="rnalib.Transformations.transformers.BaseTransformer.BaseTransformer"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseTransformer</span></code></a></p>
+<p>class Distogram</p>
+<p>This class is used to transform the input data into a distogram representation</p>
+<p><em>Whats a distogram?</em>  
+A distogram is a representation of the distances between pairs of residues in a structure</p>
+<p>This class inherits from the abstract class BaseTransformer and implements the abstract method transform
+The transformation is particularly applied to the output of the model y, which is a 3D array of coordinates</p>
+<p>usage:
+<code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">&gt;&gt;&gt;</span> <span class="pre">from</span> <span class="pre">Transformations.transformers.Distogram</span> <span class="pre">import</span> <span class="pre">Distogram</span>
+<span class="pre">&gt;&gt;&gt;</span> <span class="pre">X,y</span> <span class="pre">=</span> <span class="pre">Distogram(atoms=[1,3,5],</span> <span class="pre">b=5).transform(X,</span> <span class="pre">Y)</span>
+<span class="pre">`</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.Distogram.Distogram.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atoms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buckets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.Distogram.Distogram.__init__" title="Link to this definition"></a></dt>
+<dd><p><cite>Distogram.__init__(self, atoms=1, b=None)</cite>: Distogram’s constructor</p>
+<p>parameters:
+- atoms: list or int (optional), list of atom indices (or 1 atom index) to be used for distogram calculation (default set to 1st atom in 5’-3’ direction)
+- buckets: int (optional), number of buckets for discretization (if None, no bucketing is performed)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.Distogram.Distogram.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.Distogram.Distogram.transform" title="Link to this definition"></a></dt>
+<dd><p><cite>Distogram().transform(X,Y)</cite>: Distogram’s transform method, Computing a distogram from the coordinates of the atoms in the RNA structure</p>
+<p>parameters:</p>
+<ul class="simple">
+<li><p>X: np.ndarray, sequence data | mandatory</p></li>
+<li><p>Y: np.ndarray or dict, dict containing Original item that is nparray -&gt; coordinates data (3D coordinates of atoms) | mandatory</p></li>
+</ul>
+<p>returns:
+- X: np.ndarray, sequence data (unchanged)
+- Y_transformed: np.ndarray, distogram data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>distogram is a 2d matrix showing residues x residues matrix of distances</p></li>
+<li><p>each structure in y is transformed into a distogram (number of structures in y &lt;=&gt; nrows in y &lt;=&gt; number of distograms)</p></li>
+<li><p>all distograms will be concatenated in a single ndarray suc that nrows in y_transformed = nrows in y</p></li>
+<li><p>distogram is of shape (L x L x k) where L is the number of residues and k is the number of atoms used (3D matrix showing residues x residues x atoms given)</p></li>
+<li><p>if k=1, distogram is of shape (L x L)</p></li>
+<li><p>if b is given, i.e. user wants to split distances in b buckets, distogram is of shape (L x L x k x b) or (L x L x b) if k=1</p></li>
+</ul>
+<p><em>whats bucketing?</em>
+&gt; bucketing is a process of splitting the distances into b buckets (or bins) to create a histogram-like representation of the distances
+&gt; for example, if the maximum distance is 10 and b=5, the distances will be split into 5 buckets of size 2 (0-2, 2-4, 4-6, 6-8, 8-10)
+&gt; if a distance falls into a bucket, the corresponding bucket in the distogram will be set to 1
+&gt; it’s a way to perform discretization of the distances, this model is used in AlphaFold3</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.Distogram.test">
+<span class="sig-prename descclassname"><span class="pre">rnalib.Transformations.transformers.Distogram.</span></span><span class="sig-name descname"><span class="pre">test</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.Distogram.test" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-rnalib.Transformations.transformers.Kmers">
+<span id="rnalib-transformations-transformers-kmers-module"></span><h2>rnalib.Transformations.transformers.Kmers module<a class="headerlink" href="#module-rnalib.Transformations.transformers.Kmers" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.Kmers.Kmers">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rnalib.Transformations.transformers.Kmers.</span></span><span class="sig-name descname"><span class="pre">Kmers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.Kmers.Kmers" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rnalib.Transformations.transformers.BaseTransformer.BaseTransformer" title="rnalib.Transformations.transformers.BaseTransformer.BaseTransformer"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseTransformer</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.Kmers.Kmers.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.Kmers.Kmers.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.Kmers.Kmers.set_next">
+<span class="sig-name descname"><span class="pre">set_next</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transformer</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.Kmers.Kmers.set_next" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.Kmers.Kmers.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.Kmers.Kmers.transform" title="Link to this definition"></a></dt>
+<dd><p>Transform the input data into k-mers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>X: Input data (sequences array).</p></li>
+<li><p>Y: coordinates array (not used in this transformation).</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>Transformed data as k-mers.</p></li>
+</ul>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-rnalib.Transformations.transformers.Normalize">
+<span id="rnalib-transformations-transformers-normalize-module"></span><h2>rnalib.Transformations.transformers.Normalize module<a class="headerlink" href="#module-rnalib.Transformations.transformers.Normalize" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.Normalize.Normalize">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rnalib.Transformations.transformers.Normalize.</span></span><span class="sig-name descname"><span class="pre">Normalize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">crop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.Normalize.Normalize" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rnalib.Transformations.transformers.BaseTransformer.BaseTransformer" title="rnalib.Transformations.transformers.BaseTransformer.BaseTransformer"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseTransformer</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.Normalize.Normalize.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">crop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.Normalize.Normalize.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.Normalize.Normalize.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.Normalize.Normalize.transform" title="Link to this definition"></a></dt>
+<dd><p>Normalizes the sequences by cropping them to the minimum length of sequences in the dataset if crop is True,
+otherwise returns the original sequences that are already padded.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>X: Input data (numpy array of sequences of nucleotides, with padding as empty strings).</p></li>
+<li><p>Y: Output data (numpy array of x, y, z coordinates with dimensions</p></li>
+</ul>
+<p>(num of sequences, max num of residues, max num of atoms, 3)).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>The transformed X and Y sequences (cropped to the minimum length) if crop is True.</p></li>
+<li><p>Otherwise, the original padded X and Y sequences are returned.</p></li>
+<li><p>By calling the transform method of the parent class, the return value is either passed to the next transformer</p></li>
+</ul>
+<p>in the chain or returned directly if it’s the last transformer.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-rnalib.Transformations.transformers.OneHotEncoding">
+<span id="rnalib-transformations-transformers-onehotencoding-module"></span><h2>rnalib.Transformations.transformers.OneHotEncoding module<a class="headerlink" href="#module-rnalib.Transformations.transformers.OneHotEncoding" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.OneHotEncoding.OneHotEncoding">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rnalib.Transformations.transformers.OneHotEncoding.</span></span><span class="sig-name descname"><span class="pre">OneHotEncoding</span></span><a class="headerlink" href="#rnalib.Transformations.transformers.OneHotEncoding.OneHotEncoding" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rnalib.Transformations.transformers.BaseTransformer.BaseTransformer" title="rnalib.Transformations.transformers.BaseTransformer.BaseTransformer"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseTransformer</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.OneHotEncoding.OneHotEncoding.ALPHABET">
+<span class="sig-name descname"><span class="pre">ALPHABET</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['A',</span> <span class="pre">'C',</span> <span class="pre">'U',</span> <span class="pre">'G']</span></em><a class="headerlink" href="#rnalib.Transformations.transformers.OneHotEncoding.OneHotEncoding.ALPHABET" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.OneHotEncoding.OneHotEncoding.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.OneHotEncoding.OneHotEncoding.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.OneHotEncoding.OneHotEncoding.set_next">
+<span class="sig-name descname"><span class="pre">set_next</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transformer</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.OneHotEncoding.OneHotEncoding.set_next" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.OneHotEncoding.OneHotEncoding.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.OneHotEncoding.OneHotEncoding.transform" title="Link to this definition"></a></dt>
+<dd><p><cite>OneHotEncoding().transform(X)</cite>: transforms a numpy array representing RNA kmers (or base pairs, i.e. kmers of length 1)
+into a nd array of all possible kmers on the columns and the ones in X on the rows: 
+values are binary (0 or 1) indicating the presence of a kmer in the sequence.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>X: Input data (numpy array of sequences of nucleotides/kmers)</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>transformed_X: ndarray of 1s and 0s</p></li>
+<li><p>Y: coordinates array (not used in this transformation) but returned for information saving purposes</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Logic<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<p>this method will function always as if its taking a kmers numpy array as input, for the sake of consistency
+as it is possible to pipe it after Kmers transformer</p>
+<p>&gt; p.s. it will be 3-dimensional: d1= for the number of sequences, d2= for the number of kmers in each sequence, d3= for the number of kmers combinations (4^k)</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-rnalib.Transformations.transformers.SecondaryStructure">
+<span id="rnalib-transformations-transformers-secondarystructure-module"></span><h2>rnalib.Transformations.transformers.SecondaryStructure module<a class="headerlink" href="#module-rnalib.Transformations.transformers.SecondaryStructure" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.SecondaryStructure.SecondaryStructure">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rnalib.Transformations.transformers.SecondaryStructure.</span></span><span class="sig-name descname"><span class="pre">SecondaryStructure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nussinov</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.SecondaryStructure.SecondaryStructure" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rnalib.Transformations.transformers.BaseTransformer.BaseTransformer" title="rnalib.Transformations.transformers.BaseTransformer.BaseTransformer"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseTransformer</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.SecondaryStructure.SecondaryStructure.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nussinov</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.SecondaryStructure.SecondaryStructure.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.SecondaryStructure.SecondaryStructure.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.SecondaryStructure.SecondaryStructure.transform" title="Link to this definition"></a></dt>
+<dd><p>Adds to Y the secondary structure of the RNA sequences in X using either the Nussinov algorithm or Watson-Crick distance constraints.
+The secondary structure is represented in dot-bracket notation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>X: Input data (sequences array) of shape (num of sequences, num of residues).</p></li>
+<li><p>Y: 3D coordinates array of atoms of shape (num of sequences, num of residues, max num of atoms, 3).</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>X: Input data (unchanged).</p></li>
+<li><p>Y: Dictionary containing the original coordinates and the secondary structure.</p></li>
+</ul>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-rnalib.Transformations.transformers.TertiaryMotifs">
+<span id="rnalib-transformations-transformers-tertiarymotifs-module"></span><h2>rnalib.Transformations.transformers.TertiaryMotifs module<a class="headerlink" href="#module-rnalib.Transformations.transformers.TertiaryMotifs" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.TertiaryMotifs.TertiaryMotifs">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rnalib.Transformations.transformers.TertiaryMotifs.</span></span><span class="sig-name descname"><span class="pre">TertiaryMotifs</span></span><a class="headerlink" href="#rnalib.Transformations.transformers.TertiaryMotifs.TertiaryMotifs" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rnalib.Transformations.transformers.BaseTransformer.BaseTransformer" title="rnalib.Transformations.transformers.BaseTransformer.BaseTransformer"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseTransformer</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.TertiaryMotifs.TertiaryMotifs.set_next">
+<span class="sig-name descname"><span class="pre">set_next</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">next_transformer</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.TertiaryMotifs.TertiaryMotifs.set_next" title="Link to this definition"></a></dt>
+<dd><p>Overrides the set_next method to ensure that the next transformer is not a SecondaryStructure instance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.TertiaryMotifs.TertiaryMotifs.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.TertiaryMotifs.TertiaryMotifs.transform" title="Link to this definition"></a></dt>
+<dd><p>Checks if Y is a dictionary containing the key ‘SecondaryStructure’ and processes dot-bracket 
+notations for tertiary motif identification.</p>
+<p>Parameters:
+- X: Input data (not used in this implementation).
+- Y: Dictionary containing ‘SecondaryStructure’ key with dot-bracket format.</p>
+<p>Returns:
+- Y: Dictionary with ‘TertiaryMotifs’ key containing detected motifs for each sequence.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-rnalib.Transformations.transformers.Transformer">
+<span id="rnalib-transformations-transformers-transformer-module"></span><h2>rnalib.Transformations.transformers.Transformer module<a class="headerlink" href="#module-rnalib.Transformations.transformers.Transformer" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.Transformer.Transformer">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rnalib.Transformations.transformers.Transformer.</span></span><span class="sig-name descname"><span class="pre">Transformer</span></span><a class="headerlink" href="#rnalib.Transformations.transformers.Transformer.Transformer" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>This class defines the core interface for all transformations. 
+It implements the chain of responsibility pattern, allowing transformers to be linked together.
+Concrete transformer classes must implement the methods defined in this class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Methods<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>set_next: Sets the next transformer in the transformation chain.</p></li>
+<li><p>transform: Performs the transformation on the input data (X, Y).</p></li>
+</ul>
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.Transformer.Transformer.set_next">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set_next</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transformer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rnalib.Transformations.transformers.Transformer.Transformer" title="rnalib.Transformations.transformers.Transformer.Transformer"><span class="pre">Transformer</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.Transformer.Transformer.set_next" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.Transformer.Transformer.transform">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.Transformer.Transformer.transform" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-rnalib.Transformations.transformers.test">
+<span id="rnalib-transformations-transformers-test-module"></span><h2>rnalib.Transformations.transformers.test module<a class="headerlink" href="#module-rnalib.Transformations.transformers.test" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.test.__init__">
+<span class="sig-prename descclassname"><span class="pre">rnalib.Transformations.transformers.test.</span></span><span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.test.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+</section>
+<section id="module-rnalib.Transformations.transformers">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-rnalib.Transformations.transformers" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.BaseTransformer">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rnalib.Transformations.transformers.</span></span><span class="sig-name descname"><span class="pre">BaseTransformer</span></span><a class="headerlink" href="#rnalib.Transformations.transformers.BaseTransformer" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rnalib.Transformations.transformers.Transformer.Transformer" title="rnalib.Transformations.transformers.Transformer.Transformer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transformer</span></code></a></p>
+<p>A base class for all transformers that implements the default behavior for chaining transformers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>_next_transformer: Holds the next transformer in the chain.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Methods<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>set_next: Sets the next transformer in the chain and returns it.</p></li>
+<li><p>transform: Performs the transformation and passes the data to the next transformer in the chain.</p></li>
+</ul>
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.BaseTransformer.set_next">
+<span class="sig-name descname"><span class="pre">set_next</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transformer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rnalib.Transformations.transformers.Transformer.Transformer" title="rnalib.Transformations.transformers.Transformer.Transformer"><span class="pre">Transformer</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#rnalib.Transformations.transformers.Transformer.Transformer" title="rnalib.Transformations.transformers.Transformer.Transformer"><span class="pre">Transformer</span></a></span></span><a class="headerlink" href="#rnalib.Transformations.transformers.BaseTransformer.set_next" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.BaseTransformer.transform">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.BaseTransformer.transform" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.Distogram">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rnalib.Transformations.transformers.</span></span><span class="sig-name descname"><span class="pre">Distogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atoms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buckets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.Distogram" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rnalib.Transformations.transformers.BaseTransformer.BaseTransformer" title="rnalib.Transformations.transformers.BaseTransformer.BaseTransformer"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseTransformer</span></code></a></p>
+<p>class Distogram</p>
+<p>This class is used to transform the input data into a distogram representation</p>
+<p><em>Whats a distogram?</em>  
+A distogram is a representation of the distances between pairs of residues in a structure</p>
+<p>This class inherits from the abstract class BaseTransformer and implements the abstract method transform
+The transformation is particularly applied to the output of the model y, which is a 3D array of coordinates</p>
+<p>usage:
+<code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">&gt;&gt;&gt;</span> <span class="pre">from</span> <span class="pre">Transformations.transformers.Distogram</span> <span class="pre">import</span> <span class="pre">Distogram</span>
+<span class="pre">&gt;&gt;&gt;</span> <span class="pre">X,y</span> <span class="pre">=</span> <span class="pre">Distogram(atoms=[1,3,5],</span> <span class="pre">b=5).transform(X,</span> <span class="pre">Y)</span>
+<span class="pre">`</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.Distogram.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atoms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buckets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.Distogram.__init__" title="Link to this definition"></a></dt>
+<dd><p><cite>Distogram.__init__(self, atoms=1, b=None)</cite>: Distogram’s constructor</p>
+<p>parameters:
+- atoms: list or int (optional), list of atom indices (or 1 atom index) to be used for distogram calculation (default set to 1st atom in 5’-3’ direction)
+- buckets: int (optional), number of buckets for discretization (if None, no bucketing is performed)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.Distogram.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.Distogram.transform" title="Link to this definition"></a></dt>
+<dd><p><cite>Distogram().transform(X,Y)</cite>: Distogram’s transform method, Computing a distogram from the coordinates of the atoms in the RNA structure</p>
+<p>parameters:</p>
+<ul class="simple">
+<li><p>X: np.ndarray, sequence data | mandatory</p></li>
+<li><p>Y: np.ndarray or dict, dict containing Original item that is nparray -&gt; coordinates data (3D coordinates of atoms) | mandatory</p></li>
+</ul>
+<p>returns:
+- X: np.ndarray, sequence data (unchanged)
+- Y_transformed: np.ndarray, distogram data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>distogram is a 2d matrix showing residues x residues matrix of distances</p></li>
+<li><p>each structure in y is transformed into a distogram (number of structures in y &lt;=&gt; nrows in y &lt;=&gt; number of distograms)</p></li>
+<li><p>all distograms will be concatenated in a single ndarray suc that nrows in y_transformed = nrows in y</p></li>
+<li><p>distogram is of shape (L x L x k) where L is the number of residues and k is the number of atoms used (3D matrix showing residues x residues x atoms given)</p></li>
+<li><p>if k=1, distogram is of shape (L x L)</p></li>
+<li><p>if b is given, i.e. user wants to split distances in b buckets, distogram is of shape (L x L x k x b) or (L x L x b) if k=1</p></li>
+</ul>
+<p><em>whats bucketing?</em>
+&gt; bucketing is a process of splitting the distances into b buckets (or bins) to create a histogram-like representation of the distances
+&gt; for example, if the maximum distance is 10 and b=5, the distances will be split into 5 buckets of size 2 (0-2, 2-4, 4-6, 6-8, 8-10)
+&gt; if a distance falls into a bucket, the corresponding bucket in the distogram will be set to 1
+&gt; it’s a way to perform discretization of the distances, this model is used in AlphaFold3</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.Kmers">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rnalib.Transformations.transformers.</span></span><span class="sig-name descname"><span class="pre">Kmers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.Kmers" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rnalib.Transformations.transformers.BaseTransformer.BaseTransformer" title="rnalib.Transformations.transformers.BaseTransformer.BaseTransformer"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseTransformer</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.Kmers.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.Kmers.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.Kmers.set_next">
+<span class="sig-name descname"><span class="pre">set_next</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transformer</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.Kmers.set_next" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.Kmers.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.Kmers.transform" title="Link to this definition"></a></dt>
+<dd><p>Transform the input data into k-mers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>X: Input data (sequences array).</p></li>
+<li><p>Y: coordinates array (not used in this transformation).</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>Transformed data as k-mers.</p></li>
+</ul>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.Normalize">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rnalib.Transformations.transformers.</span></span><span class="sig-name descname"><span class="pre">Normalize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">crop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.Normalize" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rnalib.Transformations.transformers.BaseTransformer.BaseTransformer" title="rnalib.Transformations.transformers.BaseTransformer.BaseTransformer"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseTransformer</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.Normalize.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">crop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.Normalize.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.Normalize.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.Normalize.transform" title="Link to this definition"></a></dt>
+<dd><p>Normalizes the sequences by cropping them to the minimum length of sequences in the dataset if crop is True,
+otherwise returns the original sequences that are already padded.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>X: Input data (numpy array of sequences of nucleotides, with padding as empty strings).</p></li>
+<li><p>Y: Output data (numpy array of x, y, z coordinates with dimensions</p></li>
+</ul>
+<p>(num of sequences, max num of residues, max num of atoms, 3)).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>The transformed X and Y sequences (cropped to the minimum length) if crop is True.</p></li>
+<li><p>Otherwise, the original padded X and Y sequences are returned.</p></li>
+<li><p>By calling the transform method of the parent class, the return value is either passed to the next transformer</p></li>
+</ul>
+<p>in the chain or returned directly if it’s the last transformer.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.OneHotEncoding">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rnalib.Transformations.transformers.</span></span><span class="sig-name descname"><span class="pre">OneHotEncoding</span></span><a class="headerlink" href="#rnalib.Transformations.transformers.OneHotEncoding" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rnalib.Transformations.transformers.BaseTransformer.BaseTransformer" title="rnalib.Transformations.transformers.BaseTransformer.BaseTransformer"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseTransformer</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.OneHotEncoding.ALPHABET">
+<span class="sig-name descname"><span class="pre">ALPHABET</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['A',</span> <span class="pre">'C',</span> <span class="pre">'U',</span> <span class="pre">'G']</span></em><a class="headerlink" href="#rnalib.Transformations.transformers.OneHotEncoding.ALPHABET" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.OneHotEncoding.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.OneHotEncoding.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.OneHotEncoding.set_next">
+<span class="sig-name descname"><span class="pre">set_next</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transformer</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.OneHotEncoding.set_next" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.OneHotEncoding.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.OneHotEncoding.transform" title="Link to this definition"></a></dt>
+<dd><p><cite>OneHotEncoding().transform(X)</cite>: transforms a numpy array representing RNA kmers (or base pairs, i.e. kmers of length 1)
+into a nd array of all possible kmers on the columns and the ones in X on the rows: 
+values are binary (0 or 1) indicating the presence of a kmer in the sequence.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>X: Input data (numpy array of sequences of nucleotides/kmers)</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>transformed_X: ndarray of 1s and 0s</p></li>
+<li><p>Y: coordinates array (not used in this transformation) but returned for information saving purposes</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Logic<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<p>this method will function always as if its taking a kmers numpy array as input, for the sake of consistency
+as it is possible to pipe it after Kmers transformer</p>
+<p>&gt; p.s. it will be 3-dimensional: d1= for the number of sequences, d2= for the number of kmers in each sequence, d3= for the number of kmers combinations (4^k)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.SecondaryStructure">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rnalib.Transformations.transformers.</span></span><span class="sig-name descname"><span class="pre">SecondaryStructure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nussinov</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.SecondaryStructure" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#rnalib.Transformations.transformers.BaseTransformer.BaseTransformer" title="rnalib.Transformations.transformers.BaseTransformer.BaseTransformer"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseTransformer</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.SecondaryStructure.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nussinov</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.SecondaryStructure.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.SecondaryStructure.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.SecondaryStructure.transform" title="Link to this definition"></a></dt>
+<dd><p>Adds to Y the secondary structure of the RNA sequences in X using either the Nussinov algorithm or Watson-Crick distance constraints.
+The secondary structure is represented in dot-bracket notation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>X: Input data (sequences array) of shape (num of sequences, num of residues).</p></li>
+<li><p>Y: 3D coordinates array of atoms of shape (num of sequences, num of residues, max num of atoms, 3).</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>X: Input data (unchanged).</p></li>
+<li><p>Y: Dictionary containing the original coordinates and the secondary structure.</p></li>
+</ul>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.Transformer">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rnalib.Transformations.transformers.</span></span><span class="sig-name descname"><span class="pre">Transformer</span></span><a class="headerlink" href="#rnalib.Transformations.transformers.Transformer" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>This class defines the core interface for all transformations. 
+It implements the chain of responsibility pattern, allowing transformers to be linked together.
+Concrete transformer classes must implement the methods defined in this class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Methods<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<ul class="simple">
+<li><p>set_next: Sets the next transformer in the transformation chain.</p></li>
+<li><p>transform: Performs the transformation on the input data (X, Y).</p></li>
+</ul>
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.Transformer.set_next">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set_next</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transformer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rnalib.Transformations.transformers.Transformer.Transformer" title="rnalib.Transformations.transformers.Transformer.Transformer"><span class="pre">Transformer</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.Transformer.set_next" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rnalib.Transformations.transformers.Transformer.transform">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rnalib.Transformations.transformers.Transformer.transform" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="rnalib.Transformations.html" class="btn btn-neutral float-left" title="rnalib.Transformations package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, m1geniomhe2425-rna-oop-group6.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
