@@ -6,12 +6,14 @@ from setuptools import setup, find_packages
 with open("requirements.txt") as f:
     requirements = f.read().splitlines()
 
+with open("VERSION") as version_file:
+    version = version_file.read().strip()
 
 setup(
-    name="rnalib",  
-    version="0.0.0",
+    name="RNAr",  
+    version=version,
     author="Joelle ASSY, Rayane ADAM",  
-    description="object-oriented programming project with RNA structures manipulation",
+    description="python library to handle RNA spatial conformations",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
     url="https://github.com/rna-oop/2425-m1-geniomhe-group-6", 

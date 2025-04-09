@@ -1,7 +1,7 @@
-rnalib
-======
+rnar
+====
 
 .. toctree::
    :maxdepth: 4
 
-   rnalib
+   rnar

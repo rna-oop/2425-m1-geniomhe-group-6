@@ -69,7 +69,48 @@ def setup(app):
     app.connect("autodoc-skip-member", skip)
 ''' >> conf.py
 
+
+cat <<EOF > index.rst
+Welcome to ${lib_name}'s documentation!
+=================================
+
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+   modules.rst
+
+Indices and tables
+==================
+
+* :ref:\`genindex\`
+* :ref:\`modindex\`
+* :ref:\`search\`
+EOF
+
+echo "dixed index.rst to have links to genindex, modindex and search => allows for a small table of contents on main page"
+
+
 make clean html
 make html
+
+plot_file="../../../assets/1r7w_cg_transparent.html"
+index_file="_build/html/index.html"
+
+plot_to_html_content="<section id=\"embedded-content\">
+  <iframe src=\"${plot_file}\" style=\"border: none;\" width=\"600\" height=\"400\"></iframe>
+</section>"
+escaped_content=$(echo "$plot_to_html_content" | sed -e 's/[&/\]/\\&/g' -e 's/</\\</g' -e 's/>/\\>/g')
+
+
+# sed -i "/<section id=\"indices-and-tables\">/i $escaped_content" $index_file
+# # awk -v content="$plot_to_html_content" '/<section id="indices-and-tables">/ {print content}1' "_build/html/index.html" > temp.html && mv temp.html "_build/html/index.html"
+# awk 'NR==85 {print "<section id=\"embedded-content\">\n  <iframe src=\"../../../assets/1r7w_cg_transparent.html\" style=\"border: none;\" width=\"600\" height=\"400\"></iframe>\n</section>"}1'   > temp.html && mv temp.html index.html
+
+awk -v content="$plot_to_html_content" '/<section id="indices-and-tables">/ {print content}1' "$index_file" > temp.html && mv temp.html "$index_file"
+
+echo 'added plot to main page'
+
 
 echo check out docs/build/html/index.html for read.the.docs styles doucumentation of the library

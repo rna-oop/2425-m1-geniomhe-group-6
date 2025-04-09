@@ -2,14 +2,15 @@
 
 <!-- _Online demo available as soon as it becomes public:_   <a href="https://colab.research.google.com/github/rna-oop/2425-m1geniomhe-group-6/blob/main/demo.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open Project in colab"/></a>  -->
 
+<img align="right" src="./assets/3d_structure.png" width="40%">
 
-[![GitHub](https://img.shields.io/badge/GitHub-rna--oop-black?logo=Github)](https://github.com/rna--oop/2425-m1geniomhe-group-6) [![Python](https://img.shields.io/badge/python-3.10+-blue?logo=Python)](https://www.python.org/downloads/release/python-390/)     [![Version](https://img.shields.io/badge/version-0.0.1-grassgreen)](./dev/changelog.md)  ![Build](https://img.shields.io/badge/installation-pip-brightgreen) [![Read the Docs](https://img.shields.io/badge/docs-read--the--docs-blue?logo=readthedocs)](./docs/_build/html/index.html) [![jup](https://img.shields.io/badge/Jupyter-demo-orange?logo=jupyter)](./demo.ipynb)
+
+[![GitHub](https://img.shields.io/badge/GitHub-rna--oop-black?logo=Github)](https://github.com/rna-oop/2425-m1-geniomhe-group-6) [![Python](https://img.shields.io/badge/python-3.10+-blue?logo=Python)](https://www.python.org/downloads/release/python-390/)  [![Read the Docs](https://img.shields.io/badge/docs-read--the--docs-blue?logo=readthedocs)](./docs/_build/html/index.html)      [![Version](https://img.shields.io/badge/version-0.0.1-grassgreen)](./dev/changelog.md)  [![Build](https://img.shields.io/badge/installation-pip-brightgreen)](#installation)
+<!-- [![pages-build-deployment](https://github.com/rna-oop/2425-m1geniomhe-group-6/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/rna-oop/2425-m1geniomhe-group-6/actions/workflows/pages/pages-build-deployment) -->
 <!-- deployed badge -->
 
+> Welcome to `RNAr` python library for structural RNA!
 
-
-* Joelle ASSY ([@JoelleAs](https://github.com/joelleas))
-* Rayane ADAM ([@raysas](https://github.com/raysas))
 
 ## Modeling a Library for the Manipulation of Ribonucleic Acids (RNAs)
 The goal of this series of labs is to build a library that allows easy manipulation and study of RNA sequences.
@@ -44,17 +45,21 @@ This library can be installed directly from github through pip:
 ```python 
 pip install git+git://github.com/rna-oop/2425-m1geniomhe-group-6.git
 ```
+or simply clone the repository and install it locally:
+```python
+git clone https://github.com/rna-oop/2425-m1geniomhe-group-6
+cd 2425-m1geniomhe-group-6
+pip install .
+```
+
+To make sure it's installed correctly, you can run the following command in your terminal:
+```python
+python -c "import RNAr; print(RNAr.__version__)"
+```
 
 _Online demo available as soon as it becomes public:_   <a href="https://colab.research.google.com/github/rna-oop/2425-m1geniomhe-group-6/blob/main/demo.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open Project in colab"/></a> 
 
-Documentation of the various functions and classes can be found in a [`Sphinx generated read-the-docs-like webpage`](./docs/_build/html/index.html) or in the docstrings of the code. _Not deployed on github pages yet because the repo is private._
-
-<p align='center'>
-<img src='./lab4/assets/image.png' height=300>
-</p>
-
-
-
+Documentation of the various functions and classes can be found in on [github.io](https://rna-oop.github.io/2425-m1geniomhe-group-6/)
 
 ## Labs
 ### Lab1
@@ -420,14 +425,29 @@ The Chain of Responsibility pattern allows multiple handlers to process a reques
 ### Visualizations
 
 For a better understanding of the data, analysis, explanation and how it can be used, we have added a `viz` module at the root of the library containing functions to plot different representation of RNA, from the object 3D representation to raw and processed array representation.  
-We have used more than 5 plotting libraries, including `matplotlib`, `plotly`, `networkx`, `graphviz` and `pyvis` mainly and generated different spatial, interactive and network plots. A glimpse can be found here:
+We have used more than 5 plotting libraries, including `matplotlib`, `plotly`, `networkx`, `graphviz` and `pyvis` mainly and generated different spatial, interactive and network plots.
 
-<p align='center'>
-<img src='./lab4/assets/rna_obj.png'>
-</p>
-RNA object, coarse grained, representing an NMR structure of 20 models (interactive plot in plotly)
+<!-- | RNA object, coarse grained, representing an NMR structure of 20 models (interactive plot in plotly) | Visualization of the different stages of an Array object representation of the RNA, whther on sequence or structure level. |
+| --| --|
+| <img src='./lab4/assets/rna_obj.png'> | ![data viz](./lab4/assets/data.png) | -->
+
 
 ![data viz](./lab4/assets/data.png)
-Visualization of the different stages of an Array object representation of the RNA, whther on sequence or structure level.
 
-The latter image creates new horizon to view where this library is heading. Machine learning and deep learning are the new trends in bioinformatics, particulalry in structural prediction in the last couple of years, and this library is a step towards that direction. RNA structure prediction is still an open challenge today, many efforts are being made to present different types of features or labels to this model. The transformations in this library provide a good starting point to train models on different kinds of features and be assessed by the way the model is able to come near oen of the RNA structural representation.
+  
+
+The latter image creates new horizon to view where this library is heading. Machine learning and deep learning are the new trends in bioinformatics, particulalry in structural prediction in the last couple of years, and this library is a step towards that direction. RNA structure prediction is still an open challenge today, many efforts are being made to present different types of features or labels to this model. The transformations in this library provide a good starting point to train models on different kinds of features and be assessed by the way the model is able to come near one of the RNA structural representation.
+
+## Acknowledgements
+
+This project was developed as part of the course OOP2 at Université Paris-Saclay, M1 GENIOMHE 2024/25. 
+
+## Contributors
+
+* Joelle ASSY ([@JoelleAs](https://github.com/joelleas))
+* Rayane ADAM ([@raysas](https://github.com/raysas))
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE.md) file for details.
+For errors, suggestions, or contributions, please open an issue.
