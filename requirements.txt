@@ -8,5 +8,5 @@ IPython     # -- file display
 networkx    # -- graph viz
 pyvis       # -- interactive graph viz
 graphviz    # -- pipeline graphviz
-ViennaRNA   # -- RNA 2ary structure test
-draw_rna    # -- RNA 2ary structure viz test
+#ViennaRNA   # -- RNA 2ary structure test
+#draw_rna    # -- RNA 2ary structure viz test

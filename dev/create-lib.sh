@@ -37,7 +37,7 @@ fi
 mkdir docs
 cd docs
 
-printf "n\n ${lib_name} \nm1geniomhe2425-rna-oop-group6\n0\nen" | sphinx-quickstart
+printf "n\n ${lib_name} \nJoelle ASSY & Rayane ADAM\n0\nen" | sphinx-quickstart
 
 # sphinx-quickstart
 # echo multiline string
@@ -95,7 +95,7 @@ echo "dixed index.rst to have links to genindex, modindex and search => allows f
 make clean html
 make html
 
-plot_file="../../../assets/1r7w_cg_transparent.html"
+plot_file="../assets/1r7w_cg_transparent.html"
 index_file="_build/html/index.html"
 
 plot_to_html_content="<section id=\"embedded-content\">
@@ -112,5 +112,8 @@ awk -v content="$plot_to_html_content" '/<section id="indices-and-tables">/ {pri
 
 echo 'added plot to main page'
 
+# -- putting index file in docs directory
+cd ..
+cp docs/_build/html/* docs/
 
-echo check out docs/build/html/index.html for read.the.docs styles doucumentation of the library
+echo check out docs/index.html for read.the.docs styles doucumentation of the library

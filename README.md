@@ -1,12 +1,11 @@
-# 2425-m1geniomhe-oop2-labs
+# RNAr library
 
 <!-- _Online demo available as soon as it becomes public:_   <a href="https://colab.research.google.com/github/rna-oop/2425-m1geniomhe-group-6/blob/main/demo.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open Project in colab"/></a>  -->
 
 <img align="right" src="./assets/3d_structure.png" width="40%">
 
 
-[![GitHub](https://img.shields.io/badge/GitHub-rna--oop-black?logo=Github)](https://github.com/rna-oop/2425-m1-geniomhe-group-6) [![Python](https://img.shields.io/badge/python-3.10+-blue?logo=Python)](https://www.python.org/downloads/release/python-390/)  [![Read the Docs](https://img.shields.io/badge/docs-read--the--docs-blue?logo=readthedocs)](./docs/_build/html/index.html)      [![Version](https://img.shields.io/badge/version-0.0.1-grassgreen)](./dev/changelog.md)  [![Build](https://img.shields.io/badge/installation-pip-brightgreen)](#installation)
-<!-- [![pages-build-deployment](https://github.com/rna-oop/2425-m1geniomhe-group-6/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/rna-oop/2425-m1geniomhe-group-6/actions/workflows/pages/pages-build-deployment) -->
+[![GitHub](https://img.shields.io/badge/GitHub-rna--oop-black?logo=Github)](https://github.com/rna-oop/2425-m1-geniomhe-group-6) [![Python](https://img.shields.io/badge/python-3.10+-blue?logo=Python)](https://www.python.org/downloads/release/python-390/)  [![Read the Docs](https://img.shields.io/badge/docs-read--the--docs-blue?logo=readthedocs)](./docs/_build/html/index.html)      [![Version](https://img.shields.io/badge/version-0.0.1-grassgreen)](./dev/changelog.md)  [![Build](https://img.shields.io/badge/installation-pip-brightgreen)](#installation)   [![pages-build-deployment](https://github.com/rna-oop/2425-m1-geniomhe-group-6/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/rna-oop/2425-m1-geniomhe-group-6/actions/workflows/pages/pages-build-deployment) <a href="https://colab.research.google.com/github/rna-oop/2425-m1-geniomhe-group-6/blob/main/demo.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open Demo in colab"/></a>
 <!-- deployed badge -->
 
 > Welcome to `RNAr` python library for structural RNA!
@@ -43,7 +42,7 @@ The goal of this series of labs is to build a library that allows easy manipulat
 
 This library can be installed directly from github through pip:
 ```python 
-pip install git+git://github.com/rna-oop/2425-m1geniomhe-group-6.git
+pip install git+https://github.com/rna-oop/2425-m1-geniomhe-group-6.git
 ```
 or simply clone the repository and install it locally:
 ```python
@@ -57,7 +56,6 @@ To make sure it's installed correctly, you can run the following command in your
 python -c "import RNAr; print(RNAr.__version__)"
 ```
 
-_Online demo available as soon as it becomes public:_   <a href="https://colab.research.google.com/github/rna-oop/2425-m1geniomhe-group-6/blob/main/demo.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open Project in colab"/></a> 
 
 Documentation of the various functions and classes can be found in on [github.io](https://rna-oop.github.io/2425-m1geniomhe-group-6/)
 

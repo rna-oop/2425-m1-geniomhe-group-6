@@ -14,6 +14,9 @@ tools
 
 *.egg-info
 
+dev/docs/
+docs/*/
+
 # --hiding all labs from future commits in order not to update whats submitted
 lab1
 lab2
